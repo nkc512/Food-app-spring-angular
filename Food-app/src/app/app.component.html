@@ -1,0 +1,47 @@
+<div id="app">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">FoodApp</a>
+        <ul class="navbar-nav mr-auto" routerLinkActive="active">
+            <li class="nav-item">
+                <a routerLink="/home" class="nav-link">Home </a>
+            </li>
+            <li class="nav-item" *ngIf="showAdminBoard">
+                <a routerLink="/admin" class="nav-link">Admin Board</a>
+            </li>
+            <li class="nav-item" *ngIf="showAdminBoard">
+                <a routerLink="/admin/addproduct" class="nav-link">Add Product</a>
+            </li>
+            <li class="nav-item" *ngIf="showAdminBoard">
+                <a routerLink="/admin/notifications" class="nav-link">Notifications</a>
+            </li>
+            <li class="nav-item" *ngIf="showUserBoard">
+                <a routerLink="/user" class="nav-link">User Board</a>
+            </li>
+            <li class="nav-item" *ngIf="showUserBoard">
+                <a routerLink="/user/cart" class="nav-link">Cart</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+            <li class="nav-item">
+                <a routerLink="/register" class="nav-link" routerLink="register">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/login" class="nav-link" routerLink="login">Login</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+            <li class="nav-item">
+                <a routerLink="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink class="nav-link" (click)="logout()">LogOut</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</div>

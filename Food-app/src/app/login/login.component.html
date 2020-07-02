@@ -1,0 +1,20 @@
+<div class="card my-5">
+    <div class="card-body">
+        <form [formGroup]="userReactiveForm">
+
+            <div class="form-group">
+                <label>username</label>
+                <input type="text" formControlName="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>password</label>
+                <input type="text" formControlName="password" class="form-control">
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="submitted && isLoginFailed">
+                Login failed: {{ errorMessage }}
+            </div>
+        </form>
+
+        <button class="button buttonsave" (click)="onSubmit()">Save</button>
+    </div>
+</div>
