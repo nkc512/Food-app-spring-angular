@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserCartComponent } from './user-cart/user-cart.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserRoutingModule } from './user-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -10,6 +11,7 @@ import { UserRoutingModule } from './user-routing.module';
   declarations: [UserCartComponent, UserHomeComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     UserRoutingModule
   ]
 })

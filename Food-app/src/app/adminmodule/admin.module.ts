@@ -4,6 +4,7 @@ import { AdminAddProductComponent } from './admin-add-product/admin-add-product.
 import { AdminNotificationComponent } from './admin-notification/admin-notification.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -11,6 +12,7 @@ import { AdminRoutingModule } from './admin-routing.module';
   declarations: [AdminAddProductComponent, AdminNotificationComponent, AdminHomeComponent],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     AdminRoutingModule
   ]
 })

@@ -11,21 +11,24 @@ export class AppComponent implements OnInit {
   private roles: string[];
   isLoggedIn = false;
   showAdminBoard = false;
-  showUserBoard = true;
+  showUserBoard = false;
   username: string;
 
   constructor(private tokenStorageService: TokenStorageService) { }
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    console.log('ngOnInit', this.isLoggedIn);
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
+      console.log(user);
       this.roles = user.roles;
+      console.log(this.roles);
 
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showUserBoard = this.roles.includes('ROLE_User');
-
+      this.showUserBoard = this.roles.includes('ROLE_USER');
+      console.log(this.showAdminBoard, this.showUserBoard);
       this.username = user.username;
     }
   }

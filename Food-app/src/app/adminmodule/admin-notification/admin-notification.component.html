@@ -1,1 +1,36 @@
 <p>admin-notification works!</p>
+<div class="card my-5">
+    <div class="card-body">
+        <form [formGroup]="cafeTime">
+            <div class="card my-5">
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Start time:</label>
+                            </td>
+                            <td>
+                                <div class="md-form md-outline input-with-post-icon timepicker" twelvehour="true">
+                                    <input formControlName="start_time" type="text" id="light-version-examples" class="form-control" placeholder="Select time">
+
+                                    <i class="fas fa-envelope input-prefix"></i>
+                                </div>
+                            </td>
+                            <td>
+                                <label>Close time:</label>
+                            </td>
+                            <td>
+                                <div class="md-form md-outline input-with-post-icon timepicker" twelvehour="true">
+                                    <input formControlName="close_time" type="text" id="light-version-examples" class="form-control" placeholder="Select time">
+
+                                    <i class="fas fa-envelope input-prefix"></i>
+                                </div>
+                            </td>
+                            <td><button class="button" (click)="updateTime()">Update Time</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
