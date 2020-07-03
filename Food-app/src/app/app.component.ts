@@ -7,9 +7,10 @@ import { TokenStorageService } from './_services/token-storage.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Food-app';
+  title = 'Durga Cafe';
   private roles: string[];
   isLoggedIn = false;
+  showAdminBoard = false;
   showCafeteriaBoard = false;
   showUserBoard = false;
   username: string;
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
 
       this.showCafeteriaBoard = this.roles.includes('ROLE_CAFETERIAMANAGER');
       this.showUserBoard = this.roles.includes('ROLE_USER');
+      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
       console.log(this.showCafeteriaBoard, this.showUserBoard);
       this.username = user.username;
     }

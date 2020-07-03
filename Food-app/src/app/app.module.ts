@@ -16,6 +16,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     AdminModule,
     UserModule,
+    CafeteriaModule,
     AppRoutingModule
   ],
   providers: [

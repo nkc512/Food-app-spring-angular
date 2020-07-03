@@ -1,18 +1,27 @@
 <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">FoodApp</a>
+        <a href="#" class="navbar-brand">Durga Cafe</a>
         <ul class="navbar-nav mr-auto" routerLinkActive="active">
             <li class="nav-item">
                 <a routerLink="/home" class="nav-link">Home </a>
             </li>
-            <li class="nav-item" *ngIf="showCafeteriaBoard">
-                <a routerLink="/admin" class="nav-link">Cafeteria Manager Home</a>
+            <li class="nav-item" *ngIf="showAdminBoard">
+                <a routerLink="/admin" class="nav-link">Admin Home</a>
             </li>
-            <li class="nav-item" *ngIf="showCafeteriaBoard">
+            <li class="nav-item" *ngIf="showAdminBoard">
                 <a routerLink="/admin/addproduct" class="nav-link">Add Product</a>
             </li>
-            <li class="nav-item" *ngIf="showCafeteriaBoard">
+            <li class="nav-item" *ngIf="showAdminBoard">
                 <a routerLink="/admin/notifications" class="nav-link">Notifications</a>
+            </li>
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
+                <a routerLink="/cafeteria" class="nav-link">Cafeteria Manager Home</a>
+            </li>
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
+                <a routerLink="/cafeteria/addproduct" class="nav-link">Add Product</a>
+            </li>
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
+                <a routerLink="/cafeteria/notifications" class="nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
                 <a routerLink="/user" class="nav-link">User Board</a>

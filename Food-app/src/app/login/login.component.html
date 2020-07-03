@@ -8,13 +8,13 @@
             </div>
             <div class="form-group">
                 <label>password</label>
-                <input type="text" formControlName="password" class="form-control">
+                <input type="password" formControlName="password" class="form-control">
             </div>
             <div class="alert alert-danger" role="alert" *ngIf="submitted && isLoginFailed">
                 Login failed: {{ errorMessage }}
             </div>
         </form>
 
-        <button class="button buttonsave" (click)="onSubmit()">Save</button>
+        <button class="button buttonsave" (click)="onSubmit()">Sign In</button>
     </div>
 </div>
