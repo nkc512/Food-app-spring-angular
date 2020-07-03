@@ -5,13 +5,13 @@
             <li class="nav-item">
                 <a routerLink="/home" class="nav-link">Home </a>
             </li>
-            <li class="nav-item" *ngIf="showAdminBoard">
-                <a routerLink="/admin" class="nav-link">Admin Board</a>
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
+                <a routerLink="/admin" class="nav-link">Cafeteria Manager Home</a>
             </li>
-            <li class="nav-item" *ngIf="showAdminBoard">
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
                 <a routerLink="/admin/addproduct" class="nav-link">Add Product</a>
             </li>
-            <li class="nav-item" *ngIf="showAdminBoard">
+            <li class="nav-item" *ngIf="showCafeteriaBoard">
                 <a routerLink="/admin/notifications" class="nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
@@ -36,7 +36,7 @@
                 <a routerLink="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
             </li>
             <li class="nav-item">
-                <a routerLink class="nav-link" (click)="logout()">LogOut</a>
+                <a routerLink class="nav-link" (click)="logout()">Sign out</a>
             </li>
         </ul>
     </nav>

@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   title = 'Food-app';
   private roles: string[];
   isLoggedIn = false;
-  showAdminBoard = false;
+  showCafeteriaBoard = false;
   showUserBoard = false;
   username: string;
 
@@ -26,9 +26,9 @@ export class AppComponent implements OnInit {
       this.roles = user.roles;
       console.log(this.roles);
 
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+      this.showCafeteriaBoard = this.roles.includes('ROLE_CAFETERIAMANAGER');
       this.showUserBoard = this.roles.includes('ROLE_USER');
-      console.log(this.showAdminBoard, this.showUserBoard);
+      console.log(this.showCafeteriaBoard, this.showUserBoard);
       this.username = user.username;
     }
   }
