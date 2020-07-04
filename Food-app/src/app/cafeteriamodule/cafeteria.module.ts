@@ -4,14 +4,17 @@ import { CafeteriaHomeComponent } from './cafeteria-home/cafeteria-home.componen
 import { CafeteriaNotificationComponent } from './cafeteria-notification/cafeteria-notification.component';
 import { CafeteriaAddProductComponent } from './cafeteria-add-product/cafeteria-add-product.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CafeteriaRoutingModule } from './cafeteria-routing.module';
+import { CafeteriaProfileComponent } from './cafeteria-profile/cafeteria-profile.component';
 
 
 
 @NgModule({
-  declarations: [CafeteriaHomeComponent, CafeteriaNotificationComponent, CafeteriaAddProductComponent],
+  declarations: [CafeteriaHomeComponent, CafeteriaNotificationComponent, CafeteriaAddProductComponent, CafeteriaProfileComponent],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CafeteriaRoutingModule
   ]
 })
 export class CafeteriaModule { }

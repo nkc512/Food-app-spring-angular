@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Cafeteria;
+import com.example.demo.model.Customer;
+import com.example.demo.model.Dish;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -27,10 +30,13 @@ import com.example.demo.payload.request.LoginRequest;
 import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;
+import com.example.demo.repository.CafeteriaRepository;
+import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.service.UserDetailsImpl;
+import com.example.demo.sequence.SequenceGeneratorService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -44,6 +50,15 @@ public class AuthController {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	CafeteriaRepository cafeteriaRepository;
+	
+	@Autowired
+	CustomerRepository customerRepository;
+	
+	@Autowired
+	SequenceGeneratorService sequenceGeneratorService;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -105,18 +120,32 @@ public class AuthController {
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adminRole);
+					
 
 					break;
 				case "ROLE_CAFETERIAMANAGER":
-					Role modRole = roleRepository.findByName(ERole.ROLE_CAFETERIAMANAGER)
+					Role cafeteriaRole = roleRepository.findByName(ERole.ROLE_CAFETERIAMANAGER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
-
+					roles.add(cafeteriaRole);
+					//cafeteria.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
+					/*Cafeteria cafeteria = new Cafeteria();//sequenceGeneratorService.generateSequence(Cafeteria.SEQUENCE_NAME));
+					
+					//cafeteria.setId();
+					cafeteria.setCafename(signUpRequest.getUsername());
+					cafeteria.setCafeuser(user);
+					System.out.print(cafeteria);
+					cafeteriaRepository.save(cafeteria);
+					*/
 					break;
 				default:
 					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(userRole);
+					/*Customer customer = new Customer();
+					//customer.setId(sequenceGeneratorService.generateSequence(Customer.SEQUENCE_NAME));
+					customer.setName(signUpRequest.getUsername());
+					customer.setCustomeruser(user);
+					customerRepository.save(customer);*/
 				}
 			});
 		}

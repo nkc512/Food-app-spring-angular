@@ -1,1 +1,39 @@
 <p>cafeteria-add-product works!</p>
+<p>create works!</p>
+<div class="card my-5">
+    <div class="card-body">
+        <form [formGroup]="dishGroup">
+            <div class="card my-5">
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td><label>Name:</label></td>
+                            <td><input formControlName="dishName" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Price:</label></td>
+                            <td><input formControlName="price" class="form-control" value=10></td>
+                        </tr>
+                        <tr>
+                            <td><label>Category:</label></td>
+                            <td><input formControlName="category" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Veg/Non Veg</label></td>
+                            <td><input formControlName="vegNonveg" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Availability</label></td>
+                            <td><input formControlName="availability" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Desciption:</label></td>
+                            <td><input formControlName="description" class="form-control"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <button class="button buttonsave" (click)="addDish()">Add Dish</button>
+    </div>
+</div>
