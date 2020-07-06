@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
+import { UploadFileService } from './_services/upload-file.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
   providers: [
     AuthService,
     TokenStorageService,
-    UserService
+    UserService,
+    UploadFileService
   ],
   bootstrap: [AppComponent]
 })

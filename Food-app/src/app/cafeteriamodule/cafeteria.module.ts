@@ -6,7 +6,7 @@ import { CafeteriaAddProductComponent } from './cafeteria-add-product/cafeteria-
 import { ReactiveFormsModule } from '@angular/forms';
 import { CafeteriaRoutingModule } from './cafeteria-routing.module';
 import { CafeteriaProfileComponent } from './cafeteria-profile/cafeteria-profile.component';
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +14,11 @@ import { CafeteriaProfileComponent } from './cafeteria-profile/cafeteria-profile
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CafeteriaRoutingModule
+    CafeteriaRoutingModule,
+    FormsModule
+  ],
+  exports:[
+    FormsModule
   ]
 })
 export class CafeteriaModule { }

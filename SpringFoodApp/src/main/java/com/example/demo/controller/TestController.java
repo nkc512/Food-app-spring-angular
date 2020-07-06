@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Dish;
 import com.example.demo.repository.CafeteriaRepository;
-import com.example.demo.repository.DishRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -26,8 +24,7 @@ public class TestController {
 	@Autowired
 	CafeteriaRepository cafeteriaRepository;
 	
-	@Autowired
-	DishRepository dishRepository;
+
 	
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
@@ -43,27 +40,27 @@ public class TestController {
 	}
 
 	
-	@GetMapping("/")
-	public List<Dish> getAllDish() throws ResourceNotFoundException
-	{
-		return dishRepository.findAll();
-	}
-	
-	@GetMapping("/cafeteria/{cafeteriaId}")
-	public List<Dish> getCafeteriaDishs(@PathVariable(value = "cafeteriaId") Long cafeteriaId) throws ResourceNotFoundException
-	{
-		return dishRepository.findByCafeteriaId(cafeteriaId);
-	}
-	@GetMapping("/cafeteria/{cafeteriaId}/search/{searchval}")
-	public List<Dish> getCafeteriaDishFind(@PathVariable(value = "cafeteriaId") Long cafeteriaId,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-	{
-		return dishRepository.findByDishnameContainingAndCafeteriaId(searchval, cafeteriaId);
-	}	
-	@GetMapping("/dish/{searchval}")
-	public List<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-	{
-		return dishRepository.findByDishnameContaining(searchval);
-	}
+//	@GetMapping("/")
+//	public List<Dish> getAllDish() throws ResourceNotFoundException
+//	{
+//		return dishRepository.findAll();
+//	}
+//	
+//	@GetMapping("/cafeteria/{cafeteriaId}")
+//	public List<Dish> getCafeteriaDishs(@PathVariable(value = "cafeteriaId") Long cafeteriaId) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByCafeteriaId(cafeteriaId);
+//	}
+//	@GetMapping("/cafeteria/{cafeteriaId}/search/{searchval}")
+//	public List<Dish> getCafeteriaDishFind(@PathVariable(value = "cafeteriaId") Long cafeteriaId,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByDishnameContainingAndCafeteriaId(searchval, cafeteriaId);
+//	}	
+//	@GetMapping("/dish/{searchval}")
+//	public List<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByDishnameContaining(searchval);
+//	}
 	
 
 }

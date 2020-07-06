@@ -29,7 +29,7 @@ public class Cafeteria  {
     
     @JsonManagedReference
     @DBRef
-    private List < Dish > dishes;
+//    private List < Dish > dishes;
     
     private boolean accountactive;
 
@@ -53,19 +53,19 @@ public class Cafeteria  {
 		this.cafename = cafename;
 	}
 
-	public List<Dish> getDishes() {
-		return dishes;
-	}
+//	public List<Dish> getDishes() {
+//		return dishes;
+//	}
+//
+//	public void setDishes(List<Dish> dishes) {
+//		this.dishes = dishes;
+//	}
 
-	public void setDishes(List<Dish> dishes) {
-		this.dishes = dishes;
-	}
-
-	public Cafeteria(String id, @Size(max = 50) String cafename, List<Dish> dishes) {
+	public Cafeteria(String id, @Size(max = 50) String cafename) {
 		super();
 		this.id = id;
 		this.cafename = cafename;
-		this.dishes = dishes;
+//		this.dishes = dishes;
 	}
 
 	public User getCafeuser() {

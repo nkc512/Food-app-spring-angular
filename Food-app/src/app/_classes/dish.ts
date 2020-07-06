@@ -1,9 +1,11 @@
 export class Dish {
-    id: number;
+    id: string;
+    restaurantName:string;
     dishName: string;
     price: number;
     category: string;
-    vegNonveg: string;
-    availability: boolean;
+    vegNonVeg : string;
+    availability : boolean;
     description: string;
+    imgName: string;
 }

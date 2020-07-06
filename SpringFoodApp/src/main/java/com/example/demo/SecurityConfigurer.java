@@ -76,6 +76,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/test/**").permitAll()
 			.antMatchers("/api/cafeteria/**").hasRole("CAFETERIA")
 			.antMatchers("/api/admin/**").hasRole("ADMIN")
+			.antMatchers("/dishdata/**").permitAll()
+			.antMatchers("/upload/**").permitAll()
+			.antMatchers("/files/**").permitAll()
 			.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

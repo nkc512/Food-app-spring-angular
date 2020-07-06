@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Cafeteria;
-import com.example.demo.model.Dish;
+
 @Repository
 public interface CafeteriaRepository extends MongoRepository<Cafeteria,Long> {
 	

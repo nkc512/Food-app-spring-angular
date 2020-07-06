@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Cafeteria;
-import com.example.demo.model.Dish;
 import com.example.demo.model.User;
 import com.example.demo.repository.CafeteriaRepository;
-import com.example.demo.repository.DishRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 @CrossOrigin(origins = "http://localhost:4200")
@@ -33,8 +31,6 @@ public class CafeteriaController {
 	@Autowired
 	CafeteriaRepository cafeteriaRepository;
 	
-	@Autowired
-	DishRepository dishRepository;
 	
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
@@ -52,17 +48,17 @@ public class CafeteriaController {
 				
 		}	
 	
-	@PostMapping("/add/{cafeteriaId}")
-	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
-	public Dish createDish(@PathVariable(value = "cafeteriaId") Long cafeteriaId,
-			@Valid @RequestBody Dish dish) throws ResourceNotFoundException
-	{
-		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-		return cafeteriaRepository.findById(cafeteriaId).map(cafeteria -> {
-			dish.setRestaurantName(cafeteriaRepository.findById(cafeteriaId).orElse(new Cafeteria()).getCafename());
-			dish.setCafeteria(cafeteria);
-			return dishRepository.save(dish);
-		}).orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
-		
-	}
+//	@PostMapping("/add/{cafeteriaId}")
+//	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+//	public Dish createDish(@PathVariable(value = "cafeteriaId") Long cafeteriaId,
+//			@Valid @RequestBody Dish dish) throws ResourceNotFoundException
+//	{
+//		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
+//		return cafeteriaRepository.findById(cafeteriaId).map(cafeteria -> {
+//			dish.setRestaurantName(cafeteriaRepository.findById(cafeteriaId).orElse(new Cafeteria()).getCafename());
+//			dish.setCafeteria(cafeteria);
+//			return dishRepository.save(dish);
+//		}).orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
+//		
+//	}
 }

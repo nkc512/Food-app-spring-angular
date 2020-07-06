@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Cafeteria;
 import com.example.demo.model.Customer;
-import com.example.demo.model.Dish;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;

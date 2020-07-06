@@ -1,4 +1,4 @@
-<p>cafeteria-add-product works!</p>
+<!-- <p>cafeteria-add-product works!</p>
 <p>create works!</p>
 <div class="card my-5">
     <div class="card-body">
@@ -36,4 +36,228 @@
         </form>
         <button class="button buttonsave" (click)="addDish()">Add Dish</button>
     </div>
+</div> -->
+
+<div>
+    <div class="alert alert-success" *ngIf="successAlertClosed" role="alert">
+        {{successmsg}}
+    </div>
+    <div class="alert alert-danger" *ngIf="failAlertClose" role="alert">
+        {{errMsg}}<br>Something is wrong!! Unable to add new dish !
+    </div>
+    <div class="card mx-2 " >
+        <h5 class="card-header font-italic vegetablePic ">
+          <div class="row">
+            <div class="col imgtext" >
+              <h3 >Configure Menu</h3>
+            </div>
+            <div class="col ">
+              <button type="button" class="btn btn-outline-light float-right " syle="" data-toggle="modal" data-target="#exampleModal">New Dish</button>
+            </div>
+          </div>
+        </h5>
+        <div class="card-body" style="padding: 0.5% 0.5%;">
+            <div class="accordion" id="accordionExample" *ngIf="categorySort!=null">
+
+                <!-- Collapse code -->
+                <div class="card my-2 mx-2 "  *ngFor="let category of key, let i = index " >
+                  <div class="card-header imgheader " id="headingOne" >
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left font-italic text-capitalize imgtext px-5" style="height: 100%" type="button" data-toggle="collapse" attr.data-target="#collapse_{{i}}" aria-expanded="false" attr.aria-controls="collapse_{{i}}">
+                         <h2 >{{category}}</h2>
+                      </button>
+                    </h2>
+                  </div>
+              
+                  <div attr.id="collapse_{{i}}"  class="collapse " attr.aria-labelledby="heading_{{i}}" data-parent="#accordionExample">
+                    <div class="card-body " >
+                              
+                              <!-- Dish card -->
+                              <div class="row card-group">
+                                  <div class="col-xl-2 col-lg-3 col-sm-6 col-xs-10 offset-xs-1 col-md-4 my-2 d-flex align-items-stretch"  style= "padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">                          
+                                        <div class="card  dishcard "  [ngClass]="dish.availability == true? '': ''" >
+                                         <div class="" >
+                                            <div class="image" [class.disablecard]=" !dish.availability " >
+                                                <div class="actions row" >
+                                                    <!-- <a href=""> -->
+                                                        <button type="button " [disabled]="!dish.availability" id="deleteButton_{{dish.id}}" (click)="deleteDish(dish)" class="btn btn-default  pull-right " style="padding: 0% 5%; position: absolute; right: 0.1rem; background:rgba(255, 255, 255, 0.8); top: 0.02rem " >
+                                                            <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                            </svg>
+                                                        </button>
+                                                    <!-- </a> -->
+                                                    <!-- <a href=""> -->
+                                                        <button type="button " [disabled]="!dish.availability" id="deleteButton_{{dish.id}}" (click)="openUpdateDish(dish)"  data-toggle="modal" data-target="#exampleModal" class="btn btn-default  pull-right" style="padding: 0% 5%; position:relative; right: 2rem; background:rgba(255, 255, 255, 0.8); top: 0.01rem ">
+                                                            <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                              <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                                                              <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+                                                            </svg>
+                                                        </button>
+                                                    <!-- </a> -->
+                                                  </div>
+                                                  <div >
+                                                    <img  src="http://localhost:8080/files/{{dish.imgName}}"  *ngIf="true; else noImageFound" stye=" " class="card-img-top" alt="...">
+                                                    <ng-template #noImageFound>
+                                                        <img src="../../assets/images/background.jpg" alt="Fallbackimage" class="card-img-top" style="  background-position: center;background-repeat: no-repeat;background-size: cover;position: relative;">
+                                                   </ng-template>
+                                                  </div>
+                                            </div>
+                                         </div>
+                                            <div class="card-body container" style="padding: 4%">
+                                                <div class="container">
+                                                  <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right " >Veg</span>
+                                                  <span *ngIf="dish.vegNonVeg=='nonveg'" class="badge badge-danger float-right " >Non veg</span>
+                                                  <h6 class="card-title font-italic text-capitalize">{{dish.dishName}}</h6>
+                                                  <div class="" style="overflow:auto;min-height:5rem;"><p class="card-text font-weight-light">{{dish.description}}</p></div>
+                                                  </div>
+                                            </div>
+                                            <div class="footer">  
+                                                  <div class="row" style="margin-left: auto; margin-right: auto;">
+                                                      <p class="col-4">&#x20b9; {{dish.price}} </p>
+                                                      <input type="checkbox" class="invisible" (change)="availableToggle(dish)"  [(ngModel)]="dish.availability" id="availability_{{dish.id}}" /><label id="toggle" style="margin-top: 2%;" for="availability_{{dish.id}}">Toggle</label>
+                                                      <p class="text-right px-2" style="color: #0275d8;" *ngIf="dish.availability">Available</p>
+                                                      <p class="text-right px-2" *ngIf="! dish.availability">Unavailable</p>  
+                                                  </div>
+                                          </div>
+                                        </div>
+                                  </div>
+                              </div>
+                              <!--  -->
+                          <!-- </div>  -->
+                    </div>
+                  </div>
+                </div>
+            
+            </div>
+        </div>
+      </div>
+
+      <!-- Modal New Dish-->
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-italic" *ngIf="!showUpdate" id="exampleModalLabel">Add New Dish</h5>
+          <h5 class="modal-title font-italic" *ngIf="showUpdate" id="exampleModalLabel">Update Dish</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="closeUpdateDish()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        
+        <form #newDishForm="ngForm"  novalidate>  
+            <div class="modal-body">
+                <!-- div Add Dish -->
+                <div *ngIf="!showUpdate">             
+                  <input type="text" id="dishName" class="form-control" placeholder="Dish Name" 
+                        required
+                        name="dishName" [(ngModel)]="newdish.dishName "
+                        #dishName="ngModel" >
+                        <br>
+                  <input type="text" id="restaurantName" class="form-control" placeholder="Restaurant Name" 
+                        required
+                        name="restaurantName" [(ngModel)]="newdish.restaurantName "
+                        #restaurantName="ngModel" >
+                        <br>
+                  <input type="number" id="price" class="form-control" placeholder="0"
+                        required
+                        name="price" [(ngModel)]="newdish.price"
+                        #price="ngModel" >
+                        <br>
+                  <input type="text" id="category" class="form-control" placeholder="Category" name="category" 
+                        required
+                        [(ngModel)]="newdish.category"
+                        #category="ngModel" >
+                        <br>
+                  <div class="form-group form-check ">
+                            <input type="checkbox" name="availability" class="form-check-input" id="availability" [(ngModel)]="newdish.availability">
+                            <label class="form-check-label" for="availability">Available</label>
+                          </div>
+                  <div class="form-check">
+                              <input class="form-check-input" type="radio" name="Radios" id="Radios1" value="veg" [(ngModel)]="newdish.vegNonVeg" required>
+                              <label class="form-check-label" for="Radios1" >
+                                Veg
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="Radios" id="Radios2" value="nonveg" [(ngModel)]="newdish.vegNonVeg">
+                              <label class="form-check-label" for="Radios2">
+                                Non Veg
+                              </label>
+                            </div>
+                            <br>
+                  <textarea class="form-control" [(ngModel)]="newdish.description" id="description" name="description" maxlength="100" placeholder="Type dish description" rows="3" required></textarea>
+                            <span class="badge badge-default pull-right" *ngIf="newdish.description!= '' " style="position:absolute; background: grey; margin-top: -20px; margin-left: 80%;" id="count_message" >{{newdish.description.length}}/100</span>
+                   
+                  <!-- file upload code -->
+                              
+                              <label class="btn btn-default">
+                                <input  type="file" accept="image/*" id="currentFileName" name="currentFile" (change)="selectFile($event)"  required/>
+                              </label>
+                  </div>            
+                              <!-- <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">
+                                Upload
+                              </button> -->
+                              
+                              <!-- <div class="alert alert-light" role="alert">{{ message }}</div> -->
+
+            <!-- Update dish code -->
+              <form #updateDishForm="ngForm" *ngIf="showUpdate">
+                      <input type="text" id="updatedishName" class="form-control" placeholder="Dish Name" 
+                      required
+                      name="dishName" [(ngModel)]="updateDish.dishName "
+                      #dishName="ngModel" >
+                      <br>
+                <input type="number" id="updateprice" class="form-control" placeholder="0"
+                      required
+                      name="price" [(ngModel)]="updateDish.price"
+                      #price="ngModel" >
+                      <br>
+                <input type="text" id="updatecategory" class="form-control" placeholder="Category" name="category" 
+                      required
+                      [(ngModel)]="updateDish.category"
+                      #category="ngModel" >
+                      <br>
+                <div class="form-group form-check ">
+                          <input type="checkbox" name="updateavailability" class="form-check-input" id="updateavailability" [(ngModel)]="updateDish.availability">
+                          <label class="form-check-label" for="availability">Available</label>
+                        </div>
+                <div class="form-check">
+                            <input class="form-check-input" type="radio" name="updateRadios" id="updateRadios1" value="veg" [(ngModel)]="updateDish.vegNonVeg" required>
+                            <label class="form-check-label" for="updateRadios1" >
+                              Veg
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="updateRadios" id="updateRadios2" value="nonveg" [(ngModel)]="updateDish.vegNonVeg">
+                            <label class="form-check-label" for="updateRadios2">
+                              Non Veg
+                            </label>
+                          </div>
+                          <br>
+                <textarea class="form-control" [(ngModel)]="updateDish.description" id="updatedescription" name="description" maxlength="100" placeholder="Type dish description" rows="3" required></textarea>
+                          <span class="badge badge-default pull-right" *ngIf="updateDish.description!= '' " style="position:absolute; background: grey; margin-top: -20px; margin-left: 80%;" id="count_message" >{{newdish.description.length}}/100</span>
+              </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeUpdateDish()" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary " *ngIf="!showUpdate" data-dismiss="modal" [disabled]='!newDishForm.valid || !selectedFiles' (click)="submitAddDish(newDishForm)">Add Dish</button>
+              <button type="button" class="btn btn-primary " *ngIf="showUpdate" data-dismiss="modal" (click)="availableToggle(updateDish)">Update Dish</button>
+            </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
 </div>
+
+
+
+
