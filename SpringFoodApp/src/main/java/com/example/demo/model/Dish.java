@@ -1,4 +1,4 @@
-package com.example.demo.dish.models;
+package com.example.demo.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

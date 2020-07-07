@@ -11,6 +11,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { UploadFileService} from '../../_services/upload-file.service';
 import { Observable } from 'rxjs';
+import { DishService } from "../../_services/dish.service"
 
 @Component({
   selector: 'app-cafeteria-add-product',
@@ -48,7 +49,7 @@ export class CafeteriaAddProductComponent implements OnInit {
   newdish: Dish = new Dish();
   updateDish: Dish= new Dish();
 
-  head: HttpHeaders;
+
   disharray: Dish[]=[];
 
   categorySort: any;
@@ -60,7 +61,6 @@ export class CafeteriaAddProductComponent implements OnInit {
   message = '';
   errMsg="";
 
-  private baseUrl = 'http://localhost:8080';
 
   successAlertClosed: boolean;
   failAlertClose:boolean;
@@ -68,10 +68,9 @@ export class CafeteriaAddProductComponent implements OnInit {
   successmsg: string;
 
 
-  constructor(private http: HttpClient,private uploadService: UploadFileService) {
+  constructor(private http: HttpClient,private uploadService: UploadFileService, private dishsrvice: DishService) {
     this.newdish.description="";
     this.newdish.availability=false;
-    this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
     this.successAlertClosed=false;
     this.failAlertClose=false;
     this.currentFile=undefined;
@@ -100,9 +99,7 @@ export class CafeteriaAddProductComponent implements OnInit {
     this.createDish(this.newdish);
   }
 
-  createDishReq(dishObj: Dish): Observable<Dish>{
-       return this.http.post<Dish>(this.baseUrl + '/dishdata/dishes/', dishObj, { headers: this.head });
-  }
+
 
   createDish(dishObj: Dish)
  {
@@ -113,7 +110,7 @@ export class CafeteriaAddProductComponent implements OnInit {
     dishObj.imgName=this.currentFile.name;
     // var element = document.getElementById("currentFileName").value;
     console.log(dishObj.imgName);
-    this.createDishReq(dishObj)
+    this.dishsrvice.createDishReq(dishObj)
       .subscribe(
         res => {
           console.log(res);
@@ -186,12 +183,10 @@ export class CafeteriaAddProductComponent implements OnInit {
     this.currentFile = new File([this.currentFile], name.replace(" ",""), {type: oldFileItem.type});
   }
 
-getAllDishes(): Observable<Dish[]> {
-      return this.http.get<Dish[]>(this.baseUrl + '/dishdata/allDishes', { headers: this.head });
-    }
+
 
 callGetAllDishes(){
-  this.getAllDishes().subscribe(
+  this.dishsrvice.getAllDishes().subscribe(
   response => {
       console.log(response);
       this.disharray=response;
@@ -209,7 +204,7 @@ callGetAllDishes(){
 
 availableToggle( dishData: Dish){
    console.log(dishData);
-    this.http.put(this.baseUrl + '/dishdata/dishes/' + dishData.id, dishData, { headers: this.head })
+    this.dishsrvice.updateDish(dishData)
     .subscribe(
       res=>{
         this.disharray = this.disharray.filter((item) => item.id !== dishData.id);
@@ -247,7 +242,7 @@ closeUpdateDish(){
 
 deleteDish(dish:Dish){
   console.log(dish.dishName);
-  this.http.delete(this.baseUrl + '/dishdata/dishes/' + dish.id, { headers: this.head })
+  this.dishsrvice.deletDish(dish)
   .subscribe(
     res=>{
       console.log(res);

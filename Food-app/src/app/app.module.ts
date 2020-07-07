@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
 import { UploadFileService } from './_services/upload-file.service';
+import { DishService } from './_services/dish.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { UploadFileService } from './_services/upload-file.service';
     AuthService,
     TokenStorageService,
     UserService,
-    UploadFileService
+    UploadFileService,
+    DishService
   ],
   bootstrap: [AppComponent]
 })

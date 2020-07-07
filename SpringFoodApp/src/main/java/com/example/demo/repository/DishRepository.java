@@ -1,6 +1,4 @@
-package com.example.demo.dish.repositories;
-
-import com.example.demo.dish.models.Dish;
+package com.example.demo.repository;
 
 import java.awt.List;
 import java.util.ArrayList;
@@ -8,6 +6,8 @@ import java.util.ArrayList;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.example.demo.model.Dish;
 
 @Repository
 public interface DishRepository extends MongoRepository<Dish, String> {
