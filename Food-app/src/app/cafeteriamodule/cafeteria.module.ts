@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CafeteriaRoutingModule } from './cafeteria-routing.module';
 import { CafeteriaProfileComponent } from './cafeteria-profile/cafeteria-profile.component';
 import { FormsModule } from '@angular/forms';
+import { AuthInterceptor } from '../_helpers/auth.interceptor';
 
 
 @NgModule({
@@ -19,6 +20,9 @@ import { FormsModule } from '@angular/forms';
   ],
   exports:[
     FormsModule
+  ],
+  providers:[
+    AuthInterceptor
   ]
 })
 export class CafeteriaModule { }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Dish } from '../_classes/dish';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { TokenStorageService } from './token-storage.service';
  
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,28 @@ export class DishService {
 
   private baseUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private tokenservice: TokenStorageService) {
+    const token = this.tokenservice.getToken();
+    if (token != null) {
+      console.log(token);
+    }
+    else{
+      console.log("no token found")
+    }
     this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
    }
 
   
   createDishReq(dishObj: Dish): Observable<Dish>{
-    return this.http.post<Dish>(this.baseUrl + '/cafeteria/dishes/', dishObj);
+    return this.http.post<Dish>(this.baseUrl + '/cafeteria/dishes/', dishObj, { headers: this.head.append('Authorization', 'Bearer ' + this.tokenservice.getToken()) });
+  }
+
+  getDishByRestaurant(restaurantname:String): Observable<Dish[]>{
+    return this.http.get<Dish[]>(this.baseUrl + '/cafeteria/getRestaurantDishes/' + restaurantname)
   }
 
   getAllDishes(): Observable<Dish[]> {
+
     return this.http.get<Dish[]>(this.baseUrl + '/cafeteria/allDishes');
   }
 

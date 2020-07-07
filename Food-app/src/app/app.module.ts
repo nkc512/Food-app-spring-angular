@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminModule } from './adminmodule/admin.module';
 import { UserModule } from './usermodule/user.module';
 import { AuthService } from './_services/auth.service';
@@ -19,6 +19,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
 import { UploadFileService } from './_services/upload-file.service';
 import { DishService } from './_services/dish.service';
+import { AuthInterceptor } from './_helpers/auth.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { DishService } from './_services/dish.service';
   ],
   providers: [
     AuthService,
+    { provide : HTTP_INTERCEPTORS,useClass:  AuthInterceptor, multi:true},
     TokenStorageService,
     UserService,
     UploadFileService,

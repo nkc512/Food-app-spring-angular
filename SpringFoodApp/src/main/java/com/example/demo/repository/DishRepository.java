@@ -15,7 +15,8 @@ public interface DishRepository extends MongoRepository<Dish, String> {
 	
 	@Query (value = "{ $and: [ { 'dishName' : ?0 }, { 'restaurantName' : ?1 } ] }")
 	ArrayList<Dish> dishAlreadyExist(String dishName, String restaurantName);
-		
 	
+	@Query (value = "{'restaurantName' : ?0 }")
+	ArrayList<Dish> findRstaurantDishes(String restaurantname);
 	
 }

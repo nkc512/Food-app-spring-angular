@@ -158,7 +158,7 @@
                   <input type="text" id="restaurantName" class="form-control" placeholder="Restaurant Name" 
                         required
                         name="restaurantName" [(ngModel)]="newdish.restaurantName "
-                        #restaurantName="ngModel" >
+                        #restaurantName="ngModel"  [disabled]="true">
                         <br>
                   <input type="number" id="price" class="form-control" placeholder="0"
                         required

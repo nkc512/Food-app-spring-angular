@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -119,6 +120,17 @@ public class CafeteriaController {
                     dishRepository.deleteById(id);
                     return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("deleted successfully"));
                 }).orElse(ResponseEntity.notFound().build());
+    }
+    
+    
+    @GetMapping("/getRestaurantDishes/{restaurantname}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Dish>> getRestaurantDishes(@PathVariable("restaurantname") String restaurantname) {
+//        Sort sortByCreatedAtDesc = new Sort(Sort.Direction.DESC, "createdAt");
+    	System.out.println(dishRepository.findRstaurantDishes(restaurantname));
+    	
+        return ResponseEntity.ok().body(dishRepository.findRstaurantDishes(restaurantname));
+        
     }
 
 }

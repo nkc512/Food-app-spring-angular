@@ -12,6 +12,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { UploadFileService} from '../../_services/upload-file.service';
 import { Observable } from 'rxjs';
 import { DishService } from "../../_services/dish.service"
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-cafeteria-add-product',
@@ -66,11 +67,15 @@ export class CafeteriaAddProductComponent implements OnInit {
   failAlertClose:boolean;
   showUpdate: boolean=false;
   successmsg: string;
+  user:any;
 
+  constructor(private http: HttpClient,private uploadService: UploadFileService, private dishsrvice: DishService, private tokenService: TokenStorageService) {
+    this.user = this.tokenService.getUser();
 
-  constructor(private http: HttpClient,private uploadService: UploadFileService, private dishsrvice: DishService) {
     this.newdish.description="";
     this.newdish.availability=false;
+    this.newdish.restaurantName= this.user.username;
+
     this.successAlertClosed=false;
     this.failAlertClose=false;
     this.currentFile=undefined;
@@ -104,7 +109,7 @@ export class CafeteriaAddProductComponent implements OnInit {
   createDish(dishObj: Dish)
  {
     dishObj.dishName=dishObj.dishName.toLowerCase();
-    dishObj.restaurantName=dishObj.restaurantName.toLowerCase();
+    // dishObj.restaurantName=dishObj.restaurantName.toLowerCase();
     dishObj.category=dishObj.category.toLowerCase();
     this.renameFile(this.newdish.dishName+this.newdish.restaurantName);
     dishObj.imgName=this.currentFile.name;
@@ -186,7 +191,7 @@ export class CafeteriaAddProductComponent implements OnInit {
 
 
 callGetAllDishes(){
-  this.dishsrvice.getAllDishes().subscribe(
+  this.dishsrvice.getDishByRestaurant(this.tokenService.getUser().username).subscribe(
   response => {
       console.log(response);
       this.disharray=response;
