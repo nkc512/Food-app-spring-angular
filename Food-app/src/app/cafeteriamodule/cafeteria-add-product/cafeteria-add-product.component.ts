@@ -124,6 +124,7 @@ export class CafeteriaAddProductComponent implements OnInit {
         err => {
           console.log(err);
           this.newdish = new Dish();
+          this.newdish.restaurantName= this.tokenService.getUser().username;
           this.newdish.description='';
           this.newdish.availability=false;
           //this.errMsg=err.error['message'];
@@ -135,6 +136,7 @@ export class CafeteriaAddProductComponent implements OnInit {
               //  this.disharray.unshift(this.newdish);
                this.upload(this.newdish.dishName + this.newdish.restaurantName);
                this.newdish = new Dish();
+               this.newdish.restaurantName= this.tokenService.getUser().username;
                this.newdish.description='';
                this.newdish.availability=false;
                this.catSort();
