@@ -20,6 +20,7 @@ import { CafeteriaModule } from './cafeteriamodule/cafeteria.module';
 import { UploadFileService } from './_services/upload-file.service';
 import { DishService } from './_services/dish.service';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
+import { CartService } from './_services/cart.service';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { AuthInterceptor } from './_helpers/auth.interceptor';
     TokenStorageService,
     UserService,
     UploadFileService,
-    DishService
+    DishService,
+    CartService
   ],
   bootstrap: [AppComponent]
 })

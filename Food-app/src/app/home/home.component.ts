@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { PublicService } from '../_services/public.service';
 import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { CartItem } from '../_classes/cart-item';
+import { CartService } from '../_services/cart.service';
+import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -33,9 +36,19 @@ export class HomeComponent implements OnInit {
   restaurantArray: String[]=[];
   restaurantmsg: any;
 
-  constructor(private http: HttpClient, private publicservice: PublicService) {
+  showsuccess:boolean;
+  showError:boolean;
+  errmsg:string;
+  successmsg:string;
+  isLoggedIn: boolean;
+
+  constructor(private http: HttpClient, private publicservice: PublicService, private cartService:CartService, private tokenStorageService:TokenStorageService) {
     
     this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
+    this.showError=false;
+    this.showsuccess=false;
+    this.errmsg="";
+    this.successmsg="";
    }
 
   disharray: Dish[]=[];
@@ -52,7 +65,7 @@ export class HomeComponent implements OnInit {
     
     // this.callGetAllDishes();
     this.callGetDistinctRestaurant();
-  
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
    
 
 
@@ -94,6 +107,35 @@ export class HomeComponent implements OnInit {
     }
     );
     }
+
+    addCart(dish: Dish,i,j,k){
+      if(this.isLoggedIn){
+          let x=(<HTMLInputElement> document.getElementById('qnty_'+i+j+k)).value;
+          console.log(dish,x);
+          let cartObj=new CartItem();
+          cartObj.dish=dish;
+          cartObj.qnty=Number(x);
+          var msg=this.cartService.addElementToCart(cartObj);
+          console.log(msg);
+          if(msg=="Added to cart Successfully"){
+            this.showsuccess=true;
+            this.successmsg="Dish: "+dish.dishName+" Quntity: "+x+" is added to cart successfully."
+            setTimeout(() => {this.successmsg="";this.showsuccess = false;}, 5000);
+          }
+          else{
+            console.log(msg);
+            this.showError=true;
+            this.errmsg=msg;
+            setTimeout(() => {this.errmsg="";this.showError = false;}, 5000);
+          }
+      }
+      else{
+            this.showError=true;
+            this.errmsg="Log In to add dish to the card";
+            setTimeout(() => {this.errmsg="";this.showError = false;}, 5000);
+      }
+    }
+        
 
   // callGetAllDishes(){
   // this.getAllDishes().subscribe(

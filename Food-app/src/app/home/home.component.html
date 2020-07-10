@@ -39,6 +39,12 @@
 </div> -->
 
 <div>
+    <div class="alert alert-success" role="alert" *ngIf="showsuccess">
+                {{successmsg}}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="showError">
+               {{errmsg}}
+    </div>
     <div>
       <div class="card mx-2 my-2">
         <div class="card-header">
@@ -92,9 +98,9 @@
                                                 <div class="footer container" style="margin-bottom: 4%"> 
                                                       <div class="row">
                                                           <p class="col-6">&#x20b9; {{dish.price}} </p>
-                                                          <input type="number" [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1" id="formGroupExampleInput" placeholder="1">
+                                                          <input type="number" min=0 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'qnty_'+i+j+dish.restaurantName" value="0">
                                                       </div>
-                                                      <button type="button" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" >Add to Cart
+                                                      <button type="button" attr.id="cartButton_{{i}}{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability"  class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,i,j,dish.restaurantName)">Add to Cart
                                                           <svg class="bi bi-cart-plus icon" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" d="M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z"/>
                                                             <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z"/>

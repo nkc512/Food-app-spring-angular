@@ -1,1 +1,46 @@
-<p>user-cart works!</p>
+<div>
+        <div class="card my-4">
+            <div class="card-header">
+                  Cart
+            </div>
+            <div class="card-body" >
+                <div *ngIf="cartarray.length==0">Your cart is empty.</div>
+                <table class="table" *ngIf="cartarray.length!=0  ">
+                        <thead>
+                        <tr>
+                            <th style="width: 16.66%">#</th>
+                            <th style="width: 16.66%">Dish Name</th>
+                            <th style="width: 16.66%">category</th>
+                            <th style="width: 16.66%">Price</th>
+                            <th style="width: 16.66%">Quantity</th>
+                            <th style="width: 16.66%">total</th>
+                            <th style="width: 16.66%"> </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of cartarray; let i=index;">
+                            <th scope="row" >{{i+1}}</th>
+                            <td class="text-capitalize">{{item.dish.dishName}}</td>
+                            <td class="text-capitalize">{{item.dish.category}}</td>
+                            <td>{{item.dish.price}}</td>
+                            <td>
+                                <div style="width:60%">
+                                    <input type="number" min=0 name="qnty" (change)="updateQnty()" class="form-control" attr.id="qnty_{{i}}" placeholder="Example input"  [(ngModel)]="item.qnty">
+                                </div>
+                            </td>
+                            <td>{{item.dish.price*item.qnty}}</td>
+                            <td>
+                                <button type="button" attr.id="deleteButton_{{i}}" (click)="deleteElementFormCart(i)" class="btn btn-link btn-circle btn-sm">
+                                        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.146-3.146a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
+                                        </svg>
+                                </button> 
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+                
+                <div *ngIf="cartarray.length!=0 ">Total payment to be made: {{payable}}</div>
+            </div>
+        </div>
+</div>
