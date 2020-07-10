@@ -16,46 +16,23 @@ public class Dish {
 	@Id
 	private Long id;
 	
-	private Cafeteria cafeteria;
-
 	@NotBlank
-	private String restaurantName;
+	private String cafeterianame;
 	
     @NotBlank
 	private String dishname;
 	
-	public Dish(Long id, Cafeteria cafeteria, @NotBlank String restaurantName, @NotBlank String dishName, int price,
-			@NotBlank String category, @NotBlank String vegNonVeg, boolean availability,
-			@NotBlank @Size(max = 100) String description) {
-		super();
-		this.id = id;
-		this.cafeteria = cafeteria;
-		this.restaurantName = restaurantName;
-		this.dishname = dishName;
-		this.price = price;
-		this.category = category;
-		this.vegNonVeg = vegNonVeg;
-		this.availability = availability;
-		this.description = description;
-	}
-
-	public Cafeteria getCafeteria() {
-		return cafeteria;
-	}
-
-	public void setCafeteria(Cafeteria cafeteria) {
-		this.cafeteria = cafeteria;
-	}
-
 	private int price;
 
     @NotBlank
 	private String category;
 	
     @NotBlank
-	private String vegNonVeg;
+	private String vegNonveg;
 	
-	private boolean availability;
+	
+
+	private String availability;
 	
 	@NotBlank
 	@Size(max=100)
@@ -66,32 +43,28 @@ public class Dish {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Dish(String restaurantName, String dishName, int price, String category, String vegNonveg,
-			boolean availability, @Size(max = 100) String description) {
-		super();
-		this.restaurantName = restaurantName;
-		this.dishname = dishName;
-		this.price = price;
-		this.category = category;
-		this.vegNonVeg = vegNonveg;
-		this.availability = availability;
-		this.description = description;
-	}
-	
-	public String getRestaurantName() {
-		return restaurantName;
+	public Long getId() {
+		return id;
 	}
 
-	public void setRestaurantName(String restaurantName) {
-		this.restaurantName = restaurantName;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getDishName() {
+	public String getCafeterianame() {
+		return cafeterianame;
+	}
+
+	public void setCafeterianame(String cafeterianame) {
+		this.cafeterianame = cafeterianame;
+	}
+
+	public String getDishname() {
 		return dishname;
 	}
 
-	public void setDishName(String dishName) {
-		this.dishname = dishName;
+	public void setDishname(String dishname) {
+		this.dishname = dishname;
 	}
 
 	public int getPrice() {
@@ -111,18 +84,18 @@ public class Dish {
 	}
 
 	public String getVegNonveg() {
-		return vegNonVeg;
+		return vegNonveg;
 	}
 
-	public void setVegNonVeg(String vegNonVeg) {
-		this.vegNonVeg = vegNonVeg;
+	public void setVegNonveg(String vegNonveg) {
+		this.vegNonveg = vegNonveg;
 	}
 
-	public boolean isAvailability() {
+	public String getAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(boolean availability) {
+	public void setAvailability(String availability) {
 		this.availability = availability;
 	}
 
@@ -134,16 +107,18 @@ public class Dish {
 		this.description = description;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
+	public Dish(Long id, @NotBlank String cafeterianame, @NotBlank String dishname, int price,
+			@NotBlank String category, @NotBlank String vegNonveg, String availability,
+			@NotBlank @Size(max = 100) String description) {
+		super();
 		this.id = id;
-	}
-
-	public String getVegNonVeg() {
-		return vegNonVeg;
+		this.cafeterianame = cafeterianame;
+		this.dishname = dishname;
+		this.price = price;
+		this.category = category;
+		this.vegNonveg = vegNonveg;
+		this.availability = availability;
+		this.description = description;
 	}
 
 }

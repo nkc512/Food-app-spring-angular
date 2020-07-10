@@ -1,6 +1,7 @@
 export class Dish {
     id: number;
-    dishName: string;
+    dishname: string;
+    cafeterianame: string;
     price: number;
     category: string;
     vegNonveg: string;

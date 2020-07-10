@@ -14,9 +14,11 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private publicService: PublicService) { }
 
   ngOnInit(): void {
+    console.log('reach ngoninit');
     this.publicService.getAllDish().subscribe((dish: Dish[]) => {
       this.dishes = dish;
     });
+    console.log('reach ngoninit getalldish done');
   }
   searchFood()
   {

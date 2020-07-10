@@ -52,17 +52,16 @@ public class CafeteriaController {
 				
 		}	
 	
-	@PostMapping("/add/{cafeteriaId}")
+	@PostMapping("/add/{cafeteriausername}")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
-	public Dish createDish(@PathVariable(value = "cafeteriaId") Long cafeteriaId,
+	public Dish createDish(@PathVariable(value = "cafeteriausername") String cafeteriausername,
 			@Valid @RequestBody Dish dish) throws ResourceNotFoundException
 	{
+		System.out.println("add dish called");
 		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-		return cafeteriaRepository.findById(cafeteriaId).map(cafeteria -> {
-			dish.setRestaurantName(cafeteriaRepository.findById(cafeteriaId).orElse(new Cafeteria()).getCafename());
-			dish.setCafeteria(cafeteria);
-			return dishRepository.save(dish);
-		}).orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
-		
+		dish.setCafeterianame(cafeteriausername);
+		dishRepository.save(dish);
+		System.out.println(dish);
+		return dish;
 	}
 }

@@ -8,6 +8,7 @@ const USER_KEY = 'auth-user';
 })
 export class TokenStorageService {
   USER_ID: number;
+  USER_USERNAME: string;
 
   constructor() { }
 
@@ -33,9 +34,13 @@ export class TokenStorageService {
   public getUser() {
     const jsonparse = JSON.parse(sessionStorage.getItem(USER_KEY));
     this.USER_ID = jsonparse.id;
+    this.USER_USERNAME = jsonparse.username;
     return jsonparse;
   }
   public getUserId(): number {
     return this.USER_ID;
+  }
+  public getUsername(): string {
+    return this.USER_USERNAME;
   }
 }

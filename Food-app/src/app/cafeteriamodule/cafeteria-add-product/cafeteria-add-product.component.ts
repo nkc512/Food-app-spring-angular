@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Dish } from 'src/app/_classes/dish';
 import { CafeteriaService } from 'src/app/_services/cafeteria.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-cafeteria-add-product',
@@ -19,14 +20,15 @@ export class CafeteriaAddProductComponent implements OnInit {
     availability: new FormControl(''),
     description: new FormControl('')
   });
-  constructor(private cafeteriaService: CafeteriaService) { }
+  constructor(private cafeteriaService: CafeteriaService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
   }
-  addDish()
-  {
+  addDish() {
+    console.log('reach add dish');
     this.dish = new Dish();
-    this.dish.dishName = this.dishGroup.get('dishName').value;
+    this.dish.cafeterianame = this.tokenStorageService.getUsername();
+    this.dish.dishname = this.dishGroup.get('dishName').value;
     this.dish.price = this.dishGroup.get('price').value;
     this.dish.category = this.dishGroup.get('category').value;
     this.dish.vegNonveg = this.dishGroup.get('vegNonveg').value;
