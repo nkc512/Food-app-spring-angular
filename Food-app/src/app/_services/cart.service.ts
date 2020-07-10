@@ -5,39 +5,38 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CartService {
-  private cart: BehaviorSubject<CartItem[]>= new BehaviorSubject(null);
-  dumycart:Array<CartItem>=[];
-  constructor() { 
+  private cart: BehaviorSubject<CartItem[]> = new BehaviorSubject(null);
+  dumycart: Array<CartItem> = [];
+  constructor() {
     this.getCart().subscribe(
       data => {
-          if(data!=null){
+        if (data != null) {
           this.dumycart = data;
-          }
+        }
       }
-  );
-   }
-  addElementToCart(obj:CartItem){
-    if(obj.qnty!=0)
-    {
+    );
+  }
+  addElementToCart(obj: CartItem) {
+    if (obj.qnty != 0) {
       // var cartitemarray: CartItem[]=[];
-      this.dumycart.push(obj)
+      this.dumycart.push(obj);
       this.cart.next(this.dumycart);
-      return "Added to cart Successfully"
+      return 'Added to cart Successfully';
     }
-    else{
-      return "Select non zero qunatity"
+    else {
+      return 'Select non zero qunatity';
     }
   }
-  getCart(): Observable<CartItem[]>{
+  getCart(): Observable<CartItem[]> {
     return this.cart.asObservable();
   }
-  deleteElement(i){
+  deleteElement(i) {
     // this.cart.splice(i, 1);
     // var newarray = this.cart.filter(songs => songs.id !== id);
-    this.dumycart.splice(i,1);
+    this.dumycart.splice(i, 1);
     this.cart.next(this.dumycart);
   }
-  updatecart(obj:CartItem[]){
+  updatecart(obj: CartItem[]) {
     this.cart.next(obj);
   }
 }

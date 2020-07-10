@@ -21,6 +21,7 @@ import { UploadFileService } from './_services/upload-file.service';
 import { DishService } from './_services/dish.service';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { CartService } from './_services/cart.service';
+import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-access.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CartService } from './_services/cart.service';
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    UnauthorisedAccessComponent
   ],
   imports: [
     NgbModule,
