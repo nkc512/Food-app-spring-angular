@@ -11,21 +11,30 @@ export class PublicService {
   startTime = '';
   closeTime = '';
   announcements = '';
-  private publicUrl: string;
+  private baseUrl: string;
 
   constructor(private http: HttpClient) {
-    this.publicUrl = 'http://localhost:8080/api/test/';
+    this.baseUrl = 'http://localhost:8080/api/test/';
   }
-  getAllDish(): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.publicUrl);
+  // getAllDish(): Observable<Dish[]> {
+  //   return this.http.get<Dish[]>(this.publicUrl);
+  // }
+  // getCafeteriaDishs(cafeteriaId: number): Observable<Dish[]> {
+  //   return this.http.get<Dish[]>(this.publicUrl + cafeteriaId);
+  // }
+  // getCafeteriaDishFind(cafeteriaId: number, searchval: string): Observable<Dish[]> {
+  //   return this.http.get<Dish[]>(this.publicUrl + cafeteriaId + '/' + searchval);
+  // }
+  // getDish( searchval: string): Observable<Dish[]> {
+  //   return this.http.get<Dish[]>(this.publicUrl + searchval);
+  // }
+
+  getDistinctRestaurant(): Observable<String[]>{
+    return this.http.get<String[]>(this.baseUrl + 'allRestaurants');
   }
-  getCafeteriaDishs(cafeteriaId: number): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.publicUrl + cafeteriaId);
-  }
-  getCafeteriaDishFind(cafeteriaId: number, searchval: string): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.publicUrl + cafeteriaId + '/' + searchval);
-  }
-  getDish( searchval: string): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.publicUrl + searchval);
+
+  
+  getRestaurantDishes(restaurant:String): Observable<Dish[]>{
+    return this.http.get<Dish[]>(this.baseUrl + 'getRestaurantDishes/'+restaurant);
   }
 }

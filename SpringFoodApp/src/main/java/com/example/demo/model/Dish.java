@@ -1,26 +1,23 @@
 package com.example.demo.model;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="dish")
 public class Dish {
-	@Transient 
-	public static final String SEQUENCE_NAME="dish_seq";
-	
-	
 	@Id
-	private Long id;
-	
+	private String id;
+
 	@NotBlank
-	private String cafeterianame;
+	private String restaurantName;
 	
     @NotBlank
-	private String dishname;
+	private String dishName;
 	
 	private int price;
 
@@ -28,11 +25,12 @@ public class Dish {
 	private String category;
 	
     @NotBlank
-	private String vegNonveg;
+	private String vegNonVeg;
+    
+    @NotBlank
+	private String imgName;
 	
-	
-
-	private String availability;
+	private boolean availability;
 	
 	@NotBlank
 	@Size(max=100)
@@ -43,28 +41,51 @@ public class Dish {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getId() {
+	public Dish(String id,String restaurantName, String dishName, int price, String category, String vegNonVeg,
+			boolean availability, @Size(max = 100) String description) {
+		super();
+		this.id=id;
+		this.restaurantName = restaurantName;
+		this.dishName = dishName;
+		this.price = price;
+		this.category = category;
+		this.vegNonVeg = vegNonVeg;
+		this.availability = availability;
+		this.description = description;
+	}
+	
+	
+	
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getCafeterianame() {
-		return cafeterianame;
+	public String getImgName() {
+		return imgName;
 	}
 
-	public void setCafeterianame(String cafeterianame) {
-		this.cafeterianame = cafeterianame;
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
 	}
 
-	public String getDishname() {
-		return dishname;
+	public String getRestaurantName() {
+		return restaurantName;
 	}
 
-	public void setDishname(String dishname) {
-		this.dishname = dishname;
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
+	}
+
+	public String getDishName() {
+		return dishName;
+	}
+
+	public void setDishName(String dishName) {
+		this.dishName = dishName;
 	}
 
 	public int getPrice() {
@@ -83,19 +104,19 @@ public class Dish {
 		this.category = category;
 	}
 
-	public String getVegNonveg() {
-		return vegNonveg;
+	public String getVegNonVeg() {
+		return vegNonVeg;
 	}
 
-	public void setVegNonveg(String vegNonveg) {
-		this.vegNonveg = vegNonveg;
+	public void setVegNonVeg(String vegNonVeg) {
+		this.vegNonVeg = vegNonVeg;
 	}
 
-	public String getAvailability() {
+	public boolean isAvailability() {
 		return availability;
 	}
 
-	public void setAvailability(String availability) {
+	public void setAvailability(boolean availability) {
 		this.availability = availability;
 	}
 
@@ -104,20 +125,6 @@ public class Dish {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Dish(Long id, @NotBlank String cafeterianame, @NotBlank String dishname, int price,
-			@NotBlank String category, @NotBlank String vegNonveg, String availability,
-			@NotBlank @Size(max = 100) String description) {
-		super();
-		this.id = id;
-		this.cafeterianame = cafeterianame;
-		this.dishname = dishname;
-		this.price = price;
-		this.category = category;
-		this.vegNonveg = vegNonveg;
-		this.availability = availability;
 		this.description = description;
 	}
 

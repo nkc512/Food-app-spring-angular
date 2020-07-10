@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Dish;
 import com.example.demo.repository.CafeteriaRepository;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.MongoCursor;
+import com.example.demo.model.Dish;;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -30,10 +35,14 @@ public class TestController {
 	CafeteriaRepository cafeteriaRepository;
 	
 	@Autowired
-	DishRepository dishRepository;
+    DishRepository dishRepository;
 	
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
+	
+	@Autowired
+	MongoTemplate mongoTemplate;
+	
 	@GetMapping("/all")
 	public String allAccess() {
 		return "Public Content.";
@@ -44,48 +53,51 @@ public class TestController {
 	public String userAccess() {
 		return "User Content.";
 	}
+	
+    @GetMapping("/getRestaurantDishes/{restaurantname}")
+    public ResponseEntity<List<Dish>> getRestaurantDishes(@PathVariable("restaurantname") String restaurantname) {
+    	System.out.println(dishRepository.findRstaurantDishes(restaurantname));
+    	
+        return ResponseEntity.ok().body(dishRepository.findRstaurantDishes(restaurantname));
+        
+    }
+    
+    @GetMapping("/allRestaurants")
+    public List<String> getRestaurants(){
+    	List<String> restaurantList = new ArrayList<>();
+    	DistinctIterable distinctIterable = mongoTemplate.getCollection("dish").distinct("restaurantName", String.class);
+    	MongoCursor cursor = distinctIterable.iterator();
+        while (cursor.hasNext()) {
+            String category = (String)cursor.next();
+            restaurantList.add(category);
+        }
+        
+        return  restaurantList;
+    	
+    }
 
 	
-	@GetMapping("/")
-	public List<Dish> getAllDish() throws ResourceNotFoundException
-	{
-		System.out.println("reach getAllDish");
-		return dishRepository.findAll();
-	}
+//	@GetMapping("/")
+//	public List<Dish> getAllDish() throws ResourceNotFoundException
+//	{
+//		return dishRepository.findAll();
+//	}
+//	
+//	@GetMapping("/cafeteria/{cafeteriaId}")
+//	public List<Dish> getCafeteriaDishs(@PathVariable(value = "cafeteriaId") Long cafeteriaId) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByCafeteriaId(cafeteriaId);
+//	}
+//	@GetMapping("/cafeteria/{cafeteriaId}/search/{searchval}")
+//	public List<Dish> getCafeteriaDishFind(@PathVariable(value = "cafeteriaId") Long cafeteriaId,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByDishnameContainingAndCafeteriaId(searchval, cafeteriaId);
+//	}	
+//	@GetMapping("/dish/{searchval}")
+//	public List<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+//	{
+//		return dishRepository.findByDishnameContaining(searchval);
+//	}
 	
-	@GetMapping("/cafeteria/{cafeteriaId}")
-	public List<Dish> getCafeteriaDishs(@PathVariable(value = "cafeteriaId") String cafeterianame) throws ResourceNotFoundException
-	{
-		return dishRepository.findByCafeterianame(cafeterianame);
-	}
-	@GetMapping("/cafeteria/{cafeteriaId}/search/{searchval}")
-	public List<Dish> getCafeteriaDishFind(@PathVariable(value = "cafeteriaId") String cafeterianame,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-	{
-		return dishRepository.findByDishnameContainingAndCafeterianame(searchval, cafeterianame);
-	}	
-	@GetMapping("/dish/{searchval}")
-	public List<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-	{
-		return dishRepository.findByDishnameContaining(searchval);
-	}
-	@PostMapping("/cafeteria/add/{cafeteriausername}")
-	@PreAuthorize("hasRole('CAFETERIAMANAGER')")
-	public Dish createDish(@PathVariable(value = "cafeteriausername") String cafeteriausername,
-			@Valid @RequestBody Dish food) throws ResourceNotFoundException
-	{
-		Dish dish =new Dish();
-		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-		
-		dish.setAvailability(food.getAvailability());
-		dish.setDishname(food.getDishname());
-		dish.setCafeterianame(cafeteriausername);
-		dish.setCategory(food.getCategory());
-		dish.setDescription(food.getDescription());
-		dish.setPrice(food.getPrice());
-		dish.setVegNonveg(food.getVegNonveg());
-		dishRepository.save(dish);
-		System.out.println(dish);
-		return dish;
-	}
 
 }
