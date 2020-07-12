@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Order } from '../_classes/order';
 
 @Injectable()
 export class UserService {
@@ -8,9 +9,12 @@ export class UserService {
     private usersUrl: string;
 
     constructor(private http: HttpClient) {
-        this.usersUrl = 'http://localhost:8080/api/v1/';
+        this.usersUrl = 'http://localhost:8080/api/user';
     }
 
+    placeOrder(orderdata: Order): Observable<Order> {
+        return this.http.post<Order>(this.usersUrl + '/order' , orderdata);
+    }
     /*
     public getUser1(Id: string): User { // For userDummy data
         return this.userDummy.find(user => {
