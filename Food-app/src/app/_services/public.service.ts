@@ -31,12 +31,12 @@ export class PublicService {
   //   return this.http.get<Dish[]>(this.publicUrl + searchval);
   // }
 
-  getDistinctRestaurant(): Observable<String[]> {
-    return this.http.get<String[]>(this.baseUrl + 'allRestaurants');
+  getDistinctRestaurant(): Observable<string[]> {
+    return this.http.get<string[]>(this.baseUrl + 'allRestaurants');
   }
 
 
-  getRestaurantDishes(restaurant: String): Observable<Dish[]> {
+  getRestaurantDishes(restaurant: string): Observable<Dish[]> {
     return this.http.get<Dish[]>(this.baseUrl + 'getRestaurantDishes/' + restaurant);
   }
 

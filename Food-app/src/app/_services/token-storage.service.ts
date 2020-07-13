@@ -33,7 +33,7 @@ export class TokenStorageService {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
 
-    console.log(user);
+    //console.log(user);
   }
 
   public getUser() {

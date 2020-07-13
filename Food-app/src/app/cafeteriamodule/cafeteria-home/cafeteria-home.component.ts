@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class CafeteriaHomeComponent implements OnInit {
 
   constructor(private tokenService: TokenStorageService, private router: Router) {
-    if (!this.tokenService.getUserRole().includes('ROLE_CAFETERIA')) {
+    if (!this.tokenService.getUserRole().includes('ROLE_CAFETERIAMANAGER')) {
       this.router.navigate(['/accessalert']);
     }
 

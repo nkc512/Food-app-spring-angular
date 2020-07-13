@@ -17,14 +17,14 @@ export class CartService {
     );
   }
   addElementToCart(obj: CartItem) {
-    if (obj.qnty != 0) {
+    if (obj.quantity != 0) {
       // var cartitemarray: CartItem[]=[];
       this.dumycart.push(obj);
       this.cart.next(this.dumycart);
       return 'Added to cart Successfully';
     }
     else {
-      return 'Select non zero qunatity';
+      return 'Select non zero quantity';
     }
   }
   getCart(): Observable<CartItem[]> {
@@ -38,5 +38,9 @@ export class CartService {
   }
   updatecart(obj: CartItem[]) {
     this.cart.next(obj);
+  }
+  getCartAll(): CartItem[]
+  {
+    return this.dumycart;
   }
 }
