@@ -15,7 +15,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 })
 export class HomeComponent implements OnInit {
 
-  restaurantArray: String[] = [];
+  restaurantArray: string[] = [];
   restaurantmsg: any;
 
   showsuccess: boolean;
@@ -81,12 +81,12 @@ export class HomeComponent implements OnInit {
       console.log(dish, x);
       const cartObj = new CartItem();
       cartObj.dish = dish;
-      cartObj.qnty = Number(x);
+      cartObj.quantity = Number(x);
       let msg = this.cartService.addElementToCart(cartObj);
       console.log(msg);
       if (msg == 'Added to cart Successfully') {
         this.showsuccess = true;
-        this.successmsg = 'Dish: ' + dish.dishName + ' Quntity: ' + x + ' is added to cart successfully.'
+        this.successmsg = 'Dish: ' + dish.dishName + ' Quantity: ' + x + ' is added to cart successfully.';
         setTimeout(() => { this.successmsg = ''; this.showsuccess = false; }, 5000);
       }
       else {
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  callGetRestaurantDishes(restaurant: String) {
+  callGetRestaurantDishes(restaurant: string) {
     this.publicservice.getRestaurantDishes(restaurant).subscribe(
       response => {
         console.log(response);

@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Cafeteria;
+import com.example.demo.model.Cart;
 import com.example.demo.model.User;
 import com.example.demo.repository.CafeteriaRepository;
+import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 import com.example.demo.model.Dish;
@@ -32,7 +34,7 @@ import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.DishRepository;;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/cafeteria")
+@RequestMapping("/api/cafeteria/")
 public class CafeteriaController {
 	
 	@Autowired
@@ -40,6 +42,9 @@ public class CafeteriaController {
 
 	@Autowired
 	CafeteriaRepository cafeteriaRepository;
+	
+	@Autowired
+	CartRepository cartRepository;
 	
 	
 	@Autowired
@@ -61,23 +66,10 @@ public class CafeteriaController {
 				
 		}	
 	
-//	@PostMapping("/add/{cafeteriaId}")
-//	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
-//	public Dish createDish(@PathVariable(value = "cafeteriaId") Long cafeteriaId,
-//			@Valid @RequestBody Dish dish) throws ResourceNotFoundException
-//	{
-//		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-//		return cafeteriaRepository.findById(cafeteriaId).map(cafeteria -> {
-//			dish.setRestaurantName(cafeteriaRepository.findById(cafeteriaId).orElse(new Cafeteria()).getCafename());
-//			dish.setCafeteria(cafeteria);
-//			return dishRepository.save(dish);
-//		}).orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
-//		
-//	}
-	
-	@PostMapping("/dishes")
+	@PostMapping("dishes/")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<Dish> createDish(@Valid @RequestBody Dish dish) {
+		System.out.println("create dish called");
     	 if(!dishRepository.dishAlreadyExist(dish.getDishName(),dish.getRestaurantName()).isEmpty())
     	 {
     		return ResponseEntity.notFound().build();
@@ -88,15 +80,14 @@ public class CafeteriaController {
     	 }
     }
     
-    @GetMapping("/allDishes")
+    @GetMapping("allDishes/")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public List<Dish> getAllDishes() {
-//        Sort sortByCreatedAtDesc = new Sort(Sort.Direction.DESC, "createdAt");
     	System.out.println(dishRepository.findAll());
         return dishRepository.findAll();
     }
     
-    @PutMapping(value="/dishes/{id}")
+    @PutMapping(value="dishes/{id}/")
     public ResponseEntity<Dish> updateDish(@PathVariable("id") String id,
                                            @Valid @RequestBody Dish updateDish) {
     	return dishRepository.findById(id).map(
@@ -112,7 +103,7 @@ public class CafeteriaController {
     			}).orElse(ResponseEntity.notFound().build());
     }
     
-    @DeleteMapping(value="/dishes/{id}")
+    @DeleteMapping(value="dishes/{id}/")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<ResponseMessage> deleteDish(@PathVariable("id") String id) {
         return dishRepository.findById(id)
@@ -123,7 +114,7 @@ public class CafeteriaController {
     }
     
     
-    @GetMapping("/getRestaurantDishes/{restaurantname}")
+    @GetMapping("getRestaurantDishes/{restaurantname}/")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<List<Dish>> getRestaurantDishes(@PathVariable("restaurantname") String restaurantname) {
 //        Sort sortByCreatedAtDesc = new Sort(Sort.Direction.DESC, "createdAt");
@@ -132,6 +123,19 @@ public class CafeteriaController {
         return ResponseEntity.ok().body(dishRepository.findRstaurantDishes(restaurantname));
         
     }
-
+    @GetMapping("getorders/")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Cart>> getOrders()
+    {
+    	return ResponseEntity.ok().body(cartRepository.findAll());
+    }
+    @PostMapping("serve/")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<String> setOrderServed(@RequestBody String username)
+    {
+    	cartRepository.findById(username).get().setStatus("Served");
+    	return ResponseEntity.ok().body(new String("Order successfull"));
+    }
+    
 
 }

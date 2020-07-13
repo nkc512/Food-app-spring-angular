@@ -76,7 +76,11 @@ public class TestController {
     	
     }
 
-	
+    @GetMapping("/hi")
+	public String hifun()
+	{
+		return new String("Hi everyone");
+	}
 //	@GetMapping("/")
 //	public List<Dish> getAllDish() throws ResourceNotFoundException
 //	{

@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     //console.log("vgvbvbvb");
     this.authService.login(this.userReactiveForm.value).subscribe(
       data => {
-        console.log(data.accessToken);
+        //console.log(data.accessToken);
 
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);

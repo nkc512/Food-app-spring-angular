@@ -1,34 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Cart } from '../_classes/cart';
+import { TokenStorageService } from './token-storage.service';
+import { CartwithDish } from '../_classes/cartwith-dish';
 
+const httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable()
 export class UserService {
 
     private usersUrl: string;
-
-    constructor(private http: HttpClient) {
-        this.usersUrl = 'http://localhost:8080/api/v1/';
+    private head: HttpHeaders;
+    constructor(private http: HttpClient, private tokenService: TokenStorageService) {
+        this.usersUrl = 'http://localhost:8080/user/';
+        const token = this.tokenService.getToken();
+        if (token != null) {
+            console.log(token);
+        }
+        else {
+            console.log('no token found');
+        }
+        this.head = new HttpHeaders().set('access-control-allow-origin', this.usersUrl);
     }
 
-    /*
-    public getUser1(Id: string): User { // For userDummy data
-        return this.userDummy.find(user => {
-            return user.id == Id;
-        });
+    public saveCart(cart: Cart): Observable<any> {
+        return this.http.post<Cart>(this.usersUrl + 'createcart/', cart,
+            { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
     }
-    public getUser(Id: string): Observable<User> {
-        return this.http.get<User>(this.usersUrl + '/' + Id);
+    public getCart(): Observable<CartwithDish> {
+        console.log('getcart');
+        return this.http.get<CartwithDish>(this.usersUrl + 'getcart/',
+            { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
     }
-    public findAll(): Observable<User[]> {
-        console.log('reach findAll');
-        console.log('findall', this.http.get<User[]>(this.usersUrl));
-        return this.http.get<User[]>(this.usersUrl);
-    }
-
-    public save(user: User) {
-        console.log('reach save');
-        return this.http.post<User>(this.usersaddUrl, user);
-    }
-    */
 }

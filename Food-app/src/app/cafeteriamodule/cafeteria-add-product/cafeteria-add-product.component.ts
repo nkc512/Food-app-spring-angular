@@ -3,15 +3,15 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Dish } from 'src/app/_classes/dish';
 import { CafeteriaService } from 'src/app/_services/cafeteria.service';
 
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { UploadFileService } from '../../_services/upload-file.service';
+import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { Observable } from 'rxjs';
-import { DishService } from '../../_services/dish.service'
+import { DishService } from 'src/app/_services/dish.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Router } from '@angular/router';
 
@@ -49,7 +49,7 @@ export class CafeteriaAddProductComponent implements OnInit {
               private dishService: DishService,
               private tokenService: TokenStorageService,
               private router: Router) {
-    if (!this.tokenService.getUserRole().includes('ROLE_CAFETERIA')) {
+    if (!this.tokenService.getUserRole().includes('ROLE_CAFETERIAMANAGER')) {
       this.router.navigate(['/accessalert']);
     }
 
@@ -111,7 +111,7 @@ export class CafeteriaAddProductComponent implements OnInit {
           this.newdish.description = '';
           this.newdish.availability = false;
           // this.errMsg=err.error['message'];
-          this.errMsg = 'dish Already exist.'
+          this.errMsg = 'dish Already exist.';
           this.failAlertClose = true;
           setTimeout(() => { this.failAlertClose = false; this.errMsg = ''; }, 2000);
         },
@@ -159,7 +159,7 @@ export class CafeteriaAddProductComponent implements OnInit {
       },
       () => {
         this.successAlertClosed = true;
-        this.successmsg = 'Added Successfully !!!'
+        this.successmsg = 'Added Successfully !!!';
         setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
         this.currentFile = undefined;
       }
@@ -211,7 +211,7 @@ export class CafeteriaAddProductComponent implements OnInit {
         },
         () => {
           this.successAlertClosed = true;
-          this.successmsg = 'Updated Successfully !!!'
+          this.successmsg = 'Updated Successfully !!!';
           setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
           this.currentFile = undefined;
           this.updateDish = new Dish();
@@ -226,7 +226,7 @@ export class CafeteriaAddProductComponent implements OnInit {
   }
 
   closeUpdateDish() {
-    if (this.showUpdate == true) { this.showUpdate = !this.showUpdate; }
+    if (this.showUpdate === true) { this.showUpdate = !this.showUpdate; }
     this.updateDish = new Dish();
   }
 
@@ -245,7 +245,7 @@ export class CafeteriaAddProductComponent implements OnInit {
           this.catSort();
 
           this.successAlertClosed = true;
-          this.successmsg = 'deleted Successfully !!!'
+          this.successmsg = 'deleted Successfully !!!';
           setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
           this.currentFile = undefined;
         }

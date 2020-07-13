@@ -8,11 +8,11 @@ import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-
 
 
 const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'accessalert', component: UnauthorisedAccessComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
