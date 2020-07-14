@@ -23,10 +23,14 @@ export class HomeComponent implements OnInit {
   errmsg: string;
   successmsg: string;
   isLoggedIn: boolean;
+  cartarray: CartItem[] = [];
+  flag = true;
+  head: any;
+  baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient, private publicservice: PublicService,
               private cartService: CartService, private tokenStorageService: TokenStorageService) {
-
+    this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
     this.showError = false;
     this.showsuccess = false;
     this.errmsg = '';
@@ -40,8 +44,17 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.callGetDistinctRestaurant();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    const that = this;
+    this.cartService.getCart().subscribe(function (data) {
+      if (data != null) {
+        that.cartarray = data;
+      }
+    });
+
+
   }
 
   categorySortFunction() {
@@ -76,34 +89,52 @@ export class HomeComponent implements OnInit {
   }
 
   addCart(dish: Dish, i, j, k) {
+
     if (this.isLoggedIn) {
-      const x = (document.getElementById('quantity_' + i + j + k) as HTMLInputElement).value;
-      console.log(dish, x);
-      const cartObj = new CartItem();
-      cartObj.dish = dish;
-      cartObj.quantity = Number(x);
-      let msg = this.cartService.addElementToCart(cartObj);
-      console.log(msg);
-      if (msg == 'Added to cart Successfully') {
-        this.showsuccess = true;
-        this.successmsg = 'Dish: ' + dish.dishName + ' Quantity: ' + x + ' is added to cart successfully.';
-        setTimeout(() => { this.successmsg = ''; this.showsuccess = false; }, 5000);
+      this.checkSameRestaurant(dish.restaurantName);
+      console.log(this.flag);
+      if (!this.flag) {
+        this.showError = true;
+        this.errmsg = 'Cart should contain dishes from same restaurant.';
+        setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
       }
       else {
+        const x = (document.getElementById('quantity_' + i + j + k) as HTMLInputElement).value;
+        console.log(dish, x);
+        const cartObj = new CartItem();
+        cartObj.dish = dish;
+        cartObj.quantity = Number(x);
+        const msg = this.cartService.addElementToCart(cartObj);
         console.log(msg);
-        this.showError = true;
-        this.errmsg = msg;
-        setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
+        if (msg == 'Added to cart Successfully') {
+          this.showsuccess = true;
+          this.successmsg = 'Dish: ' + dish.dishName + ' Quantity: ' + x + ' is added to cart successfully.';
+          setTimeout(() => { this.successmsg = ''; this.showsuccess = false; }, 5000);
+        }
+        else {
+          console.log(msg);
+          this.showError = true;
+          this.errmsg = msg;
+          setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
+        }
       }
     }
     else {
       this.showError = true;
-      this.errmsg = 'Log In to add dish to the card';
+      this.errmsg = 'Log In to add dish to the cart';
       setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
     }
   }
-
-
+  checkSameRestaurant(name) {
+    this.flag = true;
+    if (this.cartarray.length > 0) {
+      console.log('check is called', this.cartarray[0].dish.restaurantName);
+      const rest1 = this.cartarray[0].dish.restaurantName;
+      if (name != rest1) {
+        this.flag = false;
+      }
+    }
+  }
   callGetRestaurantDishes(restaurant: string) {
     this.publicservice.getRestaurantDishes(restaurant).subscribe(
       response => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../_services/cart.service';
 import { CartItem } from 'src/app/_classes/cart-item';
+import { Order } from 'src/app/_classes/order';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
@@ -13,22 +14,27 @@ import { CartwithDish } from 'src/app/_classes/cartwith-dish';
   styleUrls: ['./user-cart.component.css']
 })
 export class UserCartComponent implements OnInit {
+  cartarray: CartItem[] = [];
+  payable = 0;
+  failAlertClose: boolean;
+  errmsg: string;
+  showRestaurant: boolean;
+  successAlertClosed: boolean;
+  successmsg: string;
+  showRecipt: boolean;
+  recipt: Order;
   cart: Cart;
-  cartarray: CartItem[];
   cartEmpty = true;
-  payable: number;
   val: string;
   errMsg = '';
-  failAlertClose: boolean;
-  successmsg: string;
-  successAlertClosed: boolean;
   checkoutcartEmpty: boolean;
   checkoutcartitemarray: CartItem[] = [];
   checkoutpayable: number;
   checkoutcart: CartwithDish;
 
   constructor(private cartservice: CartService, private tokenService: TokenStorageService, private router: Router,
-    private userService: UserService) {
+              private userService: UserService) {
+    this.showRecipt = false;
     this.successAlertClosed = false;
     if (!this.tokenService.getUserRole().includes('ROLE_USER')) {
       this.router.navigate(['/accessalert']);
@@ -49,18 +55,62 @@ export class UserCartComponent implements OnInit {
       this.calculatePrice(this.cartarray);
       this.cartEmpty = false;
     }
-    this.userService.getCart().subscribe(data => {
-      this.checkoutcart = data;
-    });
-    if (this.checkoutcart != null) {
-      this.checkoutcartEmpty = false;
-      this.checkoutcartitemarray = this.checkoutcart.cartItems;
-      this.checkoutpayable = this.checkoutcart.totalCost;
-    }
+    this.fetchPreviousCartData();
+
+
     console.log('cartarray', this.cartarray);
     console.log('checkoutcart', this.checkoutcart);
 
   }
+  fetchPreviousCartData() {
+    console.log('reach fetchprevdata');
+    this.userService.getCart().subscribe(data => {
+      this.checkoutcart = data;
+      this.checkoutcartitemarray = this.checkoutcart.cartItems;
+      this.checkoutcartEmpty = false;
+      this.checkoutpayable = this.checkoutcart.totalCost;
+
+      console.log('function sequence', this.checkoutcart);
+    },
+    err => {
+      this.checkoutcartEmpty = true;
+      console.log(err);
+    },
+    () => {
+      console.log('idhar to aana chahiye');
+    });
+    console.log('reach fetchprevdata');
+  }
+
+
+  order() {
+    const neworder = new Order();
+    neworder.user_id = this.tokenService.getUser().id;
+    neworder.restaurantName = this.checkoutcartitemarray[0].dish.restaurantName;
+    neworder.items = this.checkoutcartitemarray;
+    neworder.payableAmount = this.checkoutpayable;
+    neworder.status = 'Placed';
+    console.log(neworder);
+    this.userService.placeOrder(neworder).subscribe(res => {
+      console.log(res);
+      console.log(res.createdAt);
+      this.cartservice.updatecart([]);
+      this.successAlertClosed = true;
+      this.successmsg = 'Order is successfully placed with order id : ' + res.order_id;
+      setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
+      this.showRecipt = true;
+      this.recipt = res;
+    },
+      err => {
+        console.log(err);
+        this.failAlertClose = true;
+        this.errmsg = 'Error Occured while placing order.';
+        setTimeout(() => { this.errmsg = ''; this.failAlertClose = false; }, 5000);
+      },
+      () => { }
+    );
+  }
+
   calculatePrice(cartarray: CartItem[]) {
     this.payable = 0;
     let i;

@@ -40,10 +40,10 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     this.submitted = true;
-    //console.log("vgvbvbvb");
+    console.log('vgvbvbvb');
     this.authService.login(this.userReactiveForm.value).subscribe(
       data => {
-        //console.log(data.accessToken);
+        console.log(data.accessToken);
 
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       err => {
+        console.log('error');
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
       }

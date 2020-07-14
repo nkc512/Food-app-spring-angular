@@ -34,7 +34,7 @@ import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.DishRepository;;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/cafeteria/")
+@RequestMapping("/api/cafeteria")
 public class CafeteriaController {
 	
 	@Autowired
@@ -53,7 +53,7 @@ public class CafeteriaController {
 	@Autowired
     DishRepository dishRepository;
 	
-	@PutMapping("update/{cafeteriaid}")
+	@PutMapping("/update/{cafeteriaid}")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
 	public Cafeteria updateCafeteria(@PathVariable(value="cafeteriaid") Long id, @Valid @RequestBody Cafeteria newcafeteria)
 	{
@@ -66,7 +66,7 @@ public class CafeteriaController {
 				
 		}	
 	
-	@PostMapping("dishes/")
+	@PostMapping("/dishes")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<Dish> createDish(@Valid @RequestBody Dish dish) {
 		System.out.println("create dish called");
@@ -80,14 +80,14 @@ public class CafeteriaController {
     	 }
     }
     
-    @GetMapping("allDishes/")
+    @GetMapping("/allDishes")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public List<Dish> getAllDishes() {
     	System.out.println(dishRepository.findAll());
         return dishRepository.findAll();
     }
     
-    @PutMapping(value="dishes/{id}/")
+    @PutMapping(value="/dishes/{id}")
     public ResponseEntity<Dish> updateDish(@PathVariable("id") String id,
                                            @Valid @RequestBody Dish updateDish) {
     	return dishRepository.findById(id).map(
@@ -103,7 +103,7 @@ public class CafeteriaController {
     			}).orElse(ResponseEntity.notFound().build());
     }
     
-    @DeleteMapping(value="dishes/{id}/")
+    @DeleteMapping(value="/dishes/{id}")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<ResponseMessage> deleteDish(@PathVariable("id") String id) {
         return dishRepository.findById(id)
@@ -114,7 +114,7 @@ public class CafeteriaController {
     }
     
     
-    @GetMapping("getRestaurantDishes/{restaurantname}/")
+    @GetMapping("/getRestaurantDishes/{restaurantname}")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<List<Dish>> getRestaurantDishes(@PathVariable("restaurantname") String restaurantname) {
 //        Sort sortByCreatedAtDesc = new Sort(Sort.Direction.DESC, "createdAt");
@@ -123,13 +123,13 @@ public class CafeteriaController {
         return ResponseEntity.ok().body(dishRepository.findRstaurantDishes(restaurantname));
         
     }
-    @GetMapping("getorders/")
+    @GetMapping("/getorders")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<List<Cart>> getOrders()
     {
     	return ResponseEntity.ok().body(cartRepository.findAll());
     }
-    @PostMapping("serve/")
+    @PostMapping("/serve")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<String> setOrderServed(@RequestBody String username)
     {

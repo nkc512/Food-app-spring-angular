@@ -35,6 +35,9 @@ public class CartItem {
 	public String toString() {
 		return "CartItem [dish=" + dish + ", quantity=" + quantity + "]";
 	}
-	
+
+	public CartItem() {
+		super();
+	}
 	
 }

@@ -5,36 +5,32 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Cart;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.CartProduct;
 import com.example.demo.model.CartwithDish;
 import com.example.demo.model.Dish;
+import com.example.demo.model.Order;
+
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.DishRepository;
+import com.example.demo.repository.OrderRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/api/user")
 @PreAuthorize("hasRole('ROLE_USER')")
 public class UserController {
 	@Autowired
@@ -43,7 +39,10 @@ public class UserController {
 	@Autowired
 	private DishRepository dishRepository;
 	
-	@PostMapping("createcart/")
+	@Autowired
+	OrderRepository orderRepository;
+	
+	@PostMapping("/createcart")
 	@PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
 		System.out.println("create cart called");
@@ -71,7 +70,7 @@ public class UserController {
 		System.out.println("Successfully added cart for username "+currentUserName+" cart " + cart);
 		return ResponseEntity.ok().body(cart);		
     }
-	@GetMapping("getcart/")
+	@GetMapping("/getcart")
 	@PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<CartwithDish> getCart() {
 		System.out.println("get cart called");
@@ -106,6 +105,15 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}	
     }
-	
 
+	
+	@PostMapping("/order")
+	@PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Order> createDish(@RequestBody Order orderdata) {
+		System.out.println("reach "+orderdata);
+             Order insertedOrder =orderRepository.save(orderdata);
+             System.out.println("order placed with id "+insertedOrder);
+             return ResponseEntity.ok().body(insertedOrder); 
+    }
+	
 }

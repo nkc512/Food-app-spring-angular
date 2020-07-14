@@ -30,7 +30,7 @@ export class DishService {
     //console.log('createDishReq', this.baseUrl + '/cafeteria/dishes/', dishObj,
     //  { headers: this.head.append('Authorization', 'Bearer ' + this.tokenservice.getToken()) });
 
-    return this.http.post<Dish>(this.baseUrl + '/cafeteria/dishes/', dishObj,
+    return this.http.post<Dish>(this.baseUrl + '/cafeteria/dishes', dishObj,
       { headers: this.head.append('Authorization', 'Bearer ' + this.tokenservice.getToken()) });
   }
 

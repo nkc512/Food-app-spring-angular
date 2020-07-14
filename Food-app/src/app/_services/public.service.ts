@@ -15,8 +15,8 @@ export class PublicService {
   private dishUrl: string;
 
   constructor(private http: HttpClient) {
-    this.baseUrl = 'http://localhost:8080/api/test/';
-    this.dishUrl = 'http://localhost:8080/';
+    this.baseUrl = 'http://localhost:8080/api/test';
+    this.dishUrl = 'http://localhost:8080';
   }
   // getAllDish(): Observable<Dish[]> {
   //   return this.http.get<Dish[]>(this.publicUrl);
@@ -32,15 +32,15 @@ export class PublicService {
   // }
 
   getDistinctRestaurant(): Observable<string[]> {
-    return this.http.get<string[]>(this.baseUrl + 'allRestaurants');
+    return this.http.get<string[]>(this.baseUrl + '/allRestaurants');
   }
 
 
   getRestaurantDishes(restaurant: string): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.baseUrl + 'getRestaurantDishes/' + restaurant);
+    return this.http.get<Dish[]>(this.baseUrl + '/getRestaurantDishes/' + restaurant);
   }
 
   getAllDishes(): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.dishUrl + 'dishdata/allDishes');
+    return this.http.get<Dish[]>(this.dishUrl + '/dishdata/allDishes');
   }
 }

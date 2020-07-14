@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class UploadFileService {
-  head:HttpHeaders;
+  head: HttpHeaders;
   private baseUrl = 'http://localhost:8080';
 
-  constructor( private http: HttpClient ) {
+  constructor(private http: HttpClient) {
     this.head = new HttpHeaders().set('Access-Control-Allow-Origin', this.baseUrl);
-   }
+  }
 
 
 
@@ -21,8 +21,8 @@ export class UploadFileService {
 
     // console.log(file.name);
 
-    const req = new HttpRequest('POST', this.baseUrl+'/upload',formData, {
-      headers: this.head 
+    const req = new HttpRequest('POST', this.baseUrl + '/upload', formData, {
+      headers: this.head
     });
 
     return this.http.request(req);
