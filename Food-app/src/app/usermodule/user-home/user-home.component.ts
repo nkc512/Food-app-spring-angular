@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-home',
@@ -7,7 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private tokenService: TokenStorageService, private router: Router) {
+    if (!this.tokenService.getUserRole().includes('ROLE_USER')) {
+      this.router.navigate(['/accessalert']);
+    }
+  }
 
   ngOnInit(): void {
   }

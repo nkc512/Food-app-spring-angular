@@ -12,12 +12,13 @@ export class CafeteriaService {
   cafeteriaId: number;
 
   constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) {
-    this.cafeteriaUrl = 'http://localhost:8080/api/cafeteria/';
+    this.cafeteriaUrl = 'http://localhost:8080/api/test/cafeteria';
   }
-  addDish(dish: Dish) {
+  addDish(dish: Dish): Observable<Dish> {
+    //console.log('add Dish service called', this.tokenStorageService.getUsername());
 
-    this.http.post<Dish>(this.cafeteriaUrl + 'add/' + this.tokenStorageService.getUserId(), dish);
-    console.log('add Dish service called');
+    return this.http.post<Dish>(this.cafeteriaUrl + '/add/' + this.tokenStorageService.getUsername(), dish);
+
   }
 
 }

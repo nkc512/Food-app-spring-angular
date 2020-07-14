@@ -33,6 +33,7 @@ public class SpringFoodAppApplication implements CommandLineRunner{
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
+				System.out.println("webMVCcorsconfigure");
 				registry.addMapping("/dishdata").allowedOrigins("*").allowedHeaders("*").allowedMethods("PUT","DELETE","POST","OPTIONS","GET");
 				registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("PUT","DELETE","POST","OPTIONS","GET");
 			}
@@ -41,8 +42,8 @@ public class SpringFoodAppApplication implements CommandLineRunner{
 	
 	@Override
 	  public void run(String... arg) throws Exception {
-//	    storageService.deleteAll();
-//	    storageService.init();
+	    storageService.deleteAll();
+	    storageService.init();
 	  }
 
 }

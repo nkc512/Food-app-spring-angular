@@ -1,29 +1,43 @@
 package com.example.demo.model;
 
-import java.util.List;
+import javax.persistence.Id;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "cartitem")
 public class CartItem {
-	private int qnty;
 	private Dish dish;
-	
-	
-	
-	public CartItem() {
+	private Long quantity;
+	public CartItem(Dish dish, Long quantity) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.dish = dish;
+		this.quantity = quantity;
 	}
-	public int getQnty() {
-		return qnty;
+	
+	public CartItem(CartItem cartItem) {
+		super();
 	}
-	public void setQnty(int qnty) {
-		this.qnty = qnty;
-	}
+
 	public Dish getDish() {
 		return dish;
 	}
 	public void setDish(Dish dish) {
 		this.dish = dish;
 	}
-	
+	public Long getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		return "CartItem [dish=" + dish + ", quantity=" + quantity + "]";
+	}
+
+	public CartItem() {
+		super();
+	}
 	
 }

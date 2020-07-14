@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
     this.submitClick = true;
     this.authService.register(this.userReactiveForm.value).subscribe(
       data => {
-        console.log(data);
+        //console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },

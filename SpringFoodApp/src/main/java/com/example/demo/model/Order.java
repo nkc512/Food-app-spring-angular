@@ -8,8 +8,8 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="order")
-public class order {
+@Document(collection="Order")
+public class Order {
 	
 	@Id
 	private String order_id;
@@ -32,7 +32,7 @@ public class order {
 	
 	
 	
-	public order() {
+	public Order() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -95,7 +95,7 @@ public class order {
 
 	@Override
 	public String toString() {
-		return "order [order_id=" + order_id + ", restaurantName=" + restaurantName + ", user_id=" + user_id
+		return "Order [order_id=" + order_id + ", restaurantName=" + restaurantName + ", user_id=" + user_id
 				+ ", payableAmount=" + payableAmount + ", items=" + items + ", status=" + status + ", createdAt="
 				+ createdAt + "]";
 	}
