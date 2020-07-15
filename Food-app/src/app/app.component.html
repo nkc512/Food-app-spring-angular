@@ -1,56 +1,57 @@
-<div >
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">Durga Cafe</a>
+<div>
+    <nav class="navbar navbar-expand navbar-dark bg-dark ">
+        <a class="navbar-brand text-warning">Durga Cafe</a>
         <ul class="navbar-nav mr-auto" routerLinkActive="active">
             <li class="nav-item">
-                <a routerLink="/home" class="nav-link">Home </a>
+                <a routerLink="/home" class="text-white nav-link">Home </a>
             </li>
             <li class="nav-item" *ngIf="showAdminBoard">
-                <a routerLink="/admin" class="nav-link">Admin Home</a>
+                <a routerLink="/admin" class="text-white nav-link">Admin Home</a>
             </li>
             <li class="nav-item" *ngIf="showAdminBoard">
-                <a routerLink="/admin/addproduct" class="nav-link">Add Product</a>
+                <a routerLink="/admin/addproduct" class="text-white nav-link">Add Product</a>
             </li>
             <li class="nav-item" *ngIf="showAdminBoard">
-                <a routerLink="/admin/notifications" class="nav-link">Notifications</a>
+                <a routerLink="/admin/notifications" class="text-white nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showCafeteriaBoard">
-                <a routerLink="/cafeteria" class="nav-link">Cafeteria Manager Home</a>
+                <a routerLink="/cafeteria" class="text-white nav-link">Cafeteria Manager Home</a>
             </li>
             <li class="nav-item" *ngIf="showCafeteriaBoard">
-                <a routerLink="/cafeteria/addproduct" class="nav-link">Add Product</a>
+                <a routerLink="/cafeteria/addproduct" class="text-white nav-link">Add Product</a>
             </li>
             <li class="nav-item" *ngIf="showCafeteriaBoard">
-                <a routerLink="/cafeteria/notifications" class="nav-link">Notifications</a>
+                <a routerLink="/cafeteria/notifications" class="text-white nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
-                <a routerLink="/user" class="nav-link">User Board</a>
+                <a routerLink="/user" class="text-white nav-link">User Board</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
-                <a routerLink="/user/cart" class="nav-link">Cart</a>
+                <a routerLink="/user/cart" class="text-white nav-link">Cart</a>
             </li>
         </ul>
 
         <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
             <li class="nav-item">
-                <a routerLink="/register" class="nav-link" routerLink="register">Sign Up</a>
+                <a routerLink="/register" class="nav-link text-white" routerLink="register">Sign Up</a>
             </li>
             <li class="nav-item">
-                <a routerLink="/login" class="nav-link" routerLink="login">Login</a>
+                <a routerLink="/login" class="nav-link text-white" routerLink="login">Login</a>
             </li>
         </ul>
 
         <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
             <li class="nav-item">
-                <a routerLink="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+                <a routerLink="/profile" class="nav-link text-white" routerLink="profile">{{ username }}</a>
             </li>
             <li class="nav-item">
-                <a routerLink class="nav-link" (click)="logout()">Sign out</a>
+                <a routerLink class="nav-link text-white" (click)="logout()">Sign out</a>
             </li>
         </ul>
     </nav>
 
-    <div style="margin: 0% 2%">
+    <div>
         <router-outlet></router-outlet>
     </div>
+
 </div>
