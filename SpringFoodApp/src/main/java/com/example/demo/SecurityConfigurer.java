@@ -68,6 +68,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		System.out.println("reach configure");
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -76,6 +77,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/test/**").permitAll()
 			.antMatchers("/api/cafeteria/**").hasRole("CAFETERIAMANAGER")
 			.antMatchers("/api/admin/**").hasRole("ADMIN")
+			.antMatchers("/api/user/**").hasRole("USER")
 			.antMatchers("/upload/**").permitAll()
 			.antMatchers("/files/**").permitAll()
 			.anyRequest().authenticated();

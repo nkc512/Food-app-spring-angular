@@ -1,12 +1,20 @@
 <div>
-        <div class="card my-4">
-            <div class="card-header">
-                  Cart
-            </div>
-            <div class="card-body" >
-                <div *ngIf="cartarray.length==0">Your cart is empty.</div>
+
+    <div class="alert alert-success" *ngIf="successAlertClosed" role="alert">
+        {{successmsg}}
+    </div>
+    <div class="alert alert-danger" *ngIf="failAlertClose" role="alert">
+        {{errMsg}}<br>Something is wrong!! Unable to add new dish !
+    </div>
+    <div class="card my-4">
+        <div class="card-header">
+            Cart
+        </div>
+        <div class="card-body">
+            <div *ngIf="cartEmpty">Your cart is empty.</div>
+            <div *ngIf="!cartEmpty">
                 <table class="table" *ngIf="cartarray.length!=0  ">
-                        <thead>
+                    <thead>
                         <tr>
                             <th style="width: 16.66%">#</th>
                             <th style="width: 16.66%">Dish Name</th>
@@ -16,31 +24,169 @@
                             <th style="width: 16.66%">total</th>
                             <th style="width: 16.66%"> </th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <tr *ngFor="let item of cartarray; let i=index;">
-                            <th scope="row" >{{i+1}}</th>
+                            <th scope="row">{{i+1}}</th>
                             <td class="text-capitalize">{{item.dish.dishName}}</td>
                             <td class="text-capitalize">{{item.dish.category}}</td>
                             <td>{{item.dish.price}}</td>
                             <td>
                                 <div style="width:60%">
-                                    <input type="number" min=0 name="qnty" (change)="updateQnty()" class="form-control" attr.id="qnty_{{i}}" placeholder="Example input"  [(ngModel)]="item.qnty">
+                                    <input type="number" min=0 name="quantity" (change)="updateQuantity()" class="form-control" attr.id="quantity_{{i}}" placeholder="Example input" [(ngModel)]="item.quantity">
                                 </div>
                             </td>
-                            <td>{{item.dish.price*item.qnty}}</td>
+                            <td>{{item.dish.price*item.quantity}</td>
                             <td>
                                 <button type="button" attr.id="deleteButton_{{i}}" (click)="deleteElementFormCart(i)" class="btn btn-link btn-circle btn-sm">
-                                        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.146-3.146a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
-                                        </svg>
-                                </button> 
+                                <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.146-3.146a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z" />
+                                </svg>
+                                </button>
                             </td>
                         </tr>
-                        </tbody>
+                    </tbody>
                 </table>
-                
-                <div *ngIf="cartarray.length!=0 ">Total payment to be made: {{payable}}</div>
+
+                Total payment to be made: {{payable}}
             </div>
         </div>
+        <button (click)="save()">Save to checkout cart</button>
+    </div>
+    <div class="card my-4">
+        <div class="card-header">
+            Checkout
+        </div>
+        <div class="card-body">
+            <div *ngIf="checkoutcartEmpty">You haven't saved to checkout yet.</div>
+            <div *ngIf="!checkoutcartEmpty">
+
+                <table class="table" *ngIf="checkoutcartitemarray.length!=0  ">
+                    <thead>
+                        <tr>
+                            <th style="width: 16.66%">#</th>
+                            <th style="width: 16.66%">Dish Name</th>
+                            <th style="width: 16.66%">Category</th>
+                            <th style="width: 16.66%">Price</th>
+                            <th style="width: 16.66%">Quantity</th>
+                            <th style="width: 16.66%">total</th>
+                            <th style="width: 16.66%"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of checkoutcartitemarray; let i=index;">
+                            <th scope="row">{{i+1}}</th>
+                            <td class="text-capitalize">{{item.dish.dishName}}</td>
+                            <td class="text-capitalize">{{item.dish.category}}</td>
+                            <td class="text-capitalize">{{item.dish.price}}</td>
+                            <td class="text-capitalize">{{item.quantity}}</td>
+                            <td class="text-capitalize">{{item.dish.price*item.quantity}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div>Total payment to be made: {{checkoutpayable}}</div>
+                <hr>
+                <div class="text-right">
+                    <button type="button" (click)="order()" data-dismiss="modal" class="btn btn-primary">Confirm</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- recipt -->
+        <div *ngIf="showRecipt">
+            <div class="card">
+                <!-- <div class="card-header">
+                          Quote
+                        </div> -->
+                <div class="card-body">
+                    Order Id: {{recipt.order_id}}<br> Restaurant Name: {{recipt.restaurantName}}<br> Amount: {{recipt.payableAmount}}
+                    <br> time stamp: {{recipt.createdAt}}<br>
+
+                    <table class="table" *ngIf="recipt.items">
+                        <thead>
+                            <tr>
+                                <th style="width: 16.66%">#</th>
+                                <th style="width: 16.66%">Dish Name</th>
+                                <!-- <th style="width: 16.66%">category</th> -->
+                                <th style="width: 16.66%">Price</th>
+                                <th style="width: 16.66%">Quantity</th>
+                                <th style="width: 16.66%">total</th>
+                                <!-- <th style="width: 16.66%"> </th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of recipt.items ; let i=index;">
+                                <th scope="row">{{i+1}}</th>
+                                <td class="text-capitalize">{{item.dish.dishName}}</td>
+                                <!-- <td class="text-capitalize">{{item.dish.category}}</td> -->
+                                <td>{{item.dish.price}}</td>
+                                <td>{{item.qntyy}}</td>
+                                <td>{{item.dish.price*item.qnty}}</td>
+                                <!-- <td>
+                                            <button type="button" attr.id="deleteButton_{{i}}" (click)="deleteElementFormCart(i)" class="btn btn-link btn-circle btn-sm">
+                                                    <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.146-3.146a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
+                                                    </svg>
+                                            </button> 
+                                        </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <!--
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="cartarray.length==0">Your cart is empty.</div>
+                        <p *ngIf="cartarray.length!=0  ">Restaurant Name: {{cartarray[0].dish.restaurantName}}</p>
+                        <table class="table" *ngIf="cartarray.length!=0  ">
+                            <thead>
+                                <tr>
+                                    <th style="width: 16.66%">#</th>
+                                    <th style="width: 16.66%">Dish Name</th>
+                                    
+                                    <th style="width: 16.66%">Price</th>
+                                    <th style="width: 16.66%">Quantity</th>
+                                    <th style="width: 16.66%">total</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cartarray; let i=index;">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td class="text-capitalize">{{item.dish.dishName}}</td>
+                                    <td>{{item.dish.price}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>{{item.dish.price*item.quantity/td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="cartarray.length!=0 ">
+                            <div>Total payment to be made: {{payable}}</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" (click)="order()" data-dismiss="modal" class="btn btn-primary">Confirm</button>
+                        <button (click)="completeTransaction()">Proceed to Pay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    -->
+    </div>
 </div>

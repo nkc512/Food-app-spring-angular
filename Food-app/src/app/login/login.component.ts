@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     this.submitted = true;
-    console.log("vgvbvbvb");
+    console.log('vgvbvbvb');
     this.authService.login(this.userReactiveForm.value).subscribe(
       data => {
         console.log(data.accessToken);
@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       err => {
+        console.log('error');
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
       }
@@ -62,18 +63,4 @@ export class LoginComponent implements OnInit {
   reloadPage() {
     window.location.reload();
   }
-  /*
-  reactiveSubmit() {
-    console.log(this.userReactive.value);
-    console.log('reach reactiveSubmit');
-    this.user = this.userReactive.value;
-    this.userService.login(this.user).subscribe(result => this.gotoUserList());
-  }
-*/
-/*
-  gotoUserList() {
-    console.log('/api/test/user gotoUserlist function');
-    this.router.navigate(['/api/test/user']);
-  }
-*/
 }

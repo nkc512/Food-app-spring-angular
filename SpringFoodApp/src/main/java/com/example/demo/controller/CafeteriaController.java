@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Cafeteria;
+import com.example.demo.model.Cart;
 import com.example.demo.model.User;
 import com.example.demo.repository.CafeteriaRepository;
+import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 import com.example.demo.model.Dish;
@@ -41,6 +43,9 @@ public class CafeteriaController {
 	@Autowired
 	CafeteriaRepository cafeteriaRepository;
 	
+	@Autowired
+	CartRepository cartRepository;
+	
 	
 	@Autowired
 	SequenceGeneratorService sequenceGeneratorService;
@@ -48,7 +53,7 @@ public class CafeteriaController {
 	@Autowired
     DishRepository dishRepository;
 	
-	@PutMapping("update/{cafeteriaid}")
+	@PutMapping("/update/{cafeteriaid}")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
 	public Cafeteria updateCafeteria(@PathVariable(value="cafeteriaid") Long id, @Valid @RequestBody Cafeteria newcafeteria)
 	{
@@ -61,23 +66,10 @@ public class CafeteriaController {
 				
 		}	
 	
-//	@PostMapping("/add/{cafeteriaId}")
-//	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
-//	public Dish createDish(@PathVariable(value = "cafeteriaId") Long cafeteriaId,
-//			@Valid @RequestBody Dish dish) throws ResourceNotFoundException
-//	{
-//		dish.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-//		return cafeteriaRepository.findById(cafeteriaId).map(cafeteria -> {
-//			dish.setRestaurantName(cafeteriaRepository.findById(cafeteriaId).orElse(new Cafeteria()).getCafename());
-//			dish.setCafeteria(cafeteria);
-//			return dishRepository.save(dish);
-//		}).orElseThrow(() -> new ResourceNotFoundException("Cafeteria not found"));
-//		
-//	}
-	
 	@PostMapping("/dishes")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<Dish> createDish(@Valid @RequestBody Dish dish) {
+		System.out.println("create dish called");
     	 if(!dishRepository.dishAlreadyExist(dish.getDishName(),dish.getRestaurantName()).isEmpty())
     	 {
     		return ResponseEntity.notFound().build();
@@ -91,7 +83,6 @@ public class CafeteriaController {
     @GetMapping("/allDishes")
     @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public List<Dish> getAllDishes() {
-//        Sort sortByCreatedAtDesc = new Sort(Sort.Direction.DESC, "createdAt");
     	System.out.println(dishRepository.findAll());
         return dishRepository.findAll();
     }
@@ -132,6 +123,19 @@ public class CafeteriaController {
         return ResponseEntity.ok().body(dishRepository.findRstaurantDishes(restaurantname));
         
     }
-
+    @GetMapping("/getorders")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Cart>> getOrders()
+    {
+    	return ResponseEntity.ok().body(cartRepository.findAll());
+    }
+    @PostMapping("/serve")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<String> setOrderServed(@RequestBody String username)
+    {
+    	cartRepository.findById(username).get().setStatus("Served");
+    	return ResponseEntity.ok().body(new String("Order successfull"));
+    }
+    
 
 }
