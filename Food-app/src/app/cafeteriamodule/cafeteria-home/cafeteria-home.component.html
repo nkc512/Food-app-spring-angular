@@ -1,1 +1,160 @@
-<p>cafeteria-home works!</p>
+<div class="w3-container">
+    <div class="row" style="padding: 0.5% 0%">
+        <div class="col" style="padding: 0% 0.5%; overflow: auto; max-height: 100%">
+            <div class="card text-white bg-primary mb-3" style="width:auto;">
+                <div class="card-header">Queued Orders <span class="badge badge-light">{{placeOrder.length}}</span></div>
+            </div>
+            <div class="card border-primary  my-2" style="width:100%;" *ngFor="let order of placeOrder; let i=index;">
+                <div class="card-header bg-transparent border-primary">Order Id:{{order.order_id}}</div>
+                <div class="card-body ">
+                    <h6 class="card-title font-weight-normal">User Id: {{order.userName}}</h6>
+                    <div class=" text-primary">
+                        <h6 class="text-capitalize">Status: {{order.status}}</h6>
+                    </div>
+                    <!-- <p class="card-text"> -->
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Dish</th>
+                                <th scope="col">Qnty</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dish of order.items; let j=index;">
+                                <th scope="row">{{j+1}}</th>
+                                <td>{{dish.dish.dishName}}</td>
+                                <td>{{dish.quantity}}</td>
+                                <td>{{dish.dish.price*dish.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- </p> -->
+                    <div class="font-weight-normal">
+                        <h6>placed At: {{order.createdAt}}</h6>
+                        <h6>Payable Amount: {{order.payableAmount}}</h6>
+                    </div>
+                    <div class="text-right"><button type="button" attr.id="acceptbutton_{{i}}" (click)="acceptOrder(order,i)" class="btn btn-primary ">Accept</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="padding: 0% 0.5%;overflow: auto;">
+            <div class="card text-white bg-success mb-3" style="width:auto;">
+                <div class="card-header">Accepted Orders <span class="badge badge-light">{{acceptedOrder.length}}</span></div>
+            </div>
+            <div class="card border-success  my-2" style="width:100%; max-width: 100%; overflow: auto;" *ngFor="let order of acceptedOrder ; let i=index;">
+                <div class="card-header bg-transparent border-success">Order Id:{{order.order_id}}</div>
+                <div class="card-body">
+                    <h6 class="card-title  font-weight-normal">User Id: {{order.userName}}</h6>
+                    <div class=" text-success">
+                        <h6 class="text-capitalize ">Status: {{order.status}}</h6>
+                    </div>
+                    <div class="card-text">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Dish</th>
+                                    <th scope="col">Qnty</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let dish of order.items; let j=index;">
+                                    <th scope="row">{{j+1}}</th>
+                                    <td>{{dish.dish.dishName}}</td>
+                                    <td>{{dish.quantity}}</td>
+                                    <td>{{dish.dish.price*dish.quantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-normal">
+                        <h6 class=" font-weight-normal">placed At: {{order.createdAt}}</h6>
+                        <h6 class=" font-weight-normal">Payable Amount: {{order.payableAmount}}</h6>
+                    </div>
+                    <div class="text-right"><button type="button" attr.id="cookingbutton_{{i}}" (click)="cookingOrderFunction(order,i)" class="btn btn-success ">Cooking</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="padding: 0% 0.5%;overflow: auto;">
+            <div class="card text-white bg-warning mb-3" style="width:auto;">
+                <div class="card-header">Orders Being cooked <span class="badge badge-light">{{cookingOrder.length}}</span></div>
+            </div>
+            <div class="card border-warning my-2" style="width:100%;" *ngFor="let order of cookingOrder; let i= index;">
+                <div class="card-header bg-transparent border-warning">Order Id:{{order.order_id}}</div>
+                <div class="card-body">
+                    <h6 class="card-title  font-weight-normal">User Id: {{order.userName}}</h6>
+                    <div class=" text-warning">
+                        <h6 class="text-capitalize ">Status: {{order.status}}</h6>
+                    </div>
+                    <div class="card-text">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Dish</th>
+                                    <th scope="col">Qnty</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let dish of order.items; let j=index;">
+                                    <th scope="row">{{j+1}}</th>
+                                    <td>{{dish.dish.dishName}}</td>
+                                    <td>{{dish.quantity}}</td>
+                                    <td>{{dish.dish.price*dish.quantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-normal">
+                        <h6 class=" font-weight-normal">placed At: {{order.createdAt}}</h6>
+                        <h6 class=" font-weight-normal">Payable Amount: {{order.payableAmount}}</h6>
+                    </div>
+                    <div class="text-right"><button type="button " attr.id="readybutton_{{i}}" (click)="readyOrder(order,i)" class="btn btn-warning ">Ready</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="padding: 0% 0.5%;overflow: auto;">
+            <div class="card text-white bg-danger mb-3" style="width:auto;">
+                <div class="card-header">Ready for Delivery Orders <span class="badge badge-light">{{readyTodeliveryOrder.length}}</span></div>
+            </div>
+            <div class="card border-danger my-2" style="width:100%;" *ngFor="let order of readyTodeliveryOrder; let i= index;">
+                <div class="card-header bg-transparent border-danger">Order Id:{{order.order_id}}</div>
+                <div class="card-body">
+                    <h6 class="card-title  font-weight-normal">User Id: {{order.userName}}</h6>
+                    <div class=" text-danger">
+                        <h6 class="text-capitalize ">Status: {{order.status}}</h6>
+                    </div>
+                    <div class="card-text">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Dish</th>
+                                    <th scope="col">Qnty</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let dish of order.items; let j=index;">
+                                    <th scope="row">{{j+1}}</th>
+                                    <td>{{dish.dish.dishName}}</td>
+                                    <td>{{dish.quantity}}</td>
+                                    <td>{{dish.dish.price*dish.quantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-normal">
+                        <h6 class=" font-weight-normal">placed At: {{order.createdAt}}</h6>
+                        <h6 class=" font-weight-normal">Payable Amount: {{order.payableAmount}}</h6>
+                    </div>
+                    <div class="text-right"><button type="button " attr.id="completedbutton_{{i}}" (click)="completedOrder(order,i)" class="btn btn-danger ">Delivered</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

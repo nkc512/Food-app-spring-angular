@@ -3,9 +3,14 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +37,10 @@ import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 import com.example.demo.model.Dish;
+import com.example.demo.model.Order;
 import com.example.demo.files.upload.message.ResponseMessage;
-import com.example.demo.repository.DishRepository;;
+import com.example.demo.repository.DishRepository;
+import com.example.demo.repository.OrderRepository;;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/cafeteria")
@@ -54,6 +61,12 @@ public class CafeteriaController {
 	
 	@Autowired
     DishRepository dishRepository;
+	
+	@Autowired
+	OrderRepository orderRepository;
+	
+	@Autowired
+	MongoTemplate mongoTemplate;
 	
 	@PutMapping("/update/{cafeteriaid}")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
@@ -141,6 +154,44 @@ public class CafeteriaController {
     	cartRepository.findById(username).get().setStatus("Served");
     	return ResponseEntity.ok().body(new String("Order successfull"));
     }
+
+    @PutMapping(value="/changeStatus/{id}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public Optional<Order> updateStatus(@PathVariable("id") String id, @RequestBody String status) {
+    	Query select = Query.query(Criteria.where("order_id").is(id));
+    	Update update = new Update();
+    	update.set("status", status);
+    	Order updateResult = mongoTemplate.findAndModify(select, update, Order.class); 
+    	return orderRepository.findById(id);
+    }
+
+    @GetMapping("/restWisePlacedOrder/{restname}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Order>> restWisePLacedPrders(@PathVariable("restname") String restname)
+    {
+    	System.out.println("placed order called");
+    	return ResponseEntity.ok().body(orderRepository.restaurantWisePlacedOrders(restname));
+    }
     
+    @GetMapping("/restWiseAcceptedOrder/{restname}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Order>> restWiseAcceptedOrders(@PathVariable("restname") String restname)
+    {
+    	return ResponseEntity.ok().body(orderRepository.restaurantWiseAcceptedOrders(restname));
+    }
+    
+    @GetMapping("/restWiseCookingOrder/{restname}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Order>> restWiseCookingOrders(@PathVariable("restname") String restname)
+    {
+    	return ResponseEntity.ok().body(orderRepository.restaurantWiseCookingOrders(restname));
+    }
+    
+    @GetMapping("/restWiseReadyOrder/{restname}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<List<Order>> restWiseReadyOrders(@PathVariable("restname") String restname)
+    {
+    	return ResponseEntity.ok().body(orderRepository.restaurantWiseReadyOrders(restname));
+    }
 
 }

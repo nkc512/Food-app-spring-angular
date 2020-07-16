@@ -18,7 +18,7 @@ public class Order {
 	private String restaurantName;
 	
 	@NotBlank
-	private String user_id;
+	private String userName;
 	
 	private int payableAmount;
 	
@@ -53,12 +53,14 @@ public class Order {
 		this.restaurantName = restaurantName;
 	}
 
-	public String getUser_id() {
-		return user_id;
+
+
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public int getPayableAmount() {
@@ -95,10 +97,12 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [order_id=" + order_id + ", restaurantName=" + restaurantName + ", user_id=" + user_id
+		return "Order [order_id=" + order_id + ", restaurantName=" + restaurantName + ", userName=" + userName
 				+ ", payableAmount=" + payableAmount + ", items=" + items + ", status=" + status + ", createdAt="
 				+ createdAt + "]";
 	}
+
+
 
     
 }

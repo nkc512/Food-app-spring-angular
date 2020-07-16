@@ -164,9 +164,11 @@ public class UserController {
 	
 	@PostMapping("/order")
 	@PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Order> createDish(@RequestBody Order orderdata) {
-		String user_id=((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-		orderdata.setUser_id(user_id);
+    public ResponseEntity<Order> createOrder(@RequestBody Order orderdata) {
+		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+		//cartRepository.deleteById(userName);
+		cartRepository.deleteById(userName);
+		orderdata.setUserName(userName);
         Order insertedOrder =orderRepository.save(orderdata);
         return ResponseEntity.ok().body(insertedOrder); 
     }
@@ -176,10 +178,10 @@ public class UserController {
 	{
 		try {
 		System.out.println("getAllOrders called");
-		String user_id=((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-		System.out.println(orderRepository.findByUserid(user_id));
+		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println(orderRepository.findByUsername(userName));
 		
-		return ResponseEntity.ok().body(orderRepository.findByUserid(user_id));
+		return ResponseEntity.ok().body(orderRepository.findByUsername(userName));
 		}
 		catch (Exception e) {
 			// TODO: handle exception

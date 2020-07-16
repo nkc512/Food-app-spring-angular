@@ -12,7 +12,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends MongoRepository<Order, String> {
 
-	@Query (value = "{'user_id' : ?0 }")
-	ArrayList<Order> findByUserid(String user_id);
+	@Query (value = "{'userName' : ?0 }")
+	ArrayList<Order> findByUsername(String userName);
 
+	@Query (value = "{ $and: [ { 'status' : 'Placed' }, { 'restaurantName' : ?0 } ] }")
+	ArrayList<Order> restaurantWisePlacedOrders( String restaurantName);
+	
+	@Query (value = "{ $and: [ { 'status' : 'Accepted' }, { 'restaurantName' : ?0 } ] }")
+	ArrayList<Order> restaurantWiseAcceptedOrders( String restaurantName);
+	
+	@Query (value = "{ $and: [ { 'status' : 'Cooking' }, { 'restaurantName' : ?0 } ] }")
+	ArrayList<Order> restaurantWiseCookingOrders( String restaurantName);
+	
+	@Query (value = "{ $and: [ { 'status' : 'Ready' }, { 'restaurantName' : ?0 } ] }")
+	ArrayList<Order> restaurantWiseReadyOrders( String restaurantName);
 }

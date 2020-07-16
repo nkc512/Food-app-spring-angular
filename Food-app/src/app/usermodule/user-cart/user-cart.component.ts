@@ -40,10 +40,11 @@ export class UserCartComponent implements OnInit {
       this.router.navigate(['/accessalert']);
     }
     this.payable = 0;
-
+    this.cartEmpty = true;
   }
 
   ngOnInit(): void {
+    this.cartEmpty = true;
     this.payable = 0;
     this.cartservice.getCart().subscribe(data => {
       {
@@ -51,10 +52,7 @@ export class UserCartComponent implements OnInit {
       }
     });
 
-    if (this.cartarray != null) {
-      this.calculatePrice(this.cartarray);
-      this.cartEmpty = false;
-    }
+
     this.fetchPreviousCartData();
 
 
@@ -76,6 +74,11 @@ export class UserCartComponent implements OnInit {
       },
       () => {
       });
+    this.cartEmpty = true;
+    if (this.cartarray !== null) {
+      this.calculatePrice(this.cartarray);
+      this.cartEmpty = false;
+    }
   }
 
 
@@ -90,6 +93,8 @@ export class UserCartComponent implements OnInit {
     this.userService.placeOrder(neworder).subscribe(res => {
       console.log(res);
       console.log(res.createdAt);
+      this.checkoutcartEmpty = true;
+      this.checkoutcartitemarray = [];
       this.cartservice.updatecart([]);
       this.successAlertClosed = true;
       this.successmsg = 'Order is successfully placed with order id : ' + res.order_id;
