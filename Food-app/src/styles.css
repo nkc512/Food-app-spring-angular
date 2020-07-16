@@ -1,7 +1,7 @@
 .buttonsave {
     background-color: white;
     color: black;
-    border: 2px solid #008CBA;
+    border: 2px solid #dc3545;
     padding: 8px 64px;
     text-align: center;
     text-decoration: none;
@@ -13,7 +13,7 @@
 }
 
 .buttonsave:hover {
-    background-color: #008CBA;
+    background-color: #dc3545;
     color: white;
 }
 
@@ -1986,3 +1986,4 @@ a {
 .w3-hover-border-pale-blue:hover {
     border-color: #e7ffff!important
 }
+
