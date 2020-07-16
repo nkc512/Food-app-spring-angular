@@ -1,14 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="card-title text-center text-white py-3">Your Orders</h2>
+            <h2 class="card-title text-center py-3">Your Orders</h2>
             <div *ngFor="let order of orders;">
 
                 <div class="card bg-dark my-5">
                     <div class="card-body text-white">
 
-                        <div class="card-body">
-                            <table>
+                        <div class="card-body text-white">
+                            <table class="text-white">
                                 <tr>Order Id: {{order.order_id}}
                                     <td></td>
                                     <td>Status: {{order.status}}</td>
@@ -17,7 +17,7 @@
                             </table>
                             <br> Restaurant Name: {{order.restaurantName}}<br> Amount: {{order.payableAmount}}<br> Time of Order: {{order.createdAt}}<br>
 
-                            <table class="table" *ngIf="order.items">
+                            <table class="table text-white" *ngIf="order.items">
                                 <thead>
                                     <tr>
                                         <th style="width: 16.66%">#</th>

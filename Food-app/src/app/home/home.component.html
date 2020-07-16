@@ -1,42 +1,3 @@
-<!-- <p>home works!</p>
-<div class="card my-5">
-    <div class="card-body">
-        <div class="card-body">
-            <form>
-                <div>
-                    <i class="fa fa-search"></i></div>
-                <div class="col-6 align-left">
-
-                    <input type="text" class="form-control" id="name" required [(ngModel)]="inputSearch" name="name" (keyup)="searchFood()">
-                </div>
-            </form>
-        </div>
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">dishName</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">category</th>
-                    <th scope="col">vegNonVeg</th>
-                    <th scope="col">availability</th>
-                    <th scope="col">desciption</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let dish of dishes">
-                    <td>{{dish.dishName}}</td>
-                    <td>{{dish.price}}</td>
-                    <td>{{dish.category}}</td>
-                    <td>{{dish.vegNonVeg}}</td>
-                    <td>{{dish.availability}}</td>
-                    <td>{{dish.description }}</td>
-                    <td><button type="button" (click)=addToCart(dish.id)>Add to cart</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div> -->
 <div>
     <div class="bgimg ">
         <div class="container text-center text-white headerset">
@@ -134,17 +95,10 @@
                                 </button>
                                         </h2>
                                     </div>
-
                                     <div attr.id="collapse_{{i}}" class="collapse " attr.aria-labelledby="heading_{{i}}" data-parent="#accordionExample">
                                         <div class="card-body ">
-                                            <!-- <div *ngFor="let dish of categorySort[category]">
-                                      <div class="card">
-                                          <div class="card-body">
-                                              {{dish.dishName}}
-                                          </div>
-                                        </div> -->
                                             <div class="row card-group">
-                                                <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2 d-flex align-items-stretch" style="padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">
+                                                <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">
                                                     <div class="card dishcard " [class.disablecard]=" !dish.availability ">
                                                         <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
                                                         <div class="card-body container" style="padding: 4%">
@@ -152,15 +106,13 @@
                                                                 <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>
                                                                 <span *ngIf="dish.vegNonVeg=='nonveg'" class="badge badge-danger float-right ">Non veg</span>
                                                                 <h6 class="card-title font-italic text-capitalize">{{dish.dishName}}</h6>
-                                                                <div class="" style="overflow:auto;min-height:5rem;">
-                                                                    <p class="card-text font-weight-light">{{dish.description}}</p>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                         <div class="footer container" style="margin-bottom: 4%">
                                                             <div class="row">
                                                                 <p class="col-6">&#x20b9; {{dish.price}} </p>
-                                                                <input type="number" min=0 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+i+j+dish.restaurantName" value="0">
+                                                                <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+i+j+dish.restaurantName" value="1">
                                                             </div>
                                                             <button type="button" attr.id="cartButton_{{i}}{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,i,j,dish.restaurantName)">Add to Cart
                                                               <svg class="bi bi-cart-plus icon" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
