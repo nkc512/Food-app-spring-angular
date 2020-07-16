@@ -33,7 +33,7 @@ export class UserCartComponent implements OnInit {
   checkoutcart: CartwithDish;
 
   constructor(private cartservice: CartService, private tokenService: TokenStorageService, private router: Router,
-              private userService: UserService) {
+    private userService: UserService) {
     this.showRecipt = false;
     this.successAlertClosed = false;
     if (!this.tokenService.getUserRole().includes('ROLE_USER')) {
@@ -63,23 +63,19 @@ export class UserCartComponent implements OnInit {
 
   }
   fetchPreviousCartData() {
-    console.log('reach fetchprevdata');
     this.userService.getCart().subscribe(data => {
       this.checkoutcart = data;
       this.checkoutcartitemarray = this.checkoutcart.cartItems;
       this.checkoutcartEmpty = false;
       this.checkoutpayable = this.checkoutcart.totalCost;
 
-      console.log('function sequence', this.checkoutcart);
     },
-    err => {
-      this.checkoutcartEmpty = true;
-      console.log(err);
-    },
-    () => {
-      console.log('idhar to aana chahiye');
-    });
-    console.log('reach fetchprevdata');
+      err => {
+        this.checkoutcartEmpty = true;
+        console.log(err);
+      },
+      () => {
+      });
   }
 
 
@@ -124,6 +120,10 @@ export class UserCartComponent implements OnInit {
 
 
   deleteElementFormCart(i) {
+    if (this.cartarray.length === 1) {
+      this.payable = 0;
+      this.cartEmpty = true;
+    }
     this.cartservice.deleteElement(i);
   }
 
@@ -144,7 +144,6 @@ export class UserCartComponent implements OnInit {
     for (const cartitem of this.cartarray) {
       this.cart.cartItems.push({ id: cartitem.dish.id, quantity: cartitem.quantity });
     }
-    console.log('cart in save function', this.cart);
     this.userService.saveCart(this.cart)
       .subscribe(
         res => {
@@ -160,7 +159,12 @@ export class UserCartComponent implements OnInit {
             console.log(this.checkoutcartitemarray);
             this.checkoutpayable = this.checkoutcart.totalCost;
           }
+          this.fetchPreviousCartData();
+          this.cartarray = [];
+          this.cartEmpty = true;
+          this.payable = 0;
           setTimeout(() => { this.successAlertClosed = false; this.successmsg = ''; }, 2000);
+
         },
         err => {
           console.log(err);
@@ -173,6 +177,30 @@ export class UserCartComponent implements OnInit {
         }
       );
   }
+  cancelCart() {
+    this.userService.cancelCart()
+      .subscribe(
+        res => {
+          console.log(res);
+          this.successmsg = 'Cart deleted successfully';
+          this.successAlertClosed = true;
+          this.userService.getCart().subscribe(data => {
+            this.checkoutcart = data;
+          });
+          setTimeout(() => { this.successAlertClosed = false; this.successmsg = ''; }, 2000);
+          window.location.reload();
+        },
+        err => {
+          console.log(err);
+          this.errMsg = 'Could not delete cart';
+          this.failAlertClose = true;
+          setTimeout(() => { this.failAlertClose = false; this.errMsg = ''; }, 2000);
+        },
+        () => {
+        }
+      );
+  }
+
   completeTransaction() {
     console.log('send the data for payment');
   }

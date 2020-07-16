@@ -35,9 +35,19 @@ export class UserService {
         return this.http.post<Cart>(this.usersUrl + '/createcart', cart,
             { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
     }
+    public cancelCart(): Observable<any> {
+
+        return this.http.delete(this.usersUrl + '/deletecart',
+            { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
+    }
     public getCart(): Observable<CartwithDish> {
         console.log('getcart');
         return this.http.get<CartwithDish>(this.usersUrl + '/getcart',
             { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
+    }
+
+    public getOrders(): Observable<any>{
+        return this.http.get<any>(this.usersUrl + '/getallorders',
+        { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
     }
 }

@@ -1,1 +1,46 @@
-<p>user-home works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="card-title text-center text-white py-3">Your Orders</h2>
+            <div *ngFor="let order of orders;">
+
+                <div class="card bg-dark my-5">
+                    <div class="card-body text-white">
+
+                        <div class="card-body">
+                            <table>
+                                <tr>Order Id: {{order.order_id}}
+                                    <td></td>
+                                    <td>Status: {{order.status}}</td>
+                                </tr>
+
+                            </table>
+                            <br> Restaurant Name: {{order.restaurantName}}<br> Amount: {{order.payableAmount}}<br> Time of Order: {{order.createdAt}}<br>
+
+                            <table class="table" *ngIf="order.items">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 16.66%">#</th>
+                                        <th style="width: 16.66%">Dish Name</th>
+                                        <th style="width: 16.66%">Price</th>
+                                        <th style="width: 16.66%">Quantity</th>
+                                        <th style="width: 16.66%">total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of order.items ; let i=index;">
+                                        <th scope="row">{{i+1}}</th>
+                                        <td class="text-capitalize">{{item.dish.dishName}}</td>
+                                        <td>{{item.dish.price}}</td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{item.dish.price*item.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

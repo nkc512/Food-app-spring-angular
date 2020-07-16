@@ -36,7 +36,7 @@
                                     <input type="number" min=0 name="quantity" (change)="updateQuantity()" class="form-control" attr.id="quantity_{{i}}" placeholder="Example input" [(ngModel)]="item.quantity">
                                 </div>
                             </td>
-                            <td>{{item.dish.price*item.quantity}</td>
+                            <td>{{item.dish.price*item.quantity}}</td>
                             <td>
                                 <button type="button" attr.id="deleteButton_{{i}}" (click)="deleteElementFormCart(i)" class="btn btn-link btn-circle btn-sm">
                                 <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill"
@@ -89,15 +89,25 @@
 
                 <div>Total payment to be made: {{checkoutpayable}}</div>
                 <hr>
-                <div class="text-right">
-                    <button type="button" (click)="order()" data-dismiss="modal" class="btn btn-primary">Confirm</button>
-                </div>
+                <ul class="text-center list-inline py-3">
+                    <li class="list-inline-item">
+                        <button type="button buttondanger" (click)="cancelCart()" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                    </li>
+                    <li class="list-inline-item">
+
+                        <button type="button buttonsave" (click)="order()" data-dismiss="modal" class="btn btn-primary">Confirm</button>
+                    </li>
+                </ul>
 
             </div>
         </div>
-
+    </div>
+    <div class="card my-4" *ngIf="showRecipt">
+        <div class="card-header">
+            Your Order
+        </div>
         <!-- recipt -->
-        <div *ngIf="showRecipt">
+        <div>
             <div class="card">
                 <!-- <div class="card-header">
                           Quote
@@ -124,8 +134,8 @@
                                 <td class="text-capitalize">{{item.dish.dishName}}</td>
                                 <!-- <td class="text-capitalize">{{item.dish.category}}</td> -->
                                 <td>{{item.dish.price}}</td>
-                                <td>{{item.qntyy}}</td>
-                                <td>{{item.dish.price*item.qnty}}</td>
+                                <td>{{item.quantity}}</td>
+                                <td>{{item.dish.price*item.quantity}}</td>
                                 <!-- <td>
                                             <button type="button" attr.id="deleteButton_{{i}}" (click)="deleteElementFormCart(i)" class="btn btn-link btn-circle btn-sm">
                                                     <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

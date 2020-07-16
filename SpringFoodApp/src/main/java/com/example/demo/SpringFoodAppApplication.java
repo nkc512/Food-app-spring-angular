@@ -33,7 +33,6 @@ public class SpringFoodAppApplication implements CommandLineRunner{
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				System.out.println("webMVCcorsconfigure");
 				registry.addMapping("/dishdata").allowedOrigins("*").allowedHeaders("*").allowedMethods("PUT","DELETE","POST","OPTIONS","GET");
 				registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("PUT","DELETE","POST","OPTIONS","GET");
 			}

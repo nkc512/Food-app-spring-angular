@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exception.ResourceNotFoundException;
@@ -70,6 +72,8 @@ public class CafeteriaController {
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<Dish> createDish(@Valid @RequestBody Dish dish) {
 		System.out.println("create dish called");
+		String currentUserName=SecurityContextHolder.getContext().getAuthentication().getName();
+		dish.setRestaurantName(currentUserName);
     	 if(!dishRepository.dishAlreadyExist(dish.getDishName(),dish.getRestaurantName()).isEmpty())
     	 {
     		return ResponseEntity.notFound().build();
@@ -88,6 +92,7 @@ public class CafeteriaController {
     }
     
     @PutMapping(value="/dishes/{id}")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
     public ResponseEntity<Dish> updateDish(@PathVariable("id") String id,
                                            @Valid @RequestBody Dish updateDish) {
     	return dishRepository.findById(id).map(
