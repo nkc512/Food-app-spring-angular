@@ -6,13 +6,8 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 
 
 const routes: Routes = [
-    {
-        path: 'user',
-        children: [
             { path: '', component: UserHomeComponent },
             { path: 'cart', component: UserCartComponent },
-        ]
-    }
 ];
 
 @NgModule({

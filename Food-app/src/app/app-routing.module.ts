@@ -13,6 +13,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'accessalert', component: UnauthorisedAccessComponent },
+  { path: 'user', loadChildren: './usermodule/user.module/#UserModule' },
+  { path: 'admin', loadChildren: './adminmodule/admin.module/#AdminModule' },
+  { path: 'cafeteria', loadChildren: './cafeteriamodule/cafeteria.module/#CafeteriaModule' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
