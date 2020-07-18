@@ -8,17 +8,16 @@ import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'accessalert', component: UnauthorisedAccessComponent },
-  { path: 'user', loadChildren: './usermodule/user.module/#UserModule' },
-  { path: 'admin', loadChildren: './adminmodule/admin.module/#AdminModule' },
-  { path: 'cafeteria', loadChildren: './cafeteriamodule/cafeteria.module/#CafeteriaModule' },
+  { path: 'user', loadChildren: () => import('./usermodule/user.module').then(m => m.UserModule)},
+  { path: 'admin', loadChildren: () => import('./adminmodule/admin.module').then(m => m.AdminModule)},
+  { path: 'cafeteria', loadChildren: () => import('./cafeteriamodule/cafeteria.module').then(m => m.CafeteriaModule)},
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

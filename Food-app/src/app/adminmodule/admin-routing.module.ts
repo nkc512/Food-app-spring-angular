@@ -7,9 +7,9 @@ import { AdminNotificationComponent } from './admin-notification/admin-notificat
 
 
 const routes: Routes = [
-      { path: '', component: AdminHomeComponent },
-      { path: 'addproduct', component: AdminAddProductComponent },
-      { path: 'notifications', component: AdminNotificationComponent }
+  { path: '', component: AdminHomeComponent },
+  { path: 'addproduct', component: AdminAddProductComponent },
+  { path: 'notifications', component: AdminNotificationComponent }
 ];
 
 @NgModule({

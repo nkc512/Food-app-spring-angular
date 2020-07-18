@@ -6,9 +6,9 @@ import { CafeteriaNotificationComponent } from './cafeteria-notification/cafeter
 
 
 const routes: Routes = [
-      { path: '', component: CafeteriaHomeComponent },
-      { path: 'addproduct', component: CafeteriaAddProductComponent },
-      { path: 'notifications', component: CafeteriaNotificationComponent }
+  { path: '', component: CafeteriaHomeComponent },
+  { path: 'addproduct', component: CafeteriaAddProductComponent },
+  { path: 'notifications', component: CafeteriaNotificationComponent }
 ];
 
 @NgModule({

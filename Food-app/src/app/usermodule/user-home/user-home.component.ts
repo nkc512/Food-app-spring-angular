@@ -36,6 +36,7 @@ export class UserHomeComponent implements OnInit {
     },
     () => {
       console.log('getAllOrders response completed');
+      this.orders = this.orders.reverse();
     });
   }
 

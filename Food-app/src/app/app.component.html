@@ -1,12 +1,12 @@
 <div>
     <nav class="navbar navbar-expand navbar-dark bg-dark ">
-        <a class="navbar-brand text-warning">Durga Cafe</a>
+
         <ul class="navbar-nav mr-auto" routerLinkActive="active">
             <li class="nav-item">
-                <a routerLink="/home" class="text-white nav-link">Home </a>
+                <a routerLink="/home" class="navbar-brand text-warning">Durga Cafe </a>
             </li>
             <li class="nav-item" *ngIf="showAdminBoard">
-                <a routerLink="/admin" class="text-white nav-link">Admin Home</a>
+                <a routerLink="/admin" class="text-white nav-link">Dashboard</a>
             </li>
             <li class="nav-item" *ngIf="showAdminBoard">
                 <a routerLink="/admin/addproduct" class="text-white nav-link">Add Product</a>
@@ -15,7 +15,7 @@
                 <a routerLink="/admin/notifications" class="text-white nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showCafeteriaBoard">
-                <a routerLink="/cafeteria" class="text-white nav-link">Cafeteria Manager Home</a>
+                <a routerLink="/cafeteria" class="text-white nav-link">Dashboard</a>
             </li>
             <li class="nav-item" *ngIf="showCafeteriaBoard">
                 <a routerLink="/cafeteria/addproduct" class="text-white nav-link">Add Product</a>
@@ -24,7 +24,7 @@
                 <a routerLink="/cafeteria/notifications" class="text-white nav-link">Notifications</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
-                <a routerLink="/user" class="text-white nav-link">User Board</a>
+                <a routerLink="/user" class="text-white nav-link">Dashboard</a>
             </li>
             <li class="nav-item" *ngIf="showUserBoard">
                 <a routerLink="/user/cart" class="text-white nav-link">Cart</a>
