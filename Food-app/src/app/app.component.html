@@ -30,21 +30,23 @@
                 <a routerLink="/user/cart" class="text-white nav-link">Cart</a>
             </li>
         </ul>
-
-        <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a routerLink="/register" class="nav-link text-white" routerLink="register">Sign Up</a>
+                <a routerLink="/aboutus" class="nav-link text-white">About Us</a>
             </li>
             <li class="nav-item">
-                <a routerLink="/login" class="nav-link text-white" routerLink="login">Login</a>
+                <a routerLink="/contactus" class="nav-link text-white">Contact</a>
             </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-            <li class="nav-item">
-                <a routerLink="/profile" class="nav-link text-white" routerLink="profile">{{ username }}</a>
+            <li class="nav-item" *ngIf="!isLoggedIn">
+                <a routerLink="/register" class="nav-link text-white">Sign Up</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!isLoggedIn">
+                <a routerLink="/login" class="nav-link text-white">Login</a>
+            </li>
+            <li class="nav-item" *ngIf="isLoggedIn">
+                <a routerLink="/profile" class="nav-link text-white">{{ username }}</a>
+            </li>
+            <li class="nav-item" *ngIf="isLoggedIn">
                 <a routerLink class="nav-link text-white" (click)="logout()">Sign out</a>
             </li>
         </ul>

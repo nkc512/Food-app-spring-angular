@@ -61,11 +61,11 @@ export class UserHomeComponent implements OnInit {
   }
   submitFeedback(feedback) {
     // console.log('Submit feedback called ', id);
-    console.log('submit feedback', feedback);
+    // console.log('submit feedback', feedback);
     this.userService.saveFeedback(feedback).subscribe(data => {
-      // console.log(data);
+      console.log(data);
       this.successAlertClosed = true;
-      this.successmsg = 'Feedback added successfully: ';
+      this.successmsg = data.message;
       setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 2000);
     },
       err => {
