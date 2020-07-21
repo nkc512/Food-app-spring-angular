@@ -31,14 +31,19 @@ public class User {
 
   @DBRef
   private Set<Role> roles = new HashSet<>();
+  
+  private boolean isEnabled;
 
   public User() {
+	  super();
+	  this.isEnabled=false;
   }
 
   public User(String username, String email, String password) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.isEnabled=false;
   }
 
   public String getId() {
@@ -80,4 +85,14 @@ public class User {
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
   }
+
+public boolean isEnabled() {
+	return isEnabled;
+}
+
+public void setEnabled(boolean isEnabled) {
+	this.isEnabled = isEnabled;
+}
+  
+  
 }
