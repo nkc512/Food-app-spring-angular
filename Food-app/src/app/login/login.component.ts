@@ -61,7 +61,9 @@ export class LoginComponent implements OnInit {
         if(err.error=='Verify account first.'){
           this.errorMessage = err.error;
         }
+        else{
         this.errorMessage = err.error.message;
+        }
         this.isLoginFailed = true;
       }
     );

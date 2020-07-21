@@ -183,7 +183,7 @@ public class AuthController {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
-        mailMessage.setFrom("naikare.snehal13@gmail.com");
+        mailMessage.setFrom("cafeteriaproject.notification@gmail.com");//enter your mail id
         mailMessage.setText("To confirm your account, please click here : "
         +"http://localhost:8080/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
 
