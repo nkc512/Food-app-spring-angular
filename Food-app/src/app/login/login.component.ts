@@ -58,11 +58,16 @@ export class LoginComponent implements OnInit {
       },
       err => {
         console.log(err);
-        if(err.error=='Verify account first.'){
+        if (err.status === 403){
           this.errorMessage = err.error;
         }
-        else{
-        this.errorMessage = err.error.message;
+        else if (err.status === 401)
+        {
+            this.errorMessage = 'Wrong Credentials. Please try again.';
+        }
+        else
+        {
+          this.errorMessage = err.error.error;
         }
         this.isLoginFailed = true;
       }
