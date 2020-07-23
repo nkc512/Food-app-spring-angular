@@ -92,16 +92,20 @@ public class TestController {
 //	{
 //		return dishRepository.findByCafeteriaId(cafeteriaId);
 //	}
-//	@GetMapping("/cafeteria/{cafeteriaId}/search/{searchval}")
-//	public List<Dish> getCafeteriaDishFind(@PathVariable(value = "cafeteriaId") Long cafeteriaId,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-//	{
-//		return dishRepository.findByDishnameContainingAndCafeteriaId(searchval, cafeteriaId);
-//	}	
-//	@GetMapping("/dish/{searchval}")
-//	public List<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
-//	{
-//		return dishRepository.findByDishnameContaining(searchval);
-//	}
+	@GetMapping("/getDishes/{searchval}/restaurant/{restaurantName}")
+	public ArrayList<Dish> getCafeteriaDishFind(@PathVariable(value = "restaurantName") String restaurantName,@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+	{
+		System.out.println("Search val"+searchval+"  "+restaurantName);
+		System.out.println(dishRepository.findBydishnamecontainingAndRestaurantName(searchval, restaurantName));
+		return dishRepository.findBydishnamecontainingAndRestaurantName(searchval, restaurantName);
+	}	
+	@GetMapping("/getDishes/{searchval}")
+	public ArrayList<Dish> getDish(@PathVariable(value="searchval") String searchval) throws ResourceNotFoundException
+	{
+		System.out.println("searchval  "+searchval);
+		System.out.println(dishRepository.findBydishnamecontaining(searchval));
+		return dishRepository.findBydishnamecontaining(searchval);
+	}
 	
 
 }

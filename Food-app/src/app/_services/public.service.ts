@@ -43,4 +43,11 @@ export class PublicService {
   getAllDishes(): Observable<Dish[]> {
     return this.http.get<Dish[]>(this.dishUrl + '/dishdata/allDishes');
   }
+  getDishAllRestaurant(searchval: string): Observable<Dish[]> {
+    return this.http.get<Dish[]>(this.baseUrl + '/getDishes/' + searchval);
+  }
+  getDishSelectedRestaurant(searchval: string, restaurant: string): Observable<Dish[]>
+  {
+    return this.http.get<Dish[]>(this.baseUrl + '/getDishes/' + searchval + '/restaurant/' + restaurant);
+  }
 }
