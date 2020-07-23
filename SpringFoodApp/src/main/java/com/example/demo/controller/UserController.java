@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +26,17 @@ import com.example.demo.model.CartItem;
 import com.example.demo.model.CartProduct;
 import com.example.demo.model.CartwithDish;
 import com.example.demo.model.Dish;
+import com.example.demo.model.Feedback;
 import com.example.demo.model.Order;
 import com.example.demo.model.Payment;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.DishRepository;
+import com.example.demo.repository.FeedbackRepository;
 import com.example.demo.repository.OrderRepository;
+<<<<<<< HEAD
 import com.example.demo.repository.PaymentRepository;
+=======
+>>>>>>> 045efe1ee2793e80a349cfe55b1d232c208d944e
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -42,6 +48,9 @@ public class UserController {
 	
 	@Autowired
 	private DishRepository dishRepository;
+	
+	@Autowired
+	private FeedbackRepository feedbackRepository;
 	
 	@Autowired
 	OrderRepository orderRepository;
@@ -59,7 +68,7 @@ public class UserController {
 		{
 			return ResponseEntity.badRequest().build();
 		}
-		System.out.println("create cart called");
+		//System.out.println("create cart called");
 
 		String currentUserName=SecurityContextHolder.getContext().getAuthentication().getName();
 		List<CartProduct> cartnewProducts=cart.getCartItems();
@@ -119,13 +128,13 @@ public class UserController {
 
 		cart.setTotalCost(totalCost);
 		cartRepository.save(cart);
-		System.out.println("Successfully added cart for username "+currentUserName+" cart " + cart);
+		//System.out.println("Successfully added cart for username "+currentUserName+" cart " + cart);
 		return ResponseEntity.ok().body(cart);		
     }
 	@GetMapping("/getcart")
 	@PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<CartwithDish> getCart() {
-		System.out.println("get cart called");
+		//System.out.println("get cart called");
 		try {
 			String currentUserName=SecurityContextHolder.getContext().getAuthentication().getName();
 			Cart cart = cartRepository.findById(currentUserName).get();
@@ -152,7 +161,7 @@ public class UserController {
 	@RequestMapping(value = "/deletecart",method = RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ResponseMessage> deleteCart() {
-		System.out.println("delete cart called");
+		//System.out.println("delete cart called");
 		String currentUserName=SecurityContextHolder.getContext().getAuthentication().getName();	
 		return cartRepository.findById(currentUserName)
 				.map(cart -> {
@@ -172,14 +181,67 @@ public class UserController {
         Order insertedOrder =orderRepository.save(orderdata);
         return ResponseEntity.ok().body(insertedOrder); 
     }
+	@PostMapping("/savefeedback")
+	@PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<ResponseMessage> createOrderFeedback(@RequestBody Feedback feedback) 
+	{
+		//System.out.println(feedback+"savefeedback called");
+		//System.out.println("start "+feedback.getId() +"  "+feedback );
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		if(feedbackRepository.existsById(feedback.getId()))
+		{
+			return ResponseEntity.badRequest().body(new ResponseMessage("Feedback already exists for this order"));
+		}
+		try {
+			Order order = orderRepository.findByIdAndUsername(feedback.getId(),username);
+			Feedback newFeedback = new Feedback();
+			
+			newFeedback.setUsername(username);
+			newFeedback.setId(feedback.getId());
+			newFeedback.setRating(feedback.getRating());
+			newFeedback.setComment(feedback.getComment());
+			//System.out.println("sav newFeedback  "+newFeedback);
+			feedbackRepository.save(newFeedback);	
+			return ResponseEntity.ok().body(new ResponseMessage("Feedback added successfully"));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new ResponseMessage("Order not found"));
+		}
+		//return ResponseEntity.ok().body(new ResponseMessage("Could not add feedback"));
+	}
+	
+	@GetMapping(value = "/getallfeedbacks")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<ArrayList<Feedback>> getAllFeedbacks()
+	{
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		try {
+			ArrayList<Feedback> feeds = new ArrayList<Feedback>();
+			feeds = feedbackRepository.findByUsername(username);
+			return ResponseEntity.ok().body(feeds);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	@GetMapping(value = "/getfeedback/{orderid}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Feedback> getFeedback(@PathVariable(value="orderid") String id) 
+	{
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		try {
+				return ResponseEntity.ok().body(feedbackRepository.findByIdAndUsername(id, username).get());
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 	@GetMapping(value = "/getallorders")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<List<Order>> getAllOrders()
 	{
 		try {
-		System.out.println("getAllOrders called");
+		//System.out.println("getAllOrders called");
 		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
-		System.out.println(orderRepository.findByUsername(userName));
+		//System.out.println(orderRepository.findByUsername(userName));
 		
 		return ResponseEntity.ok().body(orderRepository.findByUsername(userName));
 		}
@@ -217,6 +279,23 @@ public class UserController {
 		catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Previous payment not found"+e);
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@GetMapping(value = "/getorder/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Order> getOrder(@PathVariable(value = "id") String id)
+	{
+		//System.out.println("getOrder called");
+		try {
+		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+
+		//System.out.println("getorder  "+orderRepository.findByIdAndUsername(id, userName));
+		return ResponseEntity.ok().body(orderRepository.findByIdAndUsername(id, userName));
+		}
+		catch (Exception e) {
+			System.out.println("Order not found");
 			return ResponseEntity.notFound().build();
 		}
 	}

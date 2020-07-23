@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-access.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 
 const routes: Routes = [
@@ -12,6 +14,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'accessalert', component: UnauthorisedAccessComponent },
+  { path: 'aboutus', component: AboutUsComponent },
+  { path: 'contactus', component: ContactUsComponent },
   { path: 'user', loadChildren: () => import('./usermodule/user.module').then(m => m.UserModule)},
   { path: 'admin', loadChildren: () => import('./adminmodule/admin.module').then(m => m.AdminModule)},
   { path: 'cafeteria', loadChildren: () => import('./cafeteriamodule/cafeteria.module').then(m => m.CafeteriaModule)},

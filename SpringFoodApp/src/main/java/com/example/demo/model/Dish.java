@@ -128,4 +128,11 @@ public class Dish {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "Dish [id=" + id + ", restaurantName=" + restaurantName + ", dishName=" + dishName + ", price=" + price
+				+ ", category=" + category + ", vegNonVeg=" + vegNonVeg + ", imgName=" + imgName + ", availability="
+				+ availability + ", description=" + description + "]";
+	}
+
 }

@@ -1,22 +1,40 @@
 <div class="container">
+    <div class="alert alert-success" *ngIf="successAlertClosed" role="alert">
+        {{successmsg}}
+    </div>
+    <div class="alert alert-danger" *ngIf="failAlertClose" role="alert">
+        {{errmsg}}<br>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <h2 class="card-title text-center py-3">Your Orders</h2>
             <div *ngFor="let order of orders;">
-
                 <div class="card bg-dark my-5">
                     <div class="card-body text-white">
 
                         <div class="card-body text-white">
-                            <table class="text-white">
-                                <tr>Order Id: {{order.order_id}}
-                                    <td></td>
-                                    <td>Status: {{order.status}}</td>
-                                </tr>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-6">Order Id: {{order.order_id}}</div>
+                                    <!-- <div class="col-sm-6">Status: {{order.status}}</div> -->
+                                    <div class="col-sm-6 p-3 mb-2 bg-white text-dark" *ngIf="'Placed'===order.status">Status: {{order.status}}</div>
+                                    <div class="col-sm-6 p-3 mb-2 bg-info" *ngIf="'Accepted'===order.status">Status: {{order.status}}</div>
+                                    <div class="col-sm-6 p-3 mb-2 bg-success" *ngIf="'Cooking'===order.status">Status: {{order.status}}</div>
+                                    <div class="col-sm-6 p-3 mb-2 bg-warning text-dark" *ngIf="'Ready'===order.status">Status: {{order.status}}</div>
+                                    <div class="col-sm-6 p-3 mb-2 bg-danger" *ngIf="'Complete'===order.status">Status: {{order.status}}</div>
 
-                            </table>
-                            <br> Restaurant Name: {{order.restaurantName}}<br> Amount: {{order.payableAmount}}<br> Time of Order: {{order.createdAt}}<br>
-
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Restaurant Name: {{order.restaurantName}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Amount: {{order.payableAmount}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Time of Order: {{order.createdAt | date: 'shortTime'}}</div>
+                                    <div class="col-sm-6">Date: {{order.createdAt | date: 'mediumDate'}}</div>
+                                </div>
+                            </div>
                             <table class="table text-white" *ngIf="order.items">
                                 <thead>
                                     <tr>
@@ -37,6 +55,38 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <!--<button class="button" (click)="getOrder(order.order_id)">Details</button>-->
+                        <button type="button" class="btn btn-info btn-lg" (click)="openFeedbackModal(order.order_id)" data-toggle="modal" data-target="#myModal">Feedback</button>
+
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade text-dark" role="dialog">
+                            <div class="modal-dialog text-dark">
+
+                                <!-- Modal content-->
+                                <div class="modal-content text-dark">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Feedback</h4>
+                                    </div>
+                                    <div class="modal-body text-dark">
+                                        <form #newDishForm="ngForm" novalidate>
+                                            <div class="modal-body">
+                                                <!-- div Add Feedback -->
+                                                <input type="text" id="rating" class="form-control" placeholder="Rating" required name="rating" [(ngModel)]="feedback.rating " #rating="ngModel">
+                                                <br>
+                                                <input type="text" id="comment" class="form-control" placeholder="Comment" required name="comment" [(ngModel)]="feedback.comment" #comment="ngModel">
+                                                <br>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer text-dark">
+                                        <button type="button" class="btn btn-primary " data-dismiss="modal" (click)="submitFeedback(feedback)">Add Feedback</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

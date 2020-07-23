@@ -26,4 +26,7 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 	
 	@Query (value = "{ $and: [ { 'status' : 'Ready' }, { 'restaurantName' : ?0 } ] }")
 	ArrayList<Order> restaurantWiseReadyOrders( String restaurantName);
+
+	@Query (value = "{ $and: [ { 'order_id': ?0}, { 'userName' : ?1 } ] }")
+	Order findByIdAndUsername(String id, String userName);
 }

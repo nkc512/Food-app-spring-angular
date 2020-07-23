@@ -19,6 +19,8 @@ import { DishService } from './_services/dish.service';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { CartService } from './_services/cart.service';
 import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-access.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 
 
@@ -29,7 +31,9 @@ import { UnauthorisedAccessComponent } from './unauthorised-access/unauthorised-
     RegisterComponent,
     PageNotFoundComponent,
     HomeComponent,
-    UnauthorisedAccessComponent
+    UnauthorisedAccessComponent,
+    AboutUsComponent,
+    ContactUsComponent
   ],
   imports: [
     NgbModule,
