@@ -23,6 +23,8 @@ export class LoginComponent implements OnInit {
     username: new FormControl(''),
   });
   user: Credentials;
+  showSuccess: boolean=false;
+  successMessage: string;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,7 +42,6 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     this.submitted = true;
-    console.log('vgvbvbvb');
     this.authService.login(this.userReactiveForm.value).subscribe(
       data => {
         console.log(data.accessToken);
@@ -51,7 +52,6 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
-        //this.reloadPage();
         this.router.navigate(['/home']).then(() => {
           window.location.reload();
         });
@@ -59,21 +59,47 @@ export class LoginComponent implements OnInit {
       err => {
         console.log(err);
         if (err.status === 403){
-          this.errorMessage = err.error;
+          this.errorMessage = "Login failed: "+err.error;
         }
         else if (err.status === 401)
         {
-            this.errorMessage = 'Wrong Credentials. Please try again.';
+            this.errorMessage = 'Login failed: Wrong Credentials. Please try again.';
         }
         else
         {
-          this.errorMessage = err.error.error;
+          this.errorMessage = "Login failed: "+ err.error.error;
         }
         this.isLoginFailed = true;
       }
     );
-  }
-  reloadPage() {
-    window.location.reload();
+   }
+  // reloadPage() {
+  //   window.location.reload();
+  // }
+  forgotPassword(){
+    const user=this.userReactiveForm.value;
+      if(user.username==''){
+      this.errorMessage="Forgot password failed : Username is empty.";
+      this.submitted=true; 
+      this.isLoginFailed=true;
+      setTimeout(() => { this.errorMessage = ''; this.isLoginFailed = false; this.submitted=false;}, 3000);
+    }
+    else{
+      this.authService.forgotPassword(user.username).subscribe(
+       res=>{
+         console.log(res);
+         this.showSuccess=true;
+         this.successMessage="Reset password link is sent to your registered email.";
+       },
+       err=>{
+         console.log(err);
+         this.submitted=true;
+         this.isLoginFailed=true;
+         this.errorMessage="Forgot password failed: "+err.error.message;
+         setTimeout(() => { this.errorMessage = ''; this.isLoginFailed = false; this.submitted=false;}, 3000);
+       }
+      );
+    }
+    console.log("forgot password :", user.username,"hi");
   }
 }

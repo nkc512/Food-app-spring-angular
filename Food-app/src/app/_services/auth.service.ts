@@ -31,4 +31,8 @@ export class AuthService {
       password: user.password
     }, httpOptions);
   }
+
+  forgotPassword(username){
+    return this.http.get(AUTH_API + '/forgot-password/'+username, httpOptions);
+  }
 }

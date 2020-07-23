@@ -7,17 +7,21 @@
 
                 <div class="form-group">
                     <label class="my-3">Username</label>
-                    <input type="text" formControlName="username" placeholder="Enter username" class="form-control">
+                    <input type="text" formControlName="username" placeholder="Enter username" class="form-control" >
                 </div>
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" formControlName="password" placeholder="Enter password" class="form-control">
                 </div>
                 <div class="alert alert-danger" role="alert" *ngIf="submitted && isLoginFailed">
-                    Login failed: {{ errorMessage }}
+                     {{ errorMessage }}
                 </div>
+                <div class="alert alert-success" role="alert" *ngIf="showSuccess">
+                    {{successMessage}}
+               </div>
             </form>
-
+            <a  (click)="forgotPassword()" class="stretched-link text-primary pull-right" style="position: relative;">Forgot password?</a>
+            <br><br>
             <button class="button buttonsave" (click)="onSubmit()">Sign In</button>
         </div>
     </div>
