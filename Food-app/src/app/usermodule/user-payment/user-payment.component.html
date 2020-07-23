@@ -1,4 +1,4 @@
-<div class="container py-5 w-75">
+<div class="container py-1">
     <!-- For demo purpose -->
     <div class="row mb-4">
         <div class="col-lg-8 mx-auto text-center">
@@ -7,13 +7,13 @@
         </div>
     </div>
     <!-- End -->
-    <div class="row">
+    <div class="row py-1">
         <div class="col-lg-6 mx-auto">
             <div class="card ">
                 <div class="card-header">
                     <div class="bg-white shadow-sm pt-4 pl-2 pr-2 pb-2">
                         <!-- Credit card form tabs -->
-                        <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
+                        <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-2">
                             <li class="nav-item">
                                 <a data-toggle="pill" href="#credit-card" class="nav-link active "> <i class="fas fa-credit-card mr-2"></i> Credit Card </a>
                             </li>
@@ -21,7 +21,7 @@
                                 <a data-toggle="pill" href="#upi_pay" class="nav-link "> <i class="fab fa-paypal mr-2"></i> UPI Pay </a>
                             </li>
                             <li class="nav-item">
-                                <a data-toggle="pill" href="#cash" class="nav-link "> <i class="fa fa-money mr-2"></i> Cash </a>
+                                <a data-toggle="pill" href="#cash" class="nav-link "> Cash </a>
                             </li>
                         </ul>
                     </div>
@@ -70,7 +70,7 @@
                                         Enter valid Card Number.
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row py-1">
                                     <div class="col-sm-8">
                                         <div class="form-group">
                                             <label><span class="hidden-xs">
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row py-1">
+                                <div class="row py-0">
                                     <div class="col-sm-8">
                                         <div *ngIf="expirationDate.invalid && (expirationDate.dirty || expirationDate.touched)" class="text-danger">
                                             <div *ngIf="expirationDate.errors.required">
@@ -115,7 +115,7 @@
 
                                     </div>
                                 </div>
-                                <div class="row py-2">
+                                <div class="row py-1">
                                     <div class="card-footer col-sm-6">
                                         <button type="button" data-toggle="modal" data-target="#myPreviousPayment" (click)="getPaymentData()" class="subscribe btn btn-primary btn-block shadow-sm"> Previous Payment </button>
                                     </div>
@@ -127,7 +127,7 @@
                         </div>
 
                         <!-- End -->
-                        <!-- Paypal info -->
+                        <!-- UPI info -->
                         <div id="upi_pay" class="text-center tab-pane fade pt-3">
                             <h4 class="py-3"><strong> UPI Pay </strong></h4>
                             <form>
@@ -143,7 +143,7 @@
 
                         </div>
                         <!-- End -->
-                        <!-- bank transfer info -->
+                        <!-- cash pay info -->
                         <div id="cash" class="tab-pane fade pt-3 text-center py-3">
                             <div class="form-group ">
                                 <h4 class="text-center"><strong>I Would Prefer Cash Payment</strong></h4>

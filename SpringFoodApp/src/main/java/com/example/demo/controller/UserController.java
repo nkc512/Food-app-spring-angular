@@ -33,10 +33,8 @@ import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.repository.FeedbackRepository;
 import com.example.demo.repository.OrderRepository;
-<<<<<<< HEAD
 import com.example.demo.repository.PaymentRepository;
-=======
->>>>>>> 045efe1ee2793e80a349cfe55b1d232c208d944e
+
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
