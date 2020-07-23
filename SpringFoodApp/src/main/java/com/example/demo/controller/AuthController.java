@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.model.Cafeteria;
 import com.example.demo.model.ConfirmationToken;
 import com.example.demo.model.Customer;
@@ -202,6 +204,7 @@ public class AuthController {
             User user = userRepository.findByEmail(token.getUser().getEmail());
             user.setEnabled(true);
             userRepository.save(user);
+            confirmationTokenRepository.delete(token);
             modelAndView.setViewName("accountVerified");
         }
         else
@@ -210,6 +213,75 @@ public class AuthController {
             modelAndView.setViewName("error");
         }
 
+        return modelAndView;
+    }
+	
+	@GetMapping("/forgot-password/{username}")
+    public ResponseEntity<ResponseMessage> forgotUserPassword(@PathVariable("username") String username) {
+		if(userRepository.existsByUsername(username) ) {
+			if(userRepository.findOneUsername(username).isEnabled()==false) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN)
+			            .body(new ResponseMessage("Verify account first."));
+			}
+		}
+        User existingUser = userRepository.findOneUsername(username);
+        System.out.println("forget pasword"+existingUser.toString());
+        if (existingUser != null) {
+            // Create token
+            ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
+
+            // Save it
+            confirmationTokenRepository.save(confirmationToken);
+
+            // Create the email
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(existingUser.getEmail());
+            mailMessage.setSubject("Complete Password Reset!");
+            mailMessage.setFrom("cafeteriaproject.notification@gmail.com");
+            mailMessage.setText("To complete the password reset process, please click here: "
+              + "http://localhost:8080/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken());
+
+            // Send the email
+            emailSenderService.sendEmail(mailMessage);
+
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Reset password link is sent to your registered email id."));
+
+        } else {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("User not found"));
+        }
+        
+    }
+	@GetMapping(value="/confirm-reset")
+    public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
+        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+        if (token != null) {
+            User user = userRepository.findByEmail(token.getUser().getEmail());
+            user.setEnabled(true);
+            userRepository.save(user);
+            confirmationTokenRepository.delete(token);
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("emailId", user.getEmail());
+            modelAndView.setViewName("resetPassword");
+        } else {
+            modelAndView.addObject("message", "The link is invalid or broken!");
+            modelAndView.setViewName("error");
+        }
+        return modelAndView;
+    }
+	@PostMapping("/reset-password")
+    public ModelAndView resetUserPassword(ModelAndView modelAndView, User user) {
+        if (user.getEmail() != null) {
+            // Use email to find user
+            User tokenUser = userRepository.findByEmail(user.getEmail());
+            tokenUser.setPassword(encoder.encode(user.getPassword()));
+            userRepository.save(tokenUser);
+            modelAndView.addObject("message", "Password successfully reset. You can now log in with the new credentials.");
+            modelAndView.setViewName("successResetPassword");
+        } else {
+            modelAndView.addObject("message","The link is invalid or broken!");
+            modelAndView.setViewName("error");
+        }
         return modelAndView;
     }
 }
