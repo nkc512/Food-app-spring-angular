@@ -7,6 +7,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { CartItem } from '../_classes/cart-item';
 import { CartService } from '../_services/cart.service';
 import { TokenStorageService } from '../_services/token-storage.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +15,10 @@ import { TokenStorageService } from '../_services/token-storage.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  restaurantselected: string;
   restaurantArray: string[] = [];
   restaurantmsg: any;
-
+  searchval: string;
   showsuccess: boolean;
   showError: boolean;
   errmsg: string;
@@ -26,15 +27,21 @@ export class HomeComponent implements OnInit {
   cartarray: CartItem[] = [];
   flag = true;
   head: any;
+  searchdishArray: Dish[] = [];
   baseUrl = 'http://localhost:8080';
-
+  searchForm = new FormGroup({
+    restaurantControl: new FormControl(''),
+    searchdata: new FormControl(''),
+  });
+  countries = ['USA', 'Canada', 'Uk']
   constructor(private http: HttpClient, private publicservice: PublicService,
-              private cartService: CartService, private tokenStorageService: TokenStorageService) {
+    private cartService: CartService, private tokenStorageService: TokenStorageService) {
     this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
     this.showError = false;
     this.showsuccess = false;
     this.errmsg = '';
     this.successmsg = '';
+    this.searchval = '';
   }
 
   disharray: Dish[] = [];
@@ -44,7 +51,6 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.callGetDistinctRestaurant();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     const that = this;
@@ -88,7 +94,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  addCart(dish: Dish, i, j, k) {
+  addCart(dish: Dish, j, k) {
 
     if (this.isLoggedIn) {
       this.checkSameRestaurant(dish.restaurantName);
@@ -96,10 +102,10 @@ export class HomeComponent implements OnInit {
       if (!this.flag) {
         this.showError = true;
         this.errmsg = 'Cart should contain dishes from same restaurant.';
-        setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
+        setTimeout(() => { this.errmsg = ''; this.showError = false; }, 1500);
       }
       else {
-        const x = (document.getElementById('quantity_' + i + j + k) as HTMLInputElement).value;
+        const x = (document.getElementById('quantity_' + j + k) as HTMLInputElement).value;
         console.log(dish, x);
         const cartObj = new CartItem();
         cartObj.dish = dish;
@@ -109,13 +115,13 @@ export class HomeComponent implements OnInit {
         if (msg == 'Added to cart Successfully') {
           this.showsuccess = true;
           this.successmsg = 'Dish: ' + dish.dishName + ' Quantity: ' + x + ' is added to cart successfully.';
-          setTimeout(() => { this.successmsg = ''; this.showsuccess = false; }, 5000);
+          setTimeout(() => { this.successmsg = ''; this.showsuccess = false; }, 1500);
         }
         else {
           console.log(msg);
           this.showError = true;
           this.errmsg = msg;
-          setTimeout(() => { this.errmsg = ''; this.showError = false; }, 5000);
+          setTimeout(() => { this.errmsg = ''; this.showError = false; }, 1500);
         }
       }
     }
@@ -154,5 +160,42 @@ export class HomeComponent implements OnInit {
     console.log(restaurant);
     this.restaurantmsg = restaurant;
     this.callGetRestaurantDishes(restaurant);
+  }
+  selectChangeHandler(event: any) {
+    this.restaurantselected = event.target.value;
+  }
+  searchfunction() {
+    this.searchval = this.searchForm.get('searchdata').value;
+    if (this.searchForm.get('searchdata').value.length === 0) {
+      console.log('no search value found');
+    }
+    else {
+      if (typeof (this.restaurantselected) === 'undefined' || this.restaurantselected.length === 0 || this.restaurantselected === 'all') {
+        this.publicservice.getDishAllRestaurant(this.searchval).subscribe(data => {
+          this.searchdishArray = data;
+        },
+          err => {
+            console.log('No dishes found with your query');
+          },
+          () => {
+            console.log('no restaurant search finished');
+            setTimeout(() => {  }, 2000);
+          });
+      }
+      else {
+        this.publicservice.getDishSelectedRestaurant(this.searchval, this.restaurantselected).subscribe(data => {
+          this.searchdishArray = data;
+        },
+          err => {
+            console.log('No dishes found with your query');
+          },
+          () => {
+            console.log('search finished');
+            setTimeout(() => {  }, 2000);
+          });
+      }
+    }
+    console.log(this.restaurantselected, this.searchForm.get('searchdata').value);
+    console.log('search called');
   }
 }

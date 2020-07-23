@@ -3,107 +3,148 @@
         <div class="container text-center text-white headerset">
             <h2>EAT GOOD FEEL GOOD</h2>
             <h4>"Meals And Memories Are Made Here."</h4>
-            <form class="form-inline justify-content-center" action="#">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                  Select Cafe
-                </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Cafe 1</a>
-                        <a class="dropdown-item" href="#">Cafe 2</a>
-                        <a class="dropdown-item" href="#">Cafe 3</a>
-                    </div>
-                </div>
-                <input class="form-control text-center" size="5" type="text" placeholder="Search">
-                <button class="btn btn-danger text-center" type="submit">Search</button>
+            <form class="form-inline justify-content-center" action="#" [formGroup]="searchForm">
+                <select formControlName="restaurantControl" (change)="selectChangeHandler($event)" class="custom-select curve-left">
+                    <option value="" [disabled]="true">Select Restaurants</option>
+                    <option value="all" >All Restaurants</option>
+                    <option *ngFor="let restaurant of restaurantArray" [value]="restaurant">{{restaurant}}</option>
+                 </select>
+                <input class="form-control my-0 py-1 amber-border no-curve" formControlName="searchdata" (keyup)="searchfunction()" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn-outline-light curve-right form-control" (click)="searchfunction()"><i class="fas fa-search text-dark"></i></button>
             </form>
         </div>
     </div>
-
-    <div class="alert alert-success" role="alert" *ngIf="showsuccess">
-        {{successmsg}}
-    </div>
-    <div class="alert alert-danger" role="alert" *ngIf="showError">
-        {{errmsg}}
-    </div>
-    <div>
-        <div class="card mx-2 my-2">
-            <div class="card-header text-center ">
-                <h2 style="font-weight: bold;"> MENU</h2>
-            </div>
-            <div class="card-body">
-                <div *ngIf="restaurantArray.length==0">
-                    <p>No Restaurants Found</p>
+    <div *ngIf="searchval.length==0">
+        <div>
+            <div class="card mx-2 my-2">
+                <div class="card-header text-center ">
+                    <h2 style="font-weight: bold;"> MENU</h2>
                 </div>
-
-                <nav *ngIf="restaurantArray.length!=0">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist" (tabChange)="restaurantTab($event)">
-                        <a class="nav-item nav-link" [ngClass]="(k==0)?'active':''" *ngFor="let restaurant of restaurantArray;let k=index;" (click)="restaurantTab(restaurant)" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{{restaurant}}</a>
+                <div class="card-body">
+                    <div *ngIf="restaurantArray.length==0">
+                        <p>No Restaurants Found</p>
                     </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
-                        <!-- tab bodyyyy starting -->
-                        <div class="accordion" id="accordionExample" *ngIf="categorySort!=null">
+                    <nav *ngIf="restaurantArray.length!=0">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist" (tabChange)="restaurantTab($event)">
+                            <a class="nav-item nav-link" [ngClass]="(k==0)?'active':''" *ngFor="let restaurant of restaurantArray;let k=index;" (click)="restaurantTab(restaurant)" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{{restaurant}}</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
-                            <div class="card my-2 mx-2 " *ngFor="let category of key, let i = index ">
-                                <div class="card-header imgheader " id="headingOne">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-left font-italic text-capitalize imgtext px-5" style="height: 100%" type="button" data-toggle="collapse" attr.data-target="#collapse_{{i}}" aria-expanded="false" attr.aria-controls="collapse_{{i}}">
+                            <!-- tab bodyyyy starting -->
+                            <div class="accordion" id="accordionExample" *ngIf="categorySort!=null">
+
+                                <div class="card my-2 mx-2 " *ngFor="let category of key, let i = index ">
+                                    <div class="card-header imgheader " id="headingOne">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link btn-block text-left font-italic text-capitalize imgtext px-5" style="height: 100%" type="button" data-toggle="collapse" attr.data-target="#collapse_{{i}}" aria-expanded="false" attr.aria-controls="collapse_{{i}}">
                                   <h2 >{{category}}</h2>
                                 </button>
-                                    </h2>
-                                </div>
-                                <div attr.id="collapse_{{i}}" class="collapse " attr.aria-labelledby="heading_{{i}}" data-parent="#accordionExample">
-                                    <div class="card-body ">
-                                        <div class="row card-group " style="padding-top: 0%;">
-                                            <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">
-                                                <div class="card dishcard " [class.disablecard]=" !dish.availability ">
-                                                    <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
-                                                    <div class="card-body container" style="padding: 4%">
-                                                        <div class="container">
-                                                            <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>
-                                                            <span *ngIf="dish.vegNonVeg=='nonveg'" class="badge badge-danger float-right ">Non veg</span>
-                                                            <h6 class="card-title font-italic text-capitalize">{{dish.dishName}}</h6>
-                                                            <h6 class="text-capitalize">{{dish.description}}</h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="footer container" style="margin-bottom: 4%">
-                                                        <div class="row">
-                                                            <p class="col-6">&#x20b9; {{dish.price}} </p>
-                                                            <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+i+j+dish.restaurantName" value="1">
-                                                        </div>
-                                                        <button type="button" attr.id="cartButton_{{i}}{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,i,j,dish.restaurantName)">Add to Cart
+                                        </h2>
+                                    </div>
+                                    <div attr.id="collapse_{{i}}" class="collapse " attr.aria-labelledby="heading_{{i}}" data-parent="#accordionExample">
+                                        <div class="card-body ">
+                                            <div class="row card-group " style="padding-top: 0%;">
+                                                <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">
+                                                    <div class="card dishcard " [class.disablecard]=" !dish.availability ">
+                                                        <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
+                                                        <div class="card-body container" style="padding: 4%">
+                                                            <div class="container">
+                                                                <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>
+                                                                <span *ngIf="dish.vegNonVeg=='nonveg'" class="badge badge-danger float-right ">Non veg</span>
+                                                                <div class="card-title font-italic text-capitalize mediumtext">{{dish.dishName}}</div>
+                                                                <div class="smalltext">{{dish.description}}</div>
+
+                                                                <div class="row">
+
+                                                                    <p class="col-6">&#x20b9; {{dish.price}} </p>
+
+                                                                    <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+i+j+dish.restaurantName" value="1">
+
+                                                                </div>
+                                                                <button type="button" attr.id="cartButton_{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,j,dish.restaurantName)">Add to Cart
                                                               <svg class="bi bi-cart-plus icon" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                                 <path fill-rule="evenodd" d="M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z"/>
                                                                 <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z"/>
                                                                 <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                                                               </svg>
                                                             </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--  -->
+                                            <!-- </div>  -->
                                         </div>
                                         <!--  -->
                                         <!-- </div>  -->
                                     </div>
-                                    <!--  -->
-                                    <!-- </div>  -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- tab bodyyyy ending -->
+
+                        <!-- tab bodyyyy ending -->
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="searchval.length!=0">
+        <div *ngIf="searchdishArray.length!=0">
+
+            <div class="card-body ">
+                <div class="row card-group " style="padding-top: 0%;">
+                    <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of searchdishArray; let j=index;">
+                        <div class="card dishcard " [class.disablecard]=" !dish.availability ">
+                            <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
+                            <div class="card-body container" style="padding: 4%">
+                                <div class="container">
+                                    <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>
+                                    <span *ngIf="dish.vegNonVeg=='nonveg'" class="badge badge-danger float-right ">Non veg</span>
+                                    <div class="card-title font-italic text-capitalize mediumtext">{{dish.dishName}}</div>
+                                    <div class="smalltext">{{dish.description}}</div>
+
+                                    <div class="row">
+
+                                        <p class="col-6">&#x20b9; {{dish.price}} </p>
+
+                                        <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+j+dish.restaurantName" value="1">
+
+                                    </div>
+                                    <button type="button" attr.id="cartButton_{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,j,dish.restaurantName)">Add to Cart
+                                          <svg class="bi bi-cart-plus icon" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M8.5 5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 .5-.5z"/>
+                                            <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0v-2z"/>
+                                            <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                          </svg>
+                                        </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- tab bodyyyy ending -->
-
-                    <!-- tab bodyyyy ending -->
                 </div>
-
+                <!--  -->
+                <!-- </div>  -->
             </div>
-        </div>
 
+        </div>
     </div>
 
+
+    <section class="fDVHVC" #sectioncomp *ngIf="showsuccess || showError">
+        <div class="alert alert-success" role="alert" *ngIf="showsuccess">
+            {{successmsg}}
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="showError">
+            {{errmsg}}
+        </div>
+    </section>
 
 
 
