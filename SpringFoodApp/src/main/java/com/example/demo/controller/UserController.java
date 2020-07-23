@@ -1,27 +1,23 @@
 package com.example.demo.controller;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.model.Cart;
@@ -30,11 +26,11 @@ import com.example.demo.model.CartProduct;
 import com.example.demo.model.CartwithDish;
 import com.example.demo.model.Dish;
 import com.example.demo.model.Order;
-
+import com.example.demo.model.Payment;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.repository.OrderRepository;
-import com.example.demo.security.service.UserDetailsImpl;
+import com.example.demo.repository.PaymentRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -49,6 +45,9 @@ public class UserController {
 	
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	PaymentRepository paymentRepository;
 	
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -167,6 +166,7 @@ public class UserController {
     public ResponseEntity<Order> createOrder(@RequestBody Order orderdata) {
 		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
 		//cartRepository.deleteById(userName);
+		System.out.println(orderdata);
 		cartRepository.deleteById(userName);
 		orderdata.setUserName(userName);
         Order insertedOrder =orderRepository.save(orderdata);
@@ -186,6 +186,37 @@ public class UserController {
 		catch (Exception e) {
 			// TODO: handle exception
 			System.out.println("Previous orders not found");
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@PostMapping("/makePayment")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Payment> makePayment(@RequestBody Payment paymentdata) {
+		System.out.println("make payment called");
+		System.out.println(paymentdata);
+		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+		paymentdata.setUsername(userName);
+        Payment insertedPayment =paymentRepository.save(paymentdata);
+        return ResponseEntity.ok().body(insertedPayment); 
+    }
+	
+	@GetMapping(value = "/getPreviousPayment")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Payment> getPreviousPayment()
+	{
+		try {
+		System.out.println("getPreviousPayment called");
+		String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+		//String userName="anonymousUser";
+		Payment p =paymentRepository.findTopByUsername(userName,Sort.by("id").descending());
+		//List<Payment> pr=paymentRepository.findByUsername(userName);
+		System.out.println(p);
+		return ResponseEntity.ok().body(p);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Previous payment not found"+e);
 			return ResponseEntity.notFound().build();
 		}
 	}

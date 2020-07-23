@@ -5,10 +5,11 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { UserRoutingModule } from './user-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { UserPaymentComponent } from './user-payment/user-payment.component';
 
 
 @NgModule({
-  declarations: [UserCartComponent, UserHomeComponent],
+  declarations: [UserCartComponent, UserHomeComponent, UserPaymentComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

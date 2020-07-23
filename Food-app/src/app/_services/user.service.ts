@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from '../_classes/order';
+import { Payment } from '../_classes/payment';
 import { Cart } from '../_classes/cart';
 import { TokenStorageService } from './token-storage.service';
 import { CartwithDish } from '../_classes/cartwith-dish';
@@ -14,6 +15,10 @@ export class UserService {
 
     private usersUrl: string;
     private head: HttpHeaders;
+    private orderIdData:string;
+    private amountData:number;
+    private restNameData:string;
+
     constructor(private http: HttpClient, private tokenService: TokenStorageService) {
         this.usersUrl = 'http://localhost:8080/api/user';
         const token = this.tokenService.getToken();
@@ -49,5 +54,39 @@ export class UserService {
     public getOrders(): Observable<any>{
         return this.http.get<any>(this.usersUrl + '/getallorders',
         { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
+    }
+    makePayment(paymentdata: Payment): Observable<Payment> {
+        console.log('reach makePayment',paymentdata);
+        
+        return this.http.post<Payment>(this.usersUrl + '/makePayment', paymentdata);
+        
+    }
+
+    getPreviousPayment(): Observable<Payment>{
+        return this.http.get<Payment>(this.usersUrl + '/getPreviousPayment',
+        { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
+    }
+    get OrderIdData():string{
+        return this.orderIdData;
+    }
+
+    set OrderIdData(orderIdData:string){
+        this.orderIdData=orderIdData;
+    }
+    get RestNameData():string{
+        return this.restNameData;
+    }
+
+    set RestNameData(restNameData:string){
+        this.restNameData=restNameData;
+    }
+
+    getAmountData(){
+        let temp=this.amountData;
+        return temp;
+    }
+
+    setAmountData(amountData:number){
+        this.amountData=amountData;
     }
 }

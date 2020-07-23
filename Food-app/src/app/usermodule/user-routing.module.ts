@@ -1,3 +1,4 @@
+import { UserPaymentComponent } from './user-payment/user-payment.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserCartComponent } from './user-cart/user-cart.component';
@@ -8,6 +9,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 const routes: Routes = [
     { path: '', component: UserHomeComponent },
     { path: 'cart', component: UserCartComponent },
+    {path:'payment', component: UserPaymentComponent}
 ];
 
 @NgModule({

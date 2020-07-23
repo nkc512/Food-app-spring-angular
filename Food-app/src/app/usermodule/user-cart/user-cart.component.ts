@@ -31,6 +31,7 @@ export class UserCartComponent implements OnInit {
   checkoutcartitemarray: CartItem[] = [];
   checkoutpayable: number;
   checkoutcart: CartwithDish;
+  orderIdData:string;
 
   constructor(private cartservice: CartService, private tokenService: TokenStorageService, private router: Router,
     private userService: UserService) {
@@ -101,6 +102,12 @@ export class UserCartComponent implements OnInit {
       setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
       this.showRecipt = true;
       this.recipt = res;
+      this.orderIdData=res.order_id;
+      this.userService.OrderIdData=this.orderIdData;
+      this.userService.RestNameData=neworder.restaurantName;
+      console.log('order:'+this.orderIdData);
+      this.userService.setAmountData(res.payableAmount);
+      this.router.navigate(['/user/payment']);
     },
       err => {
         console.log(err);

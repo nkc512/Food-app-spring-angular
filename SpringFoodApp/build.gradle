@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
+	compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 	// implementation 'io.jsonwebtoken:jjwt'
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
 	//compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -31,6 +33,7 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.apache.derby:derby'
+	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
