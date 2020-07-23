@@ -1,0 +1,374 @@
+<div class="container py-5 w-75">
+    <!-- For demo purpose -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h2 style="font-weight: bold;" class="text-center">PAYMENT</h2>
+            <hr class="w-25 mx-auto">
+        </div>
+    </div>
+    <!-- End -->
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card ">
+                <div class="card-header">
+                    <div class="bg-white shadow-sm pt-4 pl-2 pr-2 pb-2">
+                        <!-- Credit card form tabs -->
+                        <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
+                            <li class="nav-item">
+                                <a data-toggle="pill" href="#credit-card" class="nav-link active "> <i class="fas fa-credit-card mr-2"></i> Credit Card </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="pill" href="#upi_pay" class="nav-link "> <i class="fab fa-paypal mr-2"></i> UPI Pay </a>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="pill" href="#cash" class="nav-link "> <i class="fa fa-money mr-2"></i> Cash </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End -->
+                    <!-- Credit card form content -->
+                    <div class="tab-content">
+                        <!-- credit card info-->
+                        <div id="credit-card" class="tab-pane fade show active pt-3">
+                            <form #cardPaymentForm="ngForm">
+                                <div class="form-group"> <label for="cardOwner">
+                                        <h6>Card Owner</h6>
+                                    </label> <input type="text" pattern="^[a-zA-Z\s]+$" name="cardOwner" minlength="2" maxlength="30" placeholder="Card Owner Name" required [(ngModel)]="newPayment.cardOwner " #cardOwner="ngModel" class="form-control ">
+                                </div>
+                                <div *ngIf="cardOwner.invalid && (cardOwner.dirty || cardOwner.touched)" class="text-danger">
+                                    <div *ngIf="cardOwner.errors.required">
+                                        Card Owner Name is required.
+                                    </div>
+                                    <div *ngIf="cardOwner.errors.maxlength">
+                                        Card Owner Name cannot be more than 30 characters long.
+                                    </div>
+                                    <div *ngIf="cardOwner.errors.minlength">
+                                        Card Owner Name must be at least 2 characters long.
+                                    </div>
+                                    <div *ngIf="cardOwner.errors.pattern">
+                                        Enter valid Card Owner Name .
+                                    </div>
+                                </div>
+
+                                <div class="form-group"> <label for="cardNumber">
+                                        <h6>Card number</h6>
+                                    </label>
+                                    <div class="input-group"> <input type="text" pattern="^[1-9]\d*$" minlength="16" maxlength="16" name="cardNumber" placeholder="Valid card number" [(ngModel)]="newPayment.cardNumber " #cardNumber="ngModel" class="form-control " required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text text-muted"> <i class="fab fa-cc-visa mx-1"></i> <i class="fab fa-cc-mastercard mx-1"></i> <i class="fab fa-cc-amex mx-1"></i> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class=" text-danger">
+                                    <div *ngIf="cardNumber.errors.required">
+                                        Card Number is required.
+                                    </div>
+                                    <div *ngIf="cardNumber.errors.maxlength || cardNumber.errors.minlength">
+                                        Card Number must be 16 characters long.
+                                    </div>
+                                    <div *ngIf="cardNumber.errors.pattern">
+                                        Enter valid Card Number.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label><span class="hidden-xs">
+                                                    <h6>Expiration Date</h6>
+                                                </span>
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="text" placeholder="MM/YY" pattern="^(0[1-9]|1[012])\/[0-9]{2}$" maxlength="5" minlength="5" name="expirationDate" [(ngModel)]="newPayment.expirationDate " #expirationDate="ngModel" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group mb-4"> <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
+                                                <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                            </label> <input type="number" pattern="^\d{3}$" name="cvv" required [(ngModel)]="newPayment.cvv " #cvv="ngModel" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row py-1">
+                                    <div class="col-sm-8">
+                                        <div *ngIf="expirationDate.invalid && (expirationDate.dirty || expirationDate.touched)" class="text-danger">
+                                            <div *ngIf="expirationDate.errors.required">
+                                                Date is required.
+                                            </div>
+                                            <div *ngIf="expirationDate.errors.maxlength && expirationDate.errors.minlength">
+                                                Date must have 5 characters only.
+                                            </div>
+                                            <div *ngIf="expirationDate.errors.pattern">
+                                                Enter Valid Date.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div *ngIf="cvv.invalid && (cvv.dirty || cvv.touched)" class=" text-danger">
+                                            <div *ngIf="cvv.errors.required">
+                                                Cvv required.
+                                            </div>
+                                            <div *ngIf="cvv.errors.pattern ">
+                                                Enter Valid cvv.
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row py-2">
+                                    <div class="card-footer col-sm-6">
+                                        <button type="button" data-toggle="modal" data-target="#myPreviousPayment" (click)="getPaymentData()" class="subscribe btn btn-primary btn-block shadow-sm"> Previous Payment </button>
+                                    </div>
+                                    <div class="card-footer col-sm-6">
+                                        <button type="button" [disabled]="cardPaymentForm.invalid" data-toggle="modal" data-target="#myNewPayment" (click)="makeNewPayment(cardPaymentForm.value)" class="subscribe btn btn-primary btn-block shadow-sm"> Confirm Payment </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- End -->
+                        <!-- Paypal info -->
+                        <div id="upi_pay" class="text-center tab-pane fade pt-3">
+                            <h4 class="py-3"><strong> UPI Pay </strong></h4>
+                            <form>
+                                <div class="container">
+                                    <label for="upi_id" class=""><h6>UPI ID :  </h6></label>
+                                    <input type="text" name="upi_id" placeholder="Enter your UPI ID">
+
+                                </div>
+                                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myUPIPayment">
+                                    <i class="fab fa-paypal mr-2"></i>Pay</button>
+                            </form>
+
+
+                        </div>
+                        <!-- End -->
+                        <!-- bank transfer info -->
+                        <div id="cash" class="tab-pane fade pt-3 text-center py-3">
+                            <div class="form-group ">
+                                <h4 class="text-center"><strong>I Would Prefer Cash Payment</strong></h4>
+                            </div>
+                            <div class="form-group py-2">
+                                <p> <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myCashPayment"><i class="fa fa-money mr-2"></i> Pay </button> </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- End -->
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myNewPayment">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header ">
+                <h4 class="modal-title text-center">Payment Successful !</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container py-2 ">
+
+                    <div>
+                        <h5 style="font-size: medium;"><strong>Restaurant Name: {{newPayment.restaurantName}}</strong></h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Order ID:</strong> {{newPayment.orderId}}</h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Card Owner:</strong> {{newPayment.cardOwner}}</h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Time of Payment:</strong> {{newPayment.paidAt}}</h5>
+                    </div>
+
+                    <div>
+                        <h4 class="text-center py-3"><strong>Receipt</strong></h4>
+                    </div>
+                    <div class="text-white bg-dark">
+                        <table class="table text-white">
+                            <thead>
+                                <tr>
+                                    <th style="width: 16.66%">#</th>
+                                    <th style="width: 16.66%">Product</th>
+                                    <th style="width: 16.66%">Quantity</th>
+                                    <th class="text-center" style="width: 16.66%">Price</th>
+                                    <th class="text-center" style="width: 16.66%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of order.items; let i=index;">
+                                    <td scope="row">{{i+1}}</td>
+                                    <td><em>{{item.dish.dishName}}</em></td>
+                                    <td class=" text-center"> {{item.quantity}} </td>
+                                    <td style="text-align: center">{{item.dish.price}}</td>
+                                    <td class=" text-center">{{item.dish.price*item.quantity}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>   </td>
+                                    <td>   </td>
+                                    <td>   </td>
+                                    <td class="text-right">
+                                        <h6 style="width: 16.66%"><strong>Total: </strong></h6>
+                                    </td>
+                                    <td class="text-center text-white" style="width: 16.66%">
+                                        <h6 style="font-size: medium;">Rs. {{newPayment.amount}}</h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myPreviousPayment">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header ">
+                <h4 class="modal-title text-center">Previous Payment Details !</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container py-2 ">
+
+                    <div>
+                        <h5 style="font-size: medium;"><strong>Restaurant Name: {{prevPayment.restaurantName}}</strong></h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Order ID:</strong> {{prevPayment.orderId}}</h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Card Owner:</strong> {{prevPayment.cardOwner}}</h5>
+                    </div>
+                    <div>
+                        <h5 style="font-size: medium;"> <strong>Time of Payment:</strong> {{prevPayment.paidAt}}</h5>
+                    </div>
+
+                    <div>
+                        <h4 class="text-center py-3"><strong>Receipt</strong></h4>
+                    </div>
+                    <div class="text-white bg-dark">
+                        <table class="table text-white">
+                            <thead>
+                                <tr>
+                                    <th style="width: 16.66%">#</th>
+                                    <th style="width: 16.66%">Product</th>
+                                    <th style="width: 16.66%">Quantity</th>
+                                    <th class="text-center" style="width: 16.66%">Price</th>
+                                    <th class="text-center" style="width: 16.66%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of prevOrder.items; let i=index;">
+                                    <td scope="row">{{i+1}}</td>
+                                    <td><em>{{item.dish.dishName}}</em></td>
+                                    <td class=" text-center"> {{item.quantity}} </td>
+                                    <td style="text-align: center">{{item.dish.price}}</td>
+                                    <td class=" text-center">{{item.dish.price*item.quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <td>   </td>
+                                    <td>   </td>
+                                    <td>   </td>
+                                    <td class="text-right">
+                                        <h6 style="width: 16.66%"><strong>Total: </strong></h6>
+                                    </td>
+                                    <td class="text-center text-white" style="width: 16.66%">
+                                        <h6 style="font-size: medium;">Rs. {{prevPayment.amount}}</h6>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myUPIPayment">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Payment Successful</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <h4><strong>Thank You !</strong></h4>
+                <h4>Your UPI Payment is Successful.</h4>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myCashPayment">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Payment Successful</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body text-center">
+                <h4><strong> Thank You !</strong> </h4>
+                <h4>Your Cash Payment is Successful.</h4>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
