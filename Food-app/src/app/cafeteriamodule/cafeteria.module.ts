@@ -8,20 +8,22 @@ import { CafeteriaRoutingModule } from './cafeteria-routing.module';
 import { CafeteriaProfileComponent } from './cafeteria-profile/cafeteria-profile.component';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../_helpers/auth.interceptor';
+import { CafeteriaFeedbackComponent } from './cafeteria-feedback/cafeteria-feedback.component';
 
 
 @NgModule({
-  declarations: [CafeteriaHomeComponent, CafeteriaNotificationComponent, CafeteriaAddProductComponent, CafeteriaProfileComponent],
+  declarations: [CafeteriaHomeComponent, CafeteriaNotificationComponent, CafeteriaAddProductComponent,
+    CafeteriaProfileComponent, CafeteriaFeedbackComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     CafeteriaRoutingModule,
     FormsModule
   ],
-  exports:[
+  exports: [
     FormsModule
   ],
-  providers:[
+  providers: [
     AuthInterceptor
   ]
 })

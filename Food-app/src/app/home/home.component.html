@@ -61,7 +61,7 @@
 
                                                                     <p class="col-6">&#x20b9; {{dish.price}} </p>
 
-                                                                    <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+i+j+dish.restaurantName" value="1">
+                                                                    <input type="number" min=1 [disabled]="!dish.availability" class="form-control form-control-sm col-4 offset-1 my-2" [attr.id]="'quantity_'+j+dish.restaurantName" value="1">
 
                                                                 </div>
                                                                 <button type="button" attr.id="cartButton_{{j}}{{dish.restaurantName}}" [disabled]="!dish.availability" class="btn btn-outline-primary btn-circle btn-sm col-12 auto" (click)="addCart(dish,j,dish.restaurantName)">Add to Cart

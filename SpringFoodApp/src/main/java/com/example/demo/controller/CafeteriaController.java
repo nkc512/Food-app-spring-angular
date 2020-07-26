@@ -37,9 +37,11 @@ import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 import com.example.demo.model.Dish;
+import com.example.demo.model.Feedback;
 import com.example.demo.model.Order;
 import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.DishRepository;
+import com.example.demo.repository.FeedbackRepository;
 import com.example.demo.repository.OrderRepository;;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -67,6 +69,9 @@ public class CafeteriaController {
 	
 	@Autowired
 	MongoTemplate mongoTemplate;
+	
+	@Autowired
+	FeedbackRepository feedbackRepository;
 	
 	@PutMapping("/update/{cafeteriaid}")
 	@PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
@@ -193,5 +198,27 @@ public class CafeteriaController {
     {
     	return ResponseEntity.ok().body(orderRepository.restaurantWiseReadyOrders(restname));
     }
-
+    @GetMapping("/getfeedback")
+    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER')")
+    public ResponseEntity<ArrayList<Feedback>> getFeedback()
+    {
+    	String userName=SecurityContextHolder.getContext().getAuthentication().getName();
+    	ArrayList<Feedback> feedbacks=(ArrayList<Feedback>) feedbackRepository.findAll();
+    	ArrayList<Feedback> feedbackrestArrayList = new ArrayList<Feedback>();
+    	try
+    	{	
+    		for(int i=0;i<feedbacks.size();i++)
+    		{
+	    		String id=feedbacks.get(i).getId();
+	    		if(orderRepository.findById(id).get().getRestaurantName()==userName)
+	    		{
+	    			feedbackrestArrayList.add(feedbacks.get(i));
+	    		}
+    		}
+    	}
+    	catch (Exception e) {
+			System.out.println(e);
+		}
+    	return ResponseEntity.ok().body(feedbacks);
+    }
 }

@@ -113,7 +113,9 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+		try {
+		System.out.println("sign up called");
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
@@ -126,6 +128,7 @@ public class AuthController {
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
 
+		System.out.println("valid username, email");
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), 
 							 signUpRequest.getEmail(),
@@ -134,6 +137,7 @@ public class AuthController {
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
 
+		System.out.println("user created");
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -145,39 +149,24 @@ public class AuthController {
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adminRole);
-					
-
 					break;
 				case "ROLE_CAFETERIAMANAGER":
 					Role cafeteriaRole = roleRepository.findByName(ERole.ROLE_CAFETERIAMANAGER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(cafeteriaRole);
-					//cafeteria.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
-					/*Cafeteria cafeteria = new Cafeteria();//sequenceGeneratorService.generateSequence(Cafeteria.SEQUENCE_NAME));
-					
-					//cafeteria.setId();
-					cafeteria.setCafename(signUpRequest.getUsername());
-					cafeteria.setCafeuser(user);
-					System.out.print(cafeteria);
-					cafeteriaRepository.save(cafeteria);
-					*/
 					break;
 				default:
 					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(userRole);
-					/*Customer customer = new Customer();
-					//customer.setId(sequenceGeneratorService.generateSequence(Customer.SEQUENCE_NAME));
-					customer.setName(signUpRequest.getUsername());
-					customer.setCustomeruser(user);
-					customerRepository.save(customer);*/
 				}
 			});
 		}
 
 		user.setRoles(roles);
 		userRepository.save(user);
-		
+		System.out.println("user saved"+user.toString());
+		//Long confirmationtoken= sequenceGeneratorService.generateSequence(ConfirmationToken.SEQUENCE_NAME);
 		ConfirmationToken confirmationToken = new ConfirmationToken(user);
 
         confirmationTokenRepository.save(confirmationToken);
@@ -190,7 +179,12 @@ public class AuthController {
         +"http://localhost:8080/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
 
         emailSenderService.sendEmail(mailMessage);
-
+        System.out.println("mail sent");
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 		return ResponseEntity.ok(new MessageResponse("User registered successfully! Please verify your email Id !"));
 	}
 	

@@ -8,7 +8,7 @@ import { CartItem } from '../_classes/cart-item';
 import { CartService } from '../_services/cart.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { FormGroup, FormControl } from '@angular/forms';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -178,7 +178,7 @@ export class HomeComponent implements OnInit {
             console.log('No dishes found with your query');
           },
           () => {
-            console.log('no restaurant search finished');
+            // console.log('no restaurant search finished');
             setTimeout(() => {  }, 2000);
           });
       }
@@ -198,4 +198,17 @@ export class HomeComponent implements OnInit {
     console.log(this.restaurantselected, this.searchForm.get('searchdata').value);
     console.log('search called');
   }
+  /*debounce = (fn, d) => {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply();
+      }, d);
+    };
+  }*/
+  /*betterFunction() {
+    _.debounce(() => {
+      this.searchfunction();
+    }, 400); }*/
 }

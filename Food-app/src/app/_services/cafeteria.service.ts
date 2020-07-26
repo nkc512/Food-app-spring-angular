@@ -4,6 +4,7 @@ import { Dish } from '../_classes/dish';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
 import { Order } from '../_classes/order';
+import { Feedback } from '../_classes/feedback';
 
 @Injectable({
   providedIn: 'root'
@@ -55,5 +56,9 @@ export class CafeteriaService {
     return this.http.put<Order>(this.cafeteriaUrl + '/changeStatus/' + Id, status,
     { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
   }
-
+  getFeedbacks(): Observable<Feedback[]>
+  {
+    return this.http.get<Feedback[]>(this.cafeteriaUrl + '/getfeedback',
+    { headers: this.head.append('Authorization', 'Bearer ' + this.tokenService.getToken()) });
+  }
 }

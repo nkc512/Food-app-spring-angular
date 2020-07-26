@@ -18,7 +18,7 @@ public interface DishRepository extends MongoRepository<Dish, String> {
 	
 	@Query (value = "{'restaurantName' : ?0 }")
 	ArrayList<Dish> findRstaurantDishes(String restaurantname);
-	@Query (value = "{ $and: [ { 'dishName' : ?0 }, { 'restaurantName' : ?1 } ] }")
+	@Query (value = "{ $and: [ { 'dishName' : { '$regex': ?0 , '$options': 'i'} }, { 'restaurantName' : ?1 } ] }")
 	ArrayList<Dish> findBydishnamecontainingAndRestaurantName(String searchval,String RestaurantName);
 	//@Query (value = "{ 'dishName': { '$in' : [ ?0 ] } }")
 	//@Query (value = "{'dishName': { '$regex': '/.*searchval.*/' , '$options': 'i'}  }")

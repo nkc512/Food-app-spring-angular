@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="card-title text-center py-3">Feedbacks</h2>
+            <div *ngFor="let feedback of feedbacks;">
+                <div class="card bg-dark my-5">
+                    <div class="card-body text-white">
+
+                        <div class="card-body text-white">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-6">Order Id: {{feedback.id}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Rating: {{feedback.rating}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">Comment: {{feedback.comment}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
