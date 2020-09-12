@@ -9,12 +9,15 @@ import { CartService } from '../_services/cart.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash';
+import { environment } from '../../environments/environment'
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  location = environment.API_URL;
   restaurantselected: string;
   restaurantArray: string[] = [];
   restaurantmsg: any;
@@ -26,9 +29,7 @@ export class HomeComponent implements OnInit {
   isLoggedIn: boolean;
   cartarray: CartItem[] = [];
   flag = true;
-  head: any;
   searchdishArray: Dish[] = [];
-  baseUrl = 'http://localhost:8080';
   searchForm = new FormGroup({
     restaurantControl: new FormControl(''),
     searchdata: new FormControl(''),
@@ -36,7 +37,6 @@ export class HomeComponent implements OnInit {
   countries = ['USA', 'Canada', 'Uk']
   constructor(private http: HttpClient, private publicservice: PublicService,
     private cartService: CartService, private tokenStorageService: TokenStorageService) {
-    this.head = new HttpHeaders().set('access-control-allow-origin', this.baseUrl);
     this.showError = false;
     this.showsuccess = false;
     this.errmsg = '';

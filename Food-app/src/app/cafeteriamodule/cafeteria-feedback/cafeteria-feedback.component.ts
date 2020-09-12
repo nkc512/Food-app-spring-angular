@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class CafeteriaFeedbackComponent implements OnInit {
   feedbacks: Feedback[] = [];
   constructor(private tokenService: TokenStorageService, private cafeteriaService: CafeteriaService, private router: Router) {
-    if (!this.tokenService.getUserRole().includes('ROLE_USER')) {
+    if (!this.tokenService.getUserRole().includes('ROLE_CAFETERIAMANAGER')) {
       this.router.navigate(['/accessalert']);
     }
   }

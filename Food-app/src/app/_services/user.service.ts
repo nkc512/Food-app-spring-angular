@@ -7,7 +7,7 @@ import { Cart } from '../_classes/cart';
 import { TokenStorageService } from './token-storage.service';
 import { CartwithDish } from '../_classes/cartwith-dish';
 import { Feedback } from '../_classes/feedback';
-
+import { environment } from '../../environments/environment'
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -22,7 +22,7 @@ export class UserService {
     private restNameData:string;
 
     constructor(private http: HttpClient, private tokenService: TokenStorageService) {
-        this.usersUrl = 'http://localhost:8080/api/user';
+        this.usersUrl = environment.API_URL + '/user';
         const token = this.tokenService.getToken();
         if (token != null) {
             console.log(token);

@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
-import java.util.List;
-
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 

@@ -14,14 +14,14 @@ import { Observable } from 'rxjs';
 import { DishService } from 'src/app/_services/dish.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-cafeteria-add-product',
   templateUrl: './cafeteria-add-product.component.html',
   styleUrls: ['./cafeteria-add-product.component.css']
 })
 export class CafeteriaAddProductComponent implements OnInit {
-
+  location = environment.API_URL;
   newdish: Dish = new Dish();
   updateDish: Dish = new Dish();
 

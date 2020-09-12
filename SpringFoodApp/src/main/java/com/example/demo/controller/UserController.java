@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,7 +36,7 @@ import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.PaymentRepository;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/user")
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -55,9 +55,6 @@ public class UserController {
 	
 	@Autowired
 	PaymentRepository paymentRepository;
-	
-    @Autowired
-    private MongoTemplate mongoTemplate;
 	
 	@PostMapping("/createcart")
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -191,7 +188,7 @@ public class UserController {
 			return ResponseEntity.badRequest().body(new ResponseMessage("Feedback already exists for this order"));
 		}
 		try {
-			Order order = orderRepository.findByIdAndUsername(feedback.getId(),username);
+			orderRepository.findByIdAndUsername(feedback.getId(),username);
 			Feedback newFeedback = new Feedback();
 			
 			newFeedback.setUsername(username);

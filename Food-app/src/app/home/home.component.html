@@ -49,7 +49,7 @@
                                             <div class="row card-group " style="padding-top: 0%;">
                                                 <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of categorySort[category]; let j=index;">
                                                     <div class="card dishcard " [class.disablecard]=" !dish.availability ">
-                                                        <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
+                                                        <img src="{{location}}/files/{{dish.imgName}}" class="card-img-top" alt="...">
                                                         <div class="card-body container" style="padding: 4%">
                                                             <div class="container">
                                                                 <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>
@@ -102,7 +102,7 @@
                 <div class="row card-group " style="padding-top: 0%;">
                     <div class="col-xl-2 col-lg-3 col-sm-6 col-md-4 my-2" style="padding: 0% 0.5%;" *ngFor="let dish of searchdishArray; let j=index;">
                         <div class="card dishcard " [class.disablecard]=" !dish.availability ">
-                            <img src="http://localhost:8080/files/{{dish.imgName}}" class="card-img-top" alt="...">
+                            <img src= "{{location}}/files/{{dish.imgName}}" class="card-img-top" alt="...">
                             <div class="card-body container" style="padding: 4%">
                                 <div class="container">
                                     <span *ngIf="dish.vegNonVeg=='veg'" class="badge badge-success float-right ">Veg</span>

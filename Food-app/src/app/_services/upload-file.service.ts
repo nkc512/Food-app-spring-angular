@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment'
 @Injectable()
 export class UploadFileService {
   head: HttpHeaders;
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.API_URL + '/files';
 
   constructor(private http: HttpClient) {
     this.head = new HttpHeaders().set('Access-Control-Allow-Origin', this.baseUrl);
@@ -29,6 +29,6 @@ export class UploadFileService {
   }
 
   getFiles(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/files`);
+    return this.http.get(`${this.baseUrl}`);
   }
 }

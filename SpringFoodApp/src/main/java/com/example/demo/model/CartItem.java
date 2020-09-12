@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import javax.persistence.Id;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "cartitem")

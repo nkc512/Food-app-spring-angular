@@ -25,13 +25,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Cafeteria;
 import com.example.demo.model.Cart;
-import com.example.demo.model.User;
 import com.example.demo.repository.CafeteriaRepository;
 import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.UserRepository;
@@ -43,7 +40,7 @@ import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.repository.FeedbackRepository;
 import com.example.demo.repository.OrderRepository;;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/cafeteria")
 public class CafeteriaController {
@@ -166,7 +163,7 @@ public class CafeteriaController {
     	Query select = Query.query(Criteria.where("order_id").is(id));
     	Update update = new Update();
     	update.set("status", status);
-    	Order updateResult = mongoTemplate.findAndModify(select, update, Order.class); 
+    	mongoTemplate.findAndModify(select, update, Order.class); 
     	return orderRepository.findById(id);
     }
 

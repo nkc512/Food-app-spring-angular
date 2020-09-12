@@ -17,6 +17,14 @@ configurations {
 repositories {
 	mavenCentral()
 }
+/*
+dependencyManagement {
+    imports {
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.394'
+    }
+}*/
+// mainClassName = 'SpringFoodAppApplication'
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -26,6 +34,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 	compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// implementation 'com.amazonaws:aws-java-sdk-ses'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// implementation 'io.jsonwebtoken:jjwt'
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
@@ -43,6 +52,10 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-test {
-	useJUnitPlatform()
-}
+/*
+jar {
+  manifest {
+    attributes "Main-Class": "$mainClassName"
+  }
+  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}*/

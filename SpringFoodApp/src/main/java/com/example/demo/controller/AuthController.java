@@ -2,13 +2,13 @@ package com.example.demo.controller;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,9 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.files.upload.message.ResponseMessage;
-import com.example.demo.model.Cafeteria;
 import com.example.demo.model.ConfirmationToken;
-import com.example.demo.model.Customer;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -50,7 +48,7 @@ import com.example.demo.security.service.UserDetailsImpl;
 import com.example.demo.sequence.SequenceGeneratorService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
@@ -83,6 +81,9 @@ public class AuthController {
 	@Autowired
 	private EmailSenderService emailSenderService;
 
+	@Value("${spring.mail.username}")
+	private String mailSender;
+	
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 		User currentUser=userRepository.findByUsername(loginRequest.getUsername())
@@ -171,19 +172,20 @@ public class AuthController {
 
         confirmationTokenRepository.save(confirmationToken);
 
+        System.out.println(mailSender);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
-        mailMessage.setFrom("cafeteriaproject.notification@gmail.com");//enter your mail id
+        mailMessage.setFrom(mailSender);//enter your mail id
         mailMessage.setText("To confirm your account, please click here : "
-        +"http://localhost:8080/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
+        +"http://ec2-15-206-127-194.ap-south-1.compute.amazonaws.com/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
 
         emailSenderService.sendEmail(mailMessage);
         System.out.println("mail sent");
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			return ResponseEntity.ok(new MessageResponse("User registered successfully! Email could not be sent!"));
 		}
 		return ResponseEntity.ok(new MessageResponse("User registered successfully! Please verify your email Id !"));
 	}
@@ -226,12 +228,12 @@ public class AuthController {
 
             // Save it
             confirmationTokenRepository.save(confirmationToken);
-
+            System.out.println();
             // Create the email
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(existingUser.getEmail());
             mailMessage.setSubject("Complete Password Reset!");
-            mailMessage.setFrom("cafeteriaproject.notification@gmail.com");
+            mailMessage.setFrom(mailSender);
             mailMessage.setText("To complete the password reset process, please click here: "
               + "http://localhost:8080/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken());
 
@@ -240,9 +242,8 @@ public class AuthController {
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Reset password link is sent to your registered email id."));
 
-        } else {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("User not found"));
-        }
+        } 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("User not found"));
         
     }
 	@GetMapping(value="/confirm-reset")

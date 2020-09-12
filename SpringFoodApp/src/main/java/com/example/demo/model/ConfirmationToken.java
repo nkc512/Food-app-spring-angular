@@ -3,26 +3,13 @@ package com.example.demo.model;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "confirmationToken")
 public class ConfirmationToken {
-    //@Transient
-    //public static final String SEQUENCE_NAME = "confirmationtoken_sequence";
-	
-	@Id
-    private long tokenid;
 
 //    @Column(name="confirmation_token")
     private String confirmationToken;
@@ -39,14 +26,6 @@ public class ConfirmationToken {
         createdDate = new Date();
         confirmationToken = UUID.randomUUID().toString();
     }
-
-	public long getTokenid() {
-		return tokenid;
-	}
-
-	public void setTokenid(long tokenid) {
-		this.tokenid = tokenid;
-	}
 
 	public String getConfirmationToken() {
 		return confirmationToken;

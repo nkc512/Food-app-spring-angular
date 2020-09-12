@@ -5,3 +5,6 @@ public enum ERole {
 	  ROLE_CAFETERIAMANAGER,
 	  ROLE_ADMIN
 	}
+/*
+db.roles.insertMany([{ name: "ROLE_USER"}, {name: "ROLE_CAFETERIAMANAGER"}, {name: "ROLE_ADMIN"}])
+*/

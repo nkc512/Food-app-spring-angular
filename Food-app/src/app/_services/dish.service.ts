@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Dish } from '../_classes/dish';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
-
+import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +12,7 @@ export class DishService {
 
   head: HttpHeaders;
 
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.API_URL;
 
   constructor(private http: HttpClient, private tokenservice: TokenStorageService) {
     const token = this.tokenservice.getToken();

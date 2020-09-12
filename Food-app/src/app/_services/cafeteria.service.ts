@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenStorageService } from './token-storage.service';
 import { Order } from '../_classes/order';
 import { Feedback } from '../_classes/feedback';
-
+import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +15,7 @@ export class CafeteriaService {
   private head: HttpHeaders;
 
   constructor(private http: HttpClient, private tokenService: TokenStorageService) {
-    this.cafeteriaUrl = 'http://localhost:8080/api/cafeteria';
+    this.cafeteriaUrl = environment.API_URL + '/cafeteria';
     const token = this.tokenService.getToken();
     if (token != null) {
         console.log(token);

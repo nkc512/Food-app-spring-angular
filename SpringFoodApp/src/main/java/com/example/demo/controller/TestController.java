@@ -3,8 +3,6 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.CafeteriaRepository;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCursor;
+import com.example.demo.model.ContactUs;
 import com.example.demo.model.Dish;;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
@@ -107,5 +107,10 @@ public class TestController {
 		return dishRepository.findBydishnamecontaining(searchval);
 	}
 	
-
+	@PostMapping("/contactUs")
+	public ResponseEntity<ResponseMessage> createcontactUs(@RequestBody ContactUs contactUs)
+	{
+		System.out.println("contact us called");
+		return ResponseEntity.ok().body(new ResponseMessage(new String("Thanks for your comments. Our team will contact you soon.")));
+	}
 }

@@ -1,5 +1,4 @@
 package com.example.demo.sequence;
-import com.example.demo.sequence.DatabaseSequence;
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
