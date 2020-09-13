@@ -46,6 +46,9 @@ import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.service.EmailSenderService;
 import com.example.demo.security.service.UserDetailsImpl;
 import com.example.demo.sequence.SequenceGeneratorService;
+import com.example.demo.ses.AmazonEmail;
+import com.example.demo.ses.AmazonSESSample;
+import com.example.demo.ses.SESProcessor;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -81,8 +84,14 @@ public class AuthController {
 	@Autowired
 	private EmailSenderService emailSenderService;
 
-	@Value("${spring.mail.username}")
-	private String mailSender;
+	@Value("${foodapp.aws.instance.link}")
+	private String ec2InstanceLink;
+	
+    // https://attacomsian.com/blog/amazon-ses-integration-with-spring-boot
+    // https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-using-smtp-java.html
+    // https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-simulator.html
+	// https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-credentials.html
+	// https://cloudacademy.com/blog/java-programming-how-to-send-emails-using-amazon-ses/
 	
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
@@ -115,6 +124,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+		String confToken;
 		try {
 		System.out.println("sign up called");
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -169,9 +179,21 @@ public class AuthController {
 		System.out.println("user saved"+user.toString());
 		//Long confirmationtoken= sequenceGeneratorService.generateSequence(ConfirmationToken.SEQUENCE_NAME);
 		ConfirmationToken confirmationToken = new ConfirmationToken(user);
-
+		confToken = confirmationToken.getConfirmationToken();
         confirmationTokenRepository.save(confirmationToken);
 
+        // Using AmazonSESSample --------------------------------------------------
+        AmazonSESSample amazonSESSample = new AmazonSESSample();
+		amazonSESSample.sendmail("success@simulator.amazonses.com","Complete Registration by clicking on below link!","To confirm your account, please click here : "
+		        +ec2InstanceLink+"/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
+		
+        /*
+        SESProcessor.getInstance().add(new AmazonEmail(
+        signUpRequest.getEmail(),
+        "Confirm your registeration",
+        ec2InstanceLink+"/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken()));
+        */
+        /*
         System.out.println(mailSender);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
@@ -180,14 +202,14 @@ public class AuthController {
         mailMessage.setText("To confirm your account, please click here : "
         +"http://ec2-15-206-127-194.ap-south-1.compute.amazonaws.com/api/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
 
-        emailSenderService.sendEmail(mailMessage);
+        emailSenderService.sendEmail(mailMessage);*/
         System.out.println("mail sent");
 		}
 		catch(Exception e)
 		{
 			return ResponseEntity.ok(new MessageResponse("User registered successfully! Email could not be sent!"));
 		}
-		return ResponseEntity.ok(new MessageResponse("User registered successfully! Please verify your email Id !"));
+		return ResponseEntity.ok(new MessageResponse("User registered successfully! Please verify your email Id !" + ec2InstanceLink+"/api/auth/confirm-account?token="+confToken));
 	}
 	
 	@GetMapping("/confirm-account")
@@ -200,8 +222,9 @@ public class AuthController {
             User user = userRepository.findByEmail(token.getUser().getEmail());
             user.setEnabled(true);
             userRepository.save(user);
+            modelAndView.setViewName("successemailverification");
             confirmationTokenRepository.delete(token);
-            modelAndView.setViewName("accountVerified");
+            
         }
         else
         {
@@ -214,6 +237,7 @@ public class AuthController {
 	
 	@GetMapping("/forgot-password/{username}")
     public ResponseEntity<ResponseMessage> forgotUserPassword(@PathVariable("username") String username) {
+
 		if(userRepository.existsByUsername(username) ) {
 			if(userRepository.findOneUsername(username).isEnabled()==false) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -222,29 +246,44 @@ public class AuthController {
 		}
         User existingUser = userRepository.findOneUsername(username);
         System.out.println("forget pasword"+existingUser.toString());
-        if (existingUser != null) {
-            // Create token
-            ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
+        try {
+            if (existingUser != null) {
+                // Create token
+                ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
 
-            // Save it
-            confirmationTokenRepository.save(confirmationToken);
-            System.out.println();
-            // Create the email
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(existingUser.getEmail());
-            mailMessage.setSubject("Complete Password Reset!");
-            mailMessage.setFrom(mailSender);
-            mailMessage.setText("To complete the password reset process, please click here: "
-              + "http://localhost:8080/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken());
+                // Save it
+                confirmationTokenRepository.save(confirmationToken);
+                
+                // Create the email
+                AmazonSESSample amazonSESSample = new AmazonSESSample();
+        		amazonSESSample.sendmail("success@simulator.amazonses.com","Complete password reset!","Complete password reset, please click here : "
+        		        +ec2InstanceLink+"/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken());
+        		
+                /*
+                SESProcessor.getInstance().add(new AmazonEmail(
+                		existingUser.getEmail(),
+                        "Complete Password Reset!",
+                        ec2InstanceLink+"/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken()));
+                */
+                /*
+                SimpleMailMessage mailMessage = new SimpleMailMessage();
+                mailMessage.setTo(existingUser.getEmail());
+                mailMessage.setSubject("Complete Password Reset!");
+                mailMessage.setFrom(mailSender);
+                mailMessage.setText("To complete the password reset process, please click here: "
+                  + ec2InstanceLink+"/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken());
+                
+                // Send the email
+                emailSenderService.sendEmail(mailMessage);
+                */
+                System.out.println("Mail to reset password sent");
+                return ResponseEntity.ok().body(new ResponseMessage("Reset password link is sent to your registered email id."+ec2InstanceLink+"/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken()));
 
-            // Send the email
-            emailSenderService.sendEmail(mailMessage);
-
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Reset password link is sent to your registered email id."));
-
-        } 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("User not found"));
-        
+            } 			
+		} catch (Exception e) {
+	        return ResponseEntity.notFound().build();
+		}
+        return ResponseEntity.notFound().build();       
     }
 	@GetMapping(value="/confirm-reset")
     public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
@@ -254,10 +293,11 @@ public class AuthController {
             User user = userRepository.findByEmail(token.getUser().getEmail());
             user.setEnabled(true);
             userRepository.save(user);
-            confirmationTokenRepository.delete(token);
+            
             modelAndView.addObject("user", user);
             modelAndView.addObject("emailId", user.getEmail());
-            modelAndView.setViewName("resetPassword");
+            modelAndView.setViewName("resetpassword");
+            confirmationTokenRepository.delete(token);
         } else {
             modelAndView.addObject("message", "The link is invalid or broken!");
             modelAndView.setViewName("error");
@@ -272,7 +312,7 @@ public class AuthController {
             tokenUser.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(tokenUser);
             modelAndView.addObject("message", "Password successfully reset. You can now log in with the new credentials.");
-            modelAndView.setViewName("successResetPassword");
+            modelAndView.setViewName("resetpasswordsuccessfull");
         } else {
             modelAndView.addObject("message","The link is invalid or broken!");
             modelAndView.setViewName("error");

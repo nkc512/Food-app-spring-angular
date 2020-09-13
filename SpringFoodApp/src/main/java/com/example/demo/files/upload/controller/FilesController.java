@@ -1,12 +1,12 @@
 package com.example.demo.files.upload.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,18 +16,81 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.demo.s3files.S3Services;
+/*
+import org.springframework.http.HttpStatus;
+import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-
 import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.files.upload.model.FileInfo;
 import com.example.demo.files.upload.service.FilesStorageService;
+import java.util.stream.Collectors;
+*/
 
-@Controller
-@CrossOrigin(origins="*")
+
+// https://grokonez.com/frontend/angular/angular-6/angular-6-springboot-amazon-s3-upload-download-files-images-example
+@CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/api/files")
 public class FilesController {
 
+	  @Autowired
+	  S3Services s3Services;
+	  
+	    @PostMapping("/upload")
+	    @PreAuthorize("hasRole('ROLE_CAFETERIAMANAGER') or hasRole('ADMIN')")
+	    public String uploadMultipartFile(@RequestParam("file") MultipartFile file) {
+	    	try {
+
+	  	      String keyName = file.getOriginalFilename();
+	  	    s3Services.uploadFile(keyName, file);
+	  	    return "Upload Successfully -> KeyName = " + keyName;	
+			} catch (Exception e) {
+				System.out.println("Upload error "+e.toString());
+			}
+	    	return "Could not upload file in S3";
+	    }    
+	    @GetMapping("/{keyname:.+}")
+	    public ResponseEntity<byte[]> downloadFile(@PathVariable String keyname) {
+			System.out.println("Get file called" + keyname);
+	    	try {
+
+	  	      ByteArrayOutputStream downloadInputStream = s3Services.downloadFile(keyname);
+	  	    System.out.println("Get file called downloadfile " + keyname);
+	  	      return ResponseEntity.ok()
+	  	            .contentType(contentType(keyname))
+	  	            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + keyname + "\"")
+	  	            .body(downloadInputStream.toByteArray());  	
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("Exception called. Could not fetch file "+keyname + e.toString());
+			}
+	    	return ResponseEntity.notFound().build();
+	    }
+
+	    @GetMapping("/all")
+	    public List<String> listAllFiles(){
+	    	try {
+	  	      return s3Services.listFiles();				
+			} catch (Exception e) {
+				System.out.println("Could not fetch list of files " + e.toString());
+			}
+	    	return null;
+	    }
+	    
+	    private MediaType contentType(String keyname) {
+	      String[] arr = keyname.split("\\.");
+	      String type = arr[arr.length-1];
+	      switch(type) {
+	        case "txt": return MediaType.TEXT_PLAIN;
+	        case "png": return MediaType.IMAGE_PNG;
+	        case "jpg": return MediaType.IMAGE_JPEG;
+	        default: return MediaType.APPLICATION_OCTET_STREAM;
+	      }
+	    }
+	    /*
   @Autowired
   FilesStorageService storageService;
 
@@ -66,5 +129,6 @@ public class FilesController {
 
     return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
   }
+  */
 }
 

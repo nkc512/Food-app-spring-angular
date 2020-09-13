@@ -21,6 +21,7 @@ import com.example.demo.files.upload.message.ResponseMessage;
 import com.example.demo.repository.CafeteriaRepository;
 import com.example.demo.repository.DishRepository;
 import com.example.demo.sequence.SequenceGeneratorService;
+import com.example.demo.ses.AmazonSESSample;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCursor;
 import com.example.demo.model.ContactUs;
@@ -45,6 +46,7 @@ public class TestController {
 	
 	@GetMapping("/all")
 	public String allAccess() {
+		
 		return "Public Content.";
 	}
 	

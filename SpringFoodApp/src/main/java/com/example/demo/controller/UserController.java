@@ -241,7 +241,7 @@ public class UserController {
 		return ResponseEntity.ok().body(orderRepository.findByUsername(userName));
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			
 			System.out.println("Previous orders not found");
 			return ResponseEntity.notFound().build();
 		}
@@ -272,7 +272,7 @@ public class UserController {
 		return ResponseEntity.ok().body(p);
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			
 			System.out.println("Previous payment not found"+e);
 			return ResponseEntity.notFound().build();
 		}

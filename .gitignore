@@ -3,3 +3,4 @@ SpringFoodApp/derby.log
 SpringFoodApp/src/main/resources/application.properties
 .vscode/
 *.class
+*.properties

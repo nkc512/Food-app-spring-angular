@@ -17,12 +17,12 @@ configurations {
 repositories {
 	mavenCentral()
 }
-/*
+
 dependencyManagement {
     imports {
         mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.394'
     }
-}*/
+}
 // mainClassName = 'SpringFoodAppApplication'
 
 
@@ -34,7 +34,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 	compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	// implementation 'com.amazonaws:aws-java-sdk-ses'
+	implementation 'com.amazonaws:aws-java-sdk-ses'
+	implementation 'com.amazonaws:aws-java-sdk-s3'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// implementation 'io.jsonwebtoken:jjwt'
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt

@@ -12,7 +12,8 @@ import { Credentials } from '../_classes/credentials';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  successAlertClosed= false;
+  successmsg = '';
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
   showSuccess: boolean=false;
   successMessage: string;
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private userService: UserService,
     private tokenStorage: TokenStorageService,
@@ -35,6 +36,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      let mess=params['message'];
+
+      if(mess=='success')
+      {
+        console.log(mess);
+        this.successAlertClosed=true;
+        this.successmsg="Reset password link is sent to your registered email.";
+        setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false}, 3000);
+      }
+      // console.log(params['type'])
+      });  
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getUser().roles;

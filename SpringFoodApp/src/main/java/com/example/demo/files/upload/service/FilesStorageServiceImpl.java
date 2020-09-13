@@ -17,14 +17,14 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 	//@Value("${springfood.fileLocation}")
 	//private String location;
 	@Value("${springfood.fileLocation}")
-	private Path root;// = Paths.get("D:\\Codes\\uploads");
+	private Path root;
 
   @Override
   public void init() {
     try {
       Files.createDirectory(root);
     } catch (IOException e) {
-      throw new RuntimeException("Could not initialize folder for upload!");
+      System.out.println("Error: Could not initialize folder for upload!" + e.toString());
     }
   }
 
@@ -33,7 +33,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     try {
       Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
     } catch (Exception e) {
-      throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+      System.out.println("Error: Could not store the file. Error: " + file.getName().toString() + e.toString());
     }
   }
 
@@ -46,10 +46,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
       if (resource.exists() || resource.isReadable()) {
         return resource;
       } else {
-        throw new RuntimeException("Could not read the file!");
+        System.out.println("Error: Could not read the file!" +filename);
+        return null;
       }
     } catch (MalformedURLException e) {
-      throw new RuntimeException("Error: " + e.getMessage());
+      System.out.println("Error: " + e.toString());
+      return null;
     }
   }
 
@@ -63,7 +65,8 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     try {
       return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
     } catch (IOException e) {
-      throw new RuntimeException("Could not load the files!");
+      System.out.println("Could not load the files!");
+      return null;
     }
   }
 

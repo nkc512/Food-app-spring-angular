@@ -111,7 +111,7 @@ export class CafeteriaAddProductComponent implements OnInit {
           this.newdish.description = '';
           this.newdish.availability = false;
           // this.errMsg=err.error['message'];
-          this.errMsg = 'dish Already exist.';
+          this.errMsg = 'Could not add dish';
           this.failAlertClose = true;
           setTimeout(() => { this.failAlertClose = false; this.errMsg = ''; }, 2000);
         },
@@ -153,13 +153,13 @@ export class CafeteriaAddProductComponent implements OnInit {
         this.message = 'Could not upload the file!';
         this.currentFile = undefined;
 
-        this.errMsg = err.error.message;
+        this.errMsg = 'Could not upload the file!';
         this.failAlertClose = true;
         setTimeout(() => { this.failAlertClose = false; this.errMsg = ''; }, 5000);
       },
       () => {
         this.successAlertClosed = true;
-        this.successmsg = 'Added Successfully !!!';
+        this.successmsg = 'Image added Successfully !!!';
         setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false; }, 5000);
         this.currentFile = undefined;
       }
