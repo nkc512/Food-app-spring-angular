@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,12 +42,10 @@ import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.JwtUtils;
-import com.example.demo.security.service.EmailSenderService;
+//import com.example.demo.security.service.EmailSenderService;
 import com.example.demo.security.service.UserDetailsImpl;
 import com.example.demo.sequence.SequenceGeneratorService;
-import com.example.demo.ses.AmazonEmail;
 import com.example.demo.ses.AmazonSESSample;
-import com.example.demo.ses.SESProcessor;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -81,8 +78,8 @@ public class AuthController {
 	@Autowired
 	private ConfirmationTokenRepository confirmationTokenRepository;
 
-	@Autowired
-	private EmailSenderService emailSenderService;
+	//@Autowired
+	//private EmailSenderService emailSenderService;
 
 	@Value("${foodapp.aws.instance.link}")
 	private String ec2InstanceLink;
@@ -280,10 +277,11 @@ public class AuthController {
                 return ResponseEntity.ok().body(new ResponseMessage("Reset password link is sent to your registered email id."+ec2InstanceLink+"/api/auth/confirm-reset?token="+confirmationToken.getConfirmationToken()));
 
             } 			
+            return ResponseEntity.notFound().build();
 		} catch (Exception e) {
 	        return ResponseEntity.notFound().build();
 		}
-        return ResponseEntity.notFound().build();       
+              
     }
 	@GetMapping(value="/confirm-reset")
     public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {

@@ -90,7 +90,8 @@ public class S3ServicesImpl implements S3Services {
         }
   }
   
-  public List<String> listFiles() {
+  @Override
+public List<String> listFiles() {
     
     ListObjectsRequest listObjectsRequest = 
               new ListObjectsRequest()

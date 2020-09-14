@@ -18,6 +18,12 @@ import com.example.demo.filter.AuthTokenFilter;
 
 import com.example.demo.security.jwt.AuthEntryPointJwt;
 import com.example.demo.security.service.UserDetailsServiceImpl;
+/*
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+*/
 
 @Configuration
 @EnableWebSecurity
@@ -62,15 +68,39 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests()
+			
 			.antMatchers("/api/auth/**").permitAll()
 			.antMatchers("/api/test/**").permitAll()
+			.antMatchers("/api/test2/**").permitAll()
+			.antMatchers("/api/files/**").permitAll()
+			.antMatchers("/api/file/**").permitAll()
 			.antMatchers("/api/cafeteria/**").hasRole("CAFETERIAMANAGER")
 			.antMatchers("/api/admin/**").hasRole("ADMIN")
 			.antMatchers("/api/user/**").hasRole("USER")
+			.anyRequest().permitAll();
+			//.anyRequest().authenticated();;
+
+			
+			/*.antMatchers("/api/auth/**").permitAll()
+			.antMatchers("/api/test/**").permitAll()
+			.antMatchers("/api/test2/**").permitAll()
 			.antMatchers("/api/files/**").permitAll()
-			.anyRequest().authenticated();
+			.antMatchers("/api/file/**").permitAll()
+			.antMatchers("/api/cafeteria/**").hasRole("CAFETERIAMANAGER")
+			.antMatchers("/api/admin/**").hasRole("ADMIN")
+			.antMatchers("/api/user/**").hasRole("USER")
+			.anyRequest().authenticated();*/
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 	}
+	/*
+	@Bean
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_2)  
+          .select()                                  
+          .apis(RequestHandlerSelectors.any())              
+          .paths(PathSelectors.any())                          
+          .build();                                           
+    }*/
 }
