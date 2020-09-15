@@ -43,8 +43,8 @@ export class LoginComponent implements OnInit {
       {
         console.log(mess);
         this.successAlertClosed=true;
-        this.successmsg="Reset password link is sent to your registered email.";
-        setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false}, 3000);
+        this.successmsg="Reset password link is sent to your registered email. Please check console log as SES is not activated yet";
+        setTimeout(() => { this.successmsg = ''; this.successAlertClosed = false}, 5000);
       }
       // console.log(params['type'])
       });  
