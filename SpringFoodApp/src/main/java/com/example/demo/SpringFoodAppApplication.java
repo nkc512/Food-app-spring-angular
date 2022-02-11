@@ -12,23 +12,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.demo.files.upload.service.FilesStorageService;
-import com.example.demo.repository.CafeteriaRepository;
-import com.example.demo.repository.CartRepository;
-import com.example.demo.repository.ConfirmationTokenRepository;
-import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.DishRepository;
-import com.example.demo.repository.FeedbackRepository;
-import com.example.demo.repository.OrderRepository;
-import com.example.demo.repository.PaymentRepository;
-import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 
 @ComponentScan("com.example.demo")
 @EnableMongoRepositories(basePackageClasses
 	    = {
 	    		DishRepository.class,UserRepository.class
-	    		//, CafeteriaRepository.class,CartRepository.class,ConfirmationTokenRepository.class,
-	    		//CustomerRepository.class, FeedbackRepository.class, OrderRepository.class, PaymentRepository.class,RoleRepository.class
 	    })
 @SpringBootApplication
 public class SpringFoodAppApplication implements CommandLineRunner{

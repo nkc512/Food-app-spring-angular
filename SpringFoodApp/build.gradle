@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
@@ -13,20 +13,13 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-// mainClassName = 'com.example.demo.SpringFoodAppApplication'
 repositories {
 	mavenCentral()
 }
 
-/*jar {
-   
-    manifest {
-        attributes 'Main-Class': 'com.example.demo.SpringFoodAppApplication'
-    }
-}*/
 dependencyManagement {
     imports {
-        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.394'
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.12.156'
     }
 }
 
@@ -35,36 +28,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 	implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.amazonaws:aws-java-sdk-ses'
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// implementation 'io.jsonwebtoken:jjwt'
-	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-	//compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	implementation 'javax.validation:validation-api'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api'
-	//implementation 'org.springdoc.springdoc-openapi-ui:1.2.32'
-	//implementation 'io.springfox:springfox-swagger2:2.9.2'
-	//implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-	//implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation "io.springfox:springfox-bean-validators:2.9.2"
-	//compile "io.springfox:springfox-swagger-ui:2.9.2"
-	
-	
-	/*
-	compile("io.springfox:springfox-swagger2:2.9.2") {
-	    exclude module: 'mapstruct' // necessary in my case to not end up with multiple mapstruct versions
-	}
-	compile "io.springfox:springfox-bean-validators:2.9.2"
-	compile "io.springfox:springfox-swagger-ui:2.9.2"
-	*/
-	// https://mvnrepository.com/artifact/com.google.guava/guava
-	//compile group: 'com.google.guava', name: 'guava', version: 'r05'
-	
 	implementation 'org.projectlombok:lombok'
 	implementation 'org.apache.derby:derby'
 	implementation 'mysql:mysql-connector-java'
@@ -76,7 +48,6 @@ dependencies {
 	
 
 }
-// https://www.youtube.com/watch?v=BwdkyrnJQsg
 jar {
     manifest {
         attributes 'Main-Class': 'com.example.demo.SpringFoodAppApplication'
@@ -88,10 +59,3 @@ jar {
     }    
 
 }
-/*
-jar {
-  manifest {
-    attributes "Main-Class": "$mainClassName"
-  }
-  from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}*/
