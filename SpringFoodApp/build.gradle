@@ -36,7 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
-	compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
+	implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.amazonaws:aws-java-sdk-ses'
 	implementation 'com.amazonaws:aws-java-sdk-s3'
@@ -51,7 +51,7 @@ dependencies {
 	//implementation 'io.springfox:springfox-swagger2:2.9.2'
 	//implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	//implementation 'io.springfox:springfox-boot-starter:3.0.0'
-	compile "io.springfox:springfox-bean-validators:2.9.2"
+	implementation "io.springfox:springfox-bean-validators:2.9.2"
 	//compile "io.springfox:springfox-swagger-ui:2.9.2"
 	
 	
@@ -65,9 +65,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.guava/guava
 	//compile group: 'com.google.guava', name: 'guava', version: 'r05'
 	
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.apache.derby:derby'
-	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'org.projectlombok:lombok'
+	implementation 'org.apache.derby:derby'
+	implementation 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
